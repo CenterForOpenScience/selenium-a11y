@@ -31,8 +31,8 @@ class DashboardPage(BaseDashboardPage):
     view_meetings_button = Locator(By.XPATH, '//a[text()="View meetings"]')
     view_preprints_button = Locator(By.XPATH, '//a[text()="View preprints"]')
     first_noteworthy_project = Locator(By.CSS_SELECTOR, '[data-test-noteworthy-project]', settings.LONG_TIMEOUT)
-    institutions_carousel_left_arrow = Locator(By.CSS_SELECTOR, '._InstitutionCarousel__control_16pdz4.carousel-control._left_16pdz4')
-    institutions_carousel_right_arrow = Locator(By.CSS_SELECTOR, '._InstitutionCarousel__control_16pdz4.carousel-control._right_16pdz4')
+    institutions_carousel_left_arrow = Locator(By.CSS_SELECTOR, '.carousel-control.left')
+    institutions_carousel_right_arrow = Locator(By.CSS_SELECTOR, '.carousel-control.right')
 
     # Group Locators
     institution_carousel_logos = GroupLocator(By.CSS_SELECTOR, '.carousel-inner img')
