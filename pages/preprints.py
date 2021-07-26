@@ -114,3 +114,4 @@ class PreprintDetailPage(GuidBasePage, BasePreprintPage):
     identity = Locator(By.ID, 'preprintTitle', settings.LONG_TIMEOUT)
     title = Locator(By.ID, 'preprintTitle', settings.LONG_TIMEOUT)
     view_page = Locator(By.ID, 'view-page')
+    authors_load_indicator = Locator(By.CSS_SELECTOR, '.comma-list > .ball-pulse')
