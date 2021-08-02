@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- Before submit your Pull Request, make sure you picked
      the right branch:
 
@@ -37,3 +38,35 @@ Any concerns/considerations/questions that development raised?
 ## Ticket
 
 <!-- Link to JIRA ticket, if applicable e.g. https://openscience.atlassian.net/browse/OSF-1234 -->
+=======
+
+<!-- Before you submit your Pull Request, please confirm that:
+
+     - Any test that will create public data either has the `QAtest` tag or the `dont_run_on_production` marker
+     - `core_functionality` is marked as such
+     - Your tests will be able to run on *all* servers (all stagings, test)
+ -->
+
+
+## Purpose
+
+
+
+## Summary of Changes
+
+
+
+## Reviewer's Actions
+`git fetch <remote> pull/<PR_number>/head:<branch_name>`
+
+Run this test using
+`tests/<name_of_test>.py -s -v`
+
+## Testing Changes Moving Forward
+
+
+
+## Ticket
+
+https://openscience.atlassian.net/browse/ENG-
+>>>>>>> 8c51d623f314b7916562b80642f536434cadb53e

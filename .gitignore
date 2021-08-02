@@ -10,11 +10,15 @@ ehthumbs.db
 Thumbs.db
 *.swp
 *~
+<<<<<<< HEAD
 .ipynb_checkpoints
 
 # R
 #######################
 .Rhistory
+=======
+*.log
+>>>>>>> 8c51d623f314b7916562b80642f536434cadb53e
 
 # Python
 #######################
@@ -40,10 +44,15 @@ nosetests.xml
 .idea
 .hg
 .hgignore
+<<<<<<< HEAD
+=======
+.pytest_cache
+>>>>>>> 8c51d623f314b7916562b80642f536434cadb53e
 env/
 mathenv
 cover/
 .konchrc
+<<<<<<< HEAD
 
 # Node
 ######
@@ -204,3 +213,13 @@ ssl/
 # pyenv
 .python-version
 
+=======
+*.pyc
+*.log
+
+# Private Info
+variables.py
+.env
+.cache/
+geckodriver.log
+>>>>>>> 8c51d623f314b7916562b80642f536434cadb53e
