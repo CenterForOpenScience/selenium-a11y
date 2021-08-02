@@ -198,7 +198,7 @@ var PublicNodes = {
                 ctrl.publicProjects().length !== 0 ? ctrl.publicProjects().map(function(node) {
                     return m.component(PublicNode, {nodeType: ctrl.nodeType, node: node});
                 }) : ctrl.isProfile ?
-                    m('div.help-block', {}, [
+                    m('li.help-block', {}, [
                         'You have no public ' + ctrl.nodeType + '.',
                         m('p', {}, [
                             'Find out how to make your ' + ctrl.nodeType + ' ',

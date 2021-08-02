@@ -6,7 +6,7 @@
                 <h3 class="panel-title">${addon_data['full_name']}</h3>
                 <div class="pull-right">
                     % if addon_data['has_page']:
-                        <a href="${node['url']}${addon_data['short_name']}/">  <i class="fa fa-external-link"></i> </a>
+                        <a href="${node['url']}${addon_data['short_name']}/">  <i class="fa fa-external-link" aria-label="Link to ${addon_data['short_name']}"></i> </a>
                     % endif
                 </div>
             </div>

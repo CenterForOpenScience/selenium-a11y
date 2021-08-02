@@ -408,7 +408,7 @@ var tbOptions = {
             tb.resetFilter.call(tb);
             $('.db-poFilter>input').val('');
         }
-        return [ m('input.form-control[placeholder="Filter displayed projects"][type="text"]', {
+        return [ m('input.form-control[placeholder="Filter displayed projects"][type="text"][aria-label="Project Search"]', {
             style: 'display:inline;',
             onkeyup: function(event) {
                 tb.options.showSidebar(false);
