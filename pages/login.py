@@ -83,6 +83,12 @@ class InstitutionalLoginPage(BasePage):
     dropdown_options = GroupLocator(By.CSS_SELECTOR, '#institutionSelect option')
 
 
+class InstitutionForgotPasswordPage(BasePage):
+    url = settings.OSF_HOME + '/forgotpassword-institution/'
+
+    identity = Locator(By.ID, 'forgotPasswordForm')
+
+
 class ForgotPasswordPage(BasePage):
     url = settings.OSF_HOME + '/forgotpassword/'
 
@@ -90,9 +96,10 @@ class ForgotPasswordPage(BasePage):
 
 
 class UnsupportedInstitutionLoginPage(BasePage):
-    url = settings.OSF_HOME + '/login?campaign=unsupportedinstitution'
+    url = settings.CAS_DOMAIN + '/login?campaign=unsupportedinstitution'
 
     identity = Locator(By.ID, 'osfUnsupportedInstitutionLogin')
+    set_password_button = Locator(By.NAME, 'submit')
 
 
 class GenericCASPage(BasePage):
