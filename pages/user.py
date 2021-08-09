@@ -44,6 +44,9 @@ class ProfileInformationPage(BaseUserSettingsPage):
     middle_name_input = Locator(By.CSS_SELECTOR, '#names > div > form > div:nth-child(5) > input')
     save_button = Locator(By.CSS_SELECTOR, '#names > div > form > div.p-t-lg.p-b-lg > button.btn.btn-success')
     update_success = Locator(By.CSS_SELECTOR, '.text-success')
+    social_tab_link = Locator(By.LINK_TEXT, 'Social')
+    employment_tab_link = Locator(By.LINK_TEXT, 'Employment')
+    education_tab_link = Locator(By.LINK_TEXT, 'Education')
 
 class AccountSettingsPage(BaseUserSettingsPage):
     url = settings.OSF_HOME + '/settings/account/'
@@ -59,6 +62,7 @@ class NotificationsPage(BaseUserSettingsPage):
     url = settings.OSF_HOME + '/settings/notifications/'
 
     identity = Locator(By.CSS_SELECTOR, '#notificationSettings')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale', settings.LONG_TIMEOUT)
 
 class EmberDeveloperAppsPage(BaseUserSettingsPage):
     url = settings.OSF_HOME + '/settings/applications/'
@@ -72,6 +76,11 @@ class DeveloperAppsPage(BaseUserSettingsPage):
 
     identity = Locator(By.CSS_SELECTOR, 'div[data-analytics-scope="Developer apps"')
 
+class CreateDeveloperAppPage(BaseUserSettingsPage):
+    url = settings.OSF_HOME + '/settings/applications/create'
+
+    identity = Locator(By.CSS_SELECTOR, '[data-test-developer-app-name]')
+
 class EmberPersonalAccessTokenPage(BaseUserSettingsPage):
     url = settings.OSF_HOME + '/settings/tokens/'
 
@@ -83,3 +92,8 @@ class PersonalAccessTokenPage(BaseUserSettingsPage):
     url = settings.OSF_HOME + '/settings/tokens/'
 
     identity = Locator(By.CSS_SELECTOR, 'a[data-analytics-name="Personal access"]')
+
+class CreatePersonalAccessTokenPage(BaseUserSettingsPage):
+    url = settings.OSF_HOME + '/settings/tokens/create'
+
+    identity = Locator(By.CSS_SELECTOR, '[data-test-token-name]')
