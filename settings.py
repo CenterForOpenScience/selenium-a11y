@@ -1,4 +1,5 @@
 from environs import Env
+
 env = Env()
 env.read_env()  # Read .env into os.environ, if it exists
 
@@ -50,9 +51,9 @@ domains = {
             'https://osf.ucla.edu',
             'https://osf.ucr.edu',
             'https://osf.wustl.edu',
-            'https://osf.research.vcu.edu'
-        ]
-    }
+            'https://osf.research.vcu.edu',
+        ],
+    },
 }
 
 DRIVER = env('DRIVER', 'Firefox')
@@ -86,8 +87,9 @@ EXPECTED_PROVIDERS = env.list(
         'osfstorage',
         'owncloud',
         'onedrive',
-        's3'
-    ])
+        's3',
+    ],
+)
 
 OSF_HOME = domains[DOMAIN]['home']
 API_DOMAIN = domains[DOMAIN]['api']
@@ -97,9 +99,24 @@ CUSTOM_INSTITUTION_DOMAINS = domains[DOMAIN]['custom_institution_domains']
 
 # Browser capabilities for browserstack testing
 caps = {
-    'chrome': {'browser': 'Chrome', 'os': 'Windows', 'os_version': '10', 'resolution': '2048x1536'},
-    'edge': {'browser': 'Edge', 'os': 'Windows', 'os_version': '10', 'resolution': '2048x1536'},
-    'firefox': {'browser': 'Firefox', 'os': 'Windows', 'os_version': '10', 'resolution': '2048x1536'},
+    'chrome': {
+        'browser': 'Chrome',
+        'os': 'Windows',
+        'os_version': '10',
+        'resolution': '2048x1536',
+    },
+    'edge': {
+        'browser': 'Edge',
+        'os': 'Windows',
+        'os_version': '10',
+        'resolution': '2048x1536',
+    },
+    'firefox': {
+        'browser': 'Firefox',
+        'os': 'Windows',
+        'os_version': '10',
+        'resolution': '2048x1536',
+    },
 }
 
 BUILD = DRIVER
@@ -114,10 +131,14 @@ if DRIVER == 'Remote':
     upper_build = BUILD.upper()
 
     USER_ONE = env('{}_USER'.format(upper_build), env('USER_ONE', ''))
-    USER_ONE_PASSWORD = env('{}_USER_PASSWORD'.format(upper_build), env('USER_ONE_PASSWORD', ''))
+    USER_ONE_PASSWORD = env(
+        '{}_USER_PASSWORD'.format(upper_build), env('USER_ONE_PASSWORD', '')
+    )
 
     USER_TWO = env('{}_USER_TWO'.format(upper_build), env('USER_TWO', ''))
-    USER_TWO_PASSWORD = env('{}_USER_TWO_PASSWORD'.format(upper_build), env('USER_TWO_PASSWORD', ''))
+    USER_TWO_PASSWORD = env(
+        '{}_USER_TWO_PASSWORD'.format(upper_build), env('USER_TWO_PASSWORD', '')
+    )
 else:
     USER_ONE = env('USER_ONE')
     USER_ONE_PASSWORD = env('USER_ONE_PASSWORD')

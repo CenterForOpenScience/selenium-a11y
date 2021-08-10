@@ -1,11 +1,12 @@
-import settings
 import os
 
 import pandas as pd
 from axe_selenium_python import Axe
 
-class ApplyA11yRules:
+import settings
 
+
+class ApplyA11yRules:
     def run_axe(driver, session, page_name, write_files=True, terminal_errors=True):
         """ Use the axe testing engine to perform accessibility checks on a web page
             Parameters:
@@ -37,6 +38,7 @@ class ApplyA11yRules:
 #       - shared Google Drive folder
 #       - Github repository (either selenium-a11y repo or maybe separate dedicated repo)
 
+
 def write_results_files(axe, results, page_name):
     """ Write results to output .json files (3 separate files for passes, violations,
     and incomplete) and also convert each .json file to a .csv file.  So there should
@@ -57,20 +59,32 @@ def write_results_files(axe, results, page_name):
     if not os.path.isdir(work_dir):
         os.mkdir(work_dir)
     # Files for Passed Rules
-    file_name_passes = os.path.join(work_dir, 'a11y_' + page_name + '_passes_' + settings.DOMAIN + '.json')
+    file_name_passes = os.path.join(
+        work_dir, 'a11y_' + page_name + '_passes_' + settings.DOMAIN + '.json'
+    )
     axe.write_results(results['passes'], file_name_passes)
     pandaObject = pd.read_json(file_name_passes)
-    file_name_passes_csv = os.path.join(work_dir, 'a11y_' + page_name + '_passes_' + settings.DOMAIN + '.csv')
+    file_name_passes_csv = os.path.join(
+        work_dir, 'a11y_' + page_name + '_passes_' + settings.DOMAIN + '.csv'
+    )
     pandaObject.to_csv(file_name_passes_csv)
     # Files for Failed Rules (aka Violations)
-    file_name_violations = os.path.join(work_dir, 'a11y_' + page_name + '_violations_' + settings.DOMAIN + '.json')
+    file_name_violations = os.path.join(
+        work_dir, 'a11y_' + page_name + '_violations_' + settings.DOMAIN + '.json'
+    )
     axe.write_results(results['violations'], file_name_violations)
     pandaObject = pd.read_json(file_name_violations)
-    file_name_violations_csv = os.path.join(work_dir, 'a11y_' + page_name + '_violations_' + settings.DOMAIN + '.csv')
+    file_name_violations_csv = os.path.join(
+        work_dir, 'a11y_' + page_name + '_violations_' + settings.DOMAIN + '.csv'
+    )
     pandaObject.to_csv(file_name_violations_csv)
     # Files for Rules that couldn't be evaluated by the rules engine (aka Incomplete)
-    file_name_incomplete = os.path.join(work_dir, 'a11y_' + page_name + '_incomplete_' + settings.DOMAIN + '.json')
+    file_name_incomplete = os.path.join(
+        work_dir, 'a11y_' + page_name + '_incomplete_' + settings.DOMAIN + '.json'
+    )
     axe.write_results(results['incomplete'], file_name_incomplete)
     pandaObject = pd.read_json(file_name_incomplete)
-    file_name_incomplete_csv = os.path.join(work_dir, 'a11y_' + page_name + '_incomplete_' + settings.DOMAIN + '.csv')
+    file_name_incomplete_csv = os.path.join(
+        work_dir, 'a11y_' + page_name + '_incomplete_' + settings.DOMAIN + '.csv'
+    )
     pandaObject.to_csv(file_name_incomplete_csv)

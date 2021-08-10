@@ -1,20 +1,17 @@
 import pytest
+
 import settings
-
 from api import osf_api
-
 from components.accessibility import ApplyA11yRules as a11y
-
 from pages.preprints import (
+    PreprintDetailPage,
+    PreprintDiscoverPage,
     PreprintLandingPage,
     PreprintSubmitPage,
-    PreprintDiscoverPage,
-    PreprintDetailPage
 )
 
 
 class TestPreprintLandingPage:
-
     def test_accessibility(self, driver, session):
         landing_page = PreprintLandingPage(driver)
         landing_page.goto()
@@ -23,7 +20,6 @@ class TestPreprintLandingPage:
 
 
 class TestPreprintSubmitPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         submit_page = PreprintSubmitPage(driver)
         submit_page.goto()
@@ -32,7 +28,6 @@ class TestPreprintSubmitPage:
 
 
 class TestPreprintDiscoverPage:
-
     def test_accessibility(self, driver, session):
         discover_page = PreprintDiscoverPage(driver)
         discover_page.goto()
@@ -43,9 +38,10 @@ class TestPreprintDiscoverPage:
 
 # TODO: Need to figure out a way to run this test in testing environments - some way to search on the
 # Discover page and guarantee that the search results will be from current environment
-@pytest.mark.skipif(not settings.PRODUCTION, reason='Cannot test on stagings as they share SHARE')
+@pytest.mark.skipif(
+    not settings.PRODUCTION, reason='Cannot test on stagings as they share SHARE'
+)
 class TestPreprintDetailPage:
-
     def test_accessibility(self, driver, session):
         discover_page = PreprintDiscoverPage(driver)
         discover_page.goto()

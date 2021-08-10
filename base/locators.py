@@ -1,9 +1,14 @@
-import settings
-
-from base import expected_conditions as ec
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    StaleElementReferenceException,
+    TimeoutException,
+)
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException, TimeoutException, NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+
+import settings
+from base import expected_conditions as ec
+
 
 class WebElementWrapper:
     """A wrapper for selenium's WebElement. Supports all WebElement attributes
@@ -13,6 +18,7 @@ class WebElementWrapper:
     :param str attribute_name: The attribute name of the locator in its containing class.
     :param locator: An object of the type Locator.
     """
+
     def __init__(self, driver, attribute_name, locator):
         self.driver = driver
         self.locator = locator
@@ -90,8 +96,7 @@ class WebElementWrapper:
         self.click()
 
         try:
-            WebDriverWait(self.driver, timeout).until(
-                EC.number_of_windows_to_be(2))
+            WebDriverWait(self.driver, timeout).until(EC.number_of_windows_to_be(2))
         except TimeoutException:
             raise ValueError('No new window was opened.')
         self.driver.close()
@@ -106,6 +111,7 @@ class WebElementWrapper:
         for k in keys:
             self.element.send_keys(k)
 
+
 class BaseLocator:
     """Abstract base class from which all Locator classes inherit.
 
@@ -113,6 +119,7 @@ class BaseLocator:
     a string that actually identifies the element, and a timeout for how long to wait
     when searching for the element.
     """
+
     def __init__(self, selector, path, timeout=settings.TIMEOUT):
         self.selector = selector
         self.path = path
@@ -135,6 +142,7 @@ class Locator(BaseLocator):
     most notably `get_web_element`. You may end up waiting longer than your timeout because some
     methods use more than one Wait.
     """
+
     def get_web_element(self, driver, attribute_name):
         """
         Check if element is on page and visible before returning the selenium
@@ -150,39 +158,54 @@ class Locator(BaseLocator):
             WebDriverWait(driver, self.timeout).until(
                 EC.presence_of_element_located(self.location)
             )
-        except(TimeoutException, StaleElementReferenceException):
-            raise ValueError('Element {} not present on page. {}'.format(
-                attribute_name, driver.current_url)) from None
+        except (TimeoutException, StaleElementReferenceException):
+            raise ValueError(
+                'Element {} not present on page. {}'.format(
+                    attribute_name, driver.current_url
+                )
+            ) from None
 
         try:
             WebDriverWait(driver, self.timeout).until(
                 EC.visibility_of_element_located(self.location)
             )
-        except(TimeoutException, StaleElementReferenceException):
-            raise ValueError('Element {} not visible before timeout. {}'.format(
-                attribute_name, driver.current_url)) from None
+        except (TimeoutException, StaleElementReferenceException):
+            raise ValueError(
+                'Element {} not visible before timeout. {}'.format(
+                    attribute_name, driver.current_url
+                )
+            ) from None
 
         try:
             WebDriverWait(driver, self.timeout).until(
                 EC.element_to_be_clickable(self.location)
             )
-        except(TimeoutException, StaleElementReferenceException):
-            raise ValueError('Element {} not clickable before timeout. {}'.format(
-                attribute_name, driver.current_url)) from None
+        except (TimeoutException, StaleElementReferenceException):
+            raise ValueError(
+                'Element {} not clickable before timeout. {}'.format(
+                    attribute_name, driver.current_url
+                )
+            ) from None
 
         if 'href' in attribute_name:
             try:
                 WebDriverWait(driver, self.timeout).until(
                     ec.link_has_href(self.location)
                 )
-            except(TimeoutException, StaleElementReferenceException):
-                raise ValueError('Element {} on page but does not have a href. {}'.format(
-                    attribute_name, driver.current_url)) from None
+            except (TimeoutException, StaleElementReferenceException):
+                raise ValueError(
+                    'Element {} on page but does not have a href. {}'.format(
+                        attribute_name, driver.current_url
+                    )
+                ) from None
         try:
             return driver.find_element(self.selector, self.path)
         except NoSuchElementException:
-            raise ValueError('Element {} was present, but now is gone. {}'.format(
-                attribute_name, driver.current_url)) from None
+            raise ValueError(
+                'Element {} was present, but now is gone. {}'.format(
+                    attribute_name, driver.current_url
+                )
+            ) from None
 
     def get_element(self, driver, attribute_name):
         return WebElementWrapper(driver, attribute_name, self)
@@ -195,6 +218,7 @@ class GroupLocator(BaseLocator):
     :param str path: Identifying string that is shared between the elements
     you are attempting to locate.
     """
+
     def get_web_elements(self, driver):
         return driver.find_elements(self.selector, self.path)
 
@@ -214,7 +238,10 @@ class ComponentLocator(Locator):
     :param component_class: A subclass of BaseElment.
     Note: Currently the parameters selector, path, and timeout don't do anything.
     """
-    def __init__(self, component_class, selector=None, path=None, timeout=settings.TIMEOUT):
+
+    def __init__(
+        self, component_class, selector=None, path=None, timeout=settings.TIMEOUT
+    ):
         super().__init__(selector, path, timeout)
         self.component_class = component_class
 
@@ -227,6 +254,7 @@ class BaseElement:
     Handles waffled pages, storage of the WebDriver, and returning WebElements when Locators are
     accessed.
     """
+
     default_timeout = settings.TIMEOUT
 
     def __new__(cls, *args, **kwargs):

@@ -1,11 +1,10 @@
-import settings
-
 from selenium.webdriver.common.by import By
 
-from pages.base import OSFBasePage
+import settings
+from base.locators import ComponentLocator, Locator
 from components.generic import SignUpForm
 from components.navbars import EmberNavbar
-from base.locators import Locator, ComponentLocator
+from pages.base import OSFBasePage
 
 
 class LandingPage(OSFBasePage):
@@ -15,10 +14,12 @@ class LandingPage(OSFBasePage):
     navbar = ComponentLocator(EmberNavbar)
     sign_up_form = ComponentLocator(SignUpForm)
 
+
 class LegacyLandingPage(OSFBasePage):
     waffle_override = {'ember_home_page': LandingPage}
 
     identity = Locator(By.CSS_SELECTOR, '._heroHeader_1qc5dv')
+
 
 class RegisteredReportsLandingPage(OSFBasePage):
     url = settings.OSF_HOME + '/rr/'
