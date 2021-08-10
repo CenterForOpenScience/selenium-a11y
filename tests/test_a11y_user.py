@@ -1,7 +1,6 @@
 import pytest
 
 from components.accessibility import ApplyA11yRules as a11y
-
 from pages.user import (
     AccountSettingsPage,
     ConfigureAddonsPage,
@@ -11,12 +10,11 @@ from pages.user import (
     EmberPersonalAccessTokenPage,
     NotificationsPage,
     ProfileInformationPage,
-    UserProfilePage
+    UserProfilePage,
 )
 
 
 class TestUserProfilePage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         profile_page = UserProfilePage(driver)
         profile_page.goto()
@@ -25,7 +23,6 @@ class TestUserProfilePage:
 
 
 class TestUserSettingsProfileInformationPage:
-
     @pytest.fixture()
     def profile_information_page(self, driver, must_be_logged_in):
         profile_information_page = ProfileInformationPage(driver)
@@ -44,36 +41,45 @@ class TestUserSettingsProfileInformationPage:
         # Running Axe in the previous step leaves you at the bottom of the page, so we
         # need to scroll back up to the Social tab link before we can click it and then
         # run Axe again.
-        profile_information_page.scroll_into_view(profile_information_page.social_tab_link.element)
+        profile_information_page.scroll_into_view(
+            profile_information_page.social_tab_link.element
+        )
         profile_information_page.social_tab_link.click()
         assert ProfileInformationPage(driver, verify=True)
         a11y.run_axe(driver, session, 'usrSetPrfSoc')
 
-    def test_accessibility_employment_tab(self, driver, session, profile_information_page):
+    def test_accessibility_employment_tab(
+        self, driver, session, profile_information_page
+    ):
         """ Test Employment Tab of User Settings Profile Information Page
         """
         # Running Axe in the previous step leaves you at the bottom of the page, so we
         # need to scroll back up to the Employment tab link before we can click it and then
         # run Axe again.
-        profile_information_page.scroll_into_view(profile_information_page.employment_tab_link.element)
+        profile_information_page.scroll_into_view(
+            profile_information_page.employment_tab_link.element
+        )
         profile_information_page.employment_tab_link.click()
         assert ProfileInformationPage(driver, verify=True)
         a11y.run_axe(driver, session, 'usrSetPrfEmp')
 
-    def test_accessibility_education_tab(self, driver, session, profile_information_page):
+    def test_accessibility_education_tab(
+        self, driver, session, profile_information_page
+    ):
         """ Test Education Tab of User Settings Profile Information Page
         """
         # Running Axe in the previous step leaves you at the bottom of the page, so we
         # need to scroll back up to the Education tab link before we can click it and then
         # run Axe again.
-        profile_information_page.scroll_into_view(profile_information_page.education_tab_link.element)
+        profile_information_page.scroll_into_view(
+            profile_information_page.education_tab_link.element
+        )
         profile_information_page.education_tab_link.click()
         assert ProfileInformationPage(driver, verify=True)
         a11y.run_axe(driver, session, 'usrSetPrfEd')
 
 
 class TestUserSettingsAccountSettingsPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         account_settings_page = AccountSettingsPage(driver)
         account_settings_page.goto()
@@ -82,7 +88,6 @@ class TestUserSettingsAccountSettingsPage:
 
 
 class TestUserSettingsConfigureAddonsPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         configure_addons_page = ConfigureAddonsPage(driver)
         configure_addons_page.goto()
@@ -91,7 +96,6 @@ class TestUserSettingsConfigureAddonsPage:
 
 
 class TestUserSettingsNotificationsPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         notifications_page = NotificationsPage(driver)
         notifications_page.goto()
@@ -102,7 +106,6 @@ class TestUserSettingsNotificationsPage:
 
 
 class TestUserSettingsDeveloperAppsPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         developer_apps_page = EmberDeveloperAppsPage(driver)
         developer_apps_page.goto()
@@ -111,7 +114,6 @@ class TestUserSettingsDeveloperAppsPage:
 
 
 class TestUserSettingsCreateDeveloperAppPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         create_dev_app_page = CreateDeveloperAppPage(driver)
         create_dev_app_page.goto()
@@ -120,7 +122,6 @@ class TestUserSettingsCreateDeveloperAppPage:
 
 
 class TestUserSettingsPersonalAccessTokensPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         personal_access_tokens_page = EmberPersonalAccessTokenPage(driver)
         personal_access_tokens_page.goto()
@@ -129,7 +130,6 @@ class TestUserSettingsPersonalAccessTokensPage:
 
 
 class TestUserSettingsCreatePersonalAccessTokenPage:
-
     def test_accessibility(self, driver, session, must_be_logged_in):
         create_personal_access_tokens_page = CreatePersonalAccessTokenPage(driver)
         create_personal_access_tokens_page.goto()

@@ -1,15 +1,20 @@
-import settings
 import json
-import os
 import logging
-import requests
+import os
 
+import requests
 from pythosf import client
+
+import settings
+
 logger = logging.getLogger(__name__)
 
 
 def get_default_session():
-    return client.Session(api_base_url=settings.API_DOMAIN, auth=(settings.USER_ONE, settings.USER_ONE_PASSWORD))
+    return client.Session(
+        api_base_url=settings.API_DOMAIN,
+        auth=(settings.USER_ONE, settings.USER_ONE_PASSWORD),
+    )
 
 
 def create_project(session, title='osf selenium test', tags=None, **kwargs):
@@ -125,7 +130,9 @@ def delete_all_user_projects(session, user=None):
         for error_tuple in nodes_failed:
             # Position [0] of error_tuple contains node_id
             # Position [1] of error_tuple contains the exception
-            error_message = "node '{}' errored with exception: '{}'".format(error_tuple[0], error_tuple[1])
+            error_message = "node '{}' errored with exception: '{}'".format(
+                error_tuple[0], error_tuple[1]
+            )
             error_message_list.append(error_message)
         logger.error('\n'.join(error_message_list))
 
@@ -206,7 +213,14 @@ def get_existing_file(session, node_id=settings.PREFERRED_NODE):
         return upload_fake_file(session, node)
 
 
-def upload_fake_file(session, node=None, name='osf selenium test file for testing because its fake.txt', upload_url=None, provider='osfstorage', quickfile=False):
+def upload_fake_file(
+    session,
+    node=None,
+    name='osf selenium test file for testing because its fake.txt',
+    upload_url=None,
+    provider='osfstorage',
+    quickfile=False,
+):
     """Upload an almost empty file to the given node. Return the file's name.
 
     Note: The default file has a very long name because it makes it easier to click a link to it.
@@ -215,9 +229,13 @@ def upload_fake_file(session, node=None, name='osf selenium test file for testin
     if not upload_url:
         if not node:
             raise TypeError('Node must not be none when upload URL is not set.')
-        upload_url = '{}/v1/resources/{}/providers/{}/'.format(settings.FILE_DOMAIN, node.id, provider)
+        upload_url = '{}/v1/resources/{}/providers/{}/'.format(
+            settings.FILE_DOMAIN, node.id, provider
+        )
 
-    metadata = session.put(url=upload_url, query_parameters={'kind': 'file', 'name': name}, raw_body={})
+    metadata = session.put(
+        url=upload_url, query_parameters={'kind': 'file', 'name': name}, raw_body={}
+    )
 
     if quickfile:
         # create_guid param is tied to the GET request so we can't use query_parameters={'create_guid': 1} here
@@ -270,13 +288,14 @@ def get_providers_total(provider_name, session):
     """ Return the total number of preprints for a given service provider.
         Note: Reformat provider names to all lowercase and remove white spaces.
     """
-    provider_url = '/v2/providers/preprints/{}/preprints/'.format(provider_name.lower().replace(' ', ''))
+    provider_url = '/v2/providers/preprints/{}/preprints/'.format(
+        provider_name.lower().replace(' ', '')
+    )
     return session.get(provider_url)['links']['meta']['total']
 
 
 def connect_provider_root_to_node(
-    session, provider, external_account_id,
-    node_id=settings.PREFERRED_NODE,
+    session, provider, external_account_id, node_id=settings.PREFERRED_NODE,
 ):
     """Initialize the node<=>addon connection, add the given external_account_id, and configure it
     to connect to the root folder of the provider."""
@@ -306,7 +325,9 @@ def connect_provider_root_to_node(
         },
     }
     addon = session.patch(
-        url=url, item_type='node_addons', item_id=provider,
+        url=url,
+        item_type='node_addons',
+        item_id=provider,
         raw_body=json.dumps(raw_payload),
     )
     # payload = {
@@ -321,7 +342,9 @@ def connect_provider_root_to_node(
     root_folder = session.get(url + 'folders/')['data'][0]['attributes']['folder_id']
     raw_payload['data']['attributes']['folder_id'] = root_folder
     addon = session.patch(
-        url=url, item_type='node_addons', item_id=provider,
+        url=url,
+        item_type='node_addons',
+        item_id=provider,
         raw_body=json.dumps(raw_payload),
     )
     return addon

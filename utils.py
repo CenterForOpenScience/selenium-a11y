@@ -1,5 +1,6 @@
-import settings
 from selenium import webdriver
+
+import settings
 
 
 def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
@@ -18,11 +19,11 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         if desired_capabilities is None:
             desired_capabilities = settings.DESIRED_CAP
         command_executor = 'http://{}:{}@hub.browserstack.com:80/wd/hub'.format(
-            settings.BSTACK_USER,
-            settings.BSTACK_KEY
+            settings.BSTACK_USER, settings.BSTACK_KEY
         )
         # DeprecationWarning: Please use FirefoxOptions to set browser profile
         from selenium.webdriver import FirefoxProfile
+
         ffp = FirefoxProfile()
         # Set the default download location [0=Desktop, 1=Downloads, 2=Specified location]
         ffp.set_preference('browser.download.folderList', 2)
@@ -32,9 +33,11 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         ffp.set_preference('browser.download.manager.showWhenStarting', False)
         ffp.set_preference('browser.helperApps.alwaysAsk.force', False)
         # Specify the file types supported by the download
-        ffp.set_preference('browser.helperApps.neverAsk.saveToDisk',
-                           'text/plain, application/octet-stream, application/binary, text/csv, application/csv, '
-                           'application/excel, text/comma-separated-values, text/xml, application/xml')
+        ffp.set_preference(
+            'browser.helperApps.neverAsk.saveToDisk',
+            'text/plain, application/octet-stream, application/binary, text/csv, application/csv, '
+            'application/excel, text/comma-separated-values, text/xml, application/xml',
+        )
         driver = driver_cls(
             command_executor=command_executor,
             desired_capabilities=desired_capabilities,
@@ -42,6 +45,7 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         )
     elif driver_name == 'Chrome' and settings.HEADLESS:
         from selenium.webdriver.chrome.options import Options
+
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
@@ -49,6 +53,7 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         driver = driver_cls(chrome_options=chrome_options)
     elif driver_name == 'Chrome' and not settings.HEADLESS:
         from selenium.webdriver.chrome.options import Options
+
         chrome_options = Options()
         # disable w3c for local testing
         chrome_options.add_experimental_option('w3c', False)
@@ -57,14 +62,17 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         driver = driver_cls(chrome_options=chrome_options)
     elif driver_name == 'Firefox' and not settings.HEADLESS:
         from selenium.webdriver import FirefoxProfile
+
         ffp = FirefoxProfile()
         # Set the default download location [0=Desktop, 1=Downloads, 2=Specified location]
         ffp.set_preference('browser.download.folderList', 1)
         ffp.set_preference('browser.download.manager.showWhenStarting', False)
         ffp.set_preference('browser.helperApps.alwaysAsk.force', False)
-        ffp.set_preference('browser.helperApps.neverAsk.saveToDisk',
-                           'text/plain, application/octet-stream, application/binary, text/csv, application/csv, '
-                           'application/excel, text/comma-separated-values, text/xml, application/xml')
+        ffp.set_preference(
+            'browser.helperApps.neverAsk.saveToDisk',
+            'text/plain, application/octet-stream, application/binary, text/csv, application/csv, '
+            'application/excel, text/comma-separated-values, text/xml, application/xml',
+        )
         driver = driver_cls(firefox_profile=ffp)
     else:
         driver = driver_cls()

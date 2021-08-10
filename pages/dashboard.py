@@ -1,16 +1,13 @@
-import settings
-
 from selenium.webdriver.common.by import By
 
 import components.dashboard as components
-
-from pages.base import OSFBasePage
+import settings
+from base.locators import ComponentLocator, GroupLocator, Locator
 from components.navbars import EmberNavbar
-from base.locators import Locator, GroupLocator, ComponentLocator
+from pages.base import OSFBasePage
 
 
 class BaseDashboardPage(OSFBasePage):
-
     def get_institutions(self):
         page_institutions = self.institution_carousel_logos
         while self.institutions_carousel_left_arrow.present():
@@ -26,13 +23,25 @@ class BaseDashboardPage(OSFBasePage):
 class DashboardPage(BaseDashboardPage):
     url = settings.OSF_HOME + '/dashboard/'
 
-    identity = Locator(By.CSS_SELECTOR, '._institutions-panel_1b28t4', settings.LONG_TIMEOUT)
-    create_project_button = Locator(By.CSS_SELECTOR, '[data-test-create-project-modal-button]', settings.LONG_TIMEOUT)
+    identity = Locator(
+        By.CSS_SELECTOR, '._institutions-panel_1b28t4', settings.LONG_TIMEOUT
+    )
+    create_project_button = Locator(
+        By.CSS_SELECTOR,
+        '[data-test-create-project-modal-button]',
+        settings.LONG_TIMEOUT,
+    )
     view_meetings_button = Locator(By.XPATH, '//a[text()="View meetings"]')
     view_preprints_button = Locator(By.XPATH, '//a[text()="View preprints"]')
-    first_noteworthy_project = Locator(By.CSS_SELECTOR, '[data-test-noteworthy-project]', settings.LONG_TIMEOUT)
-    institutions_carousel_left_arrow = Locator(By.CSS_SELECTOR, '.carousel-control.left')
-    institutions_carousel_right_arrow = Locator(By.CSS_SELECTOR, '.carousel-control.right')
+    first_noteworthy_project = Locator(
+        By.CSS_SELECTOR, '[data-test-noteworthy-project]', settings.LONG_TIMEOUT
+    )
+    institutions_carousel_left_arrow = Locator(
+        By.CSS_SELECTOR, '.carousel-control.left'
+    )
+    institutions_carousel_right_arrow = Locator(
+        By.CSS_SELECTOR, '.carousel-control.right'
+    )
 
     # Group Locators
     institution_carousel_logos = GroupLocator(By.CSS_SELECTOR, '.carousel-inner img')
@@ -47,18 +56,38 @@ class DashboardPage(BaseDashboardPage):
 class LegacyDashboardPage(BaseDashboardPage):
     waffle_override = {'ember_home_page': DashboardPage}
 
-    identity = Locator(By.CSS_SELECTOR, '#osfHome > div.prereg-banner', settings.LONG_TIMEOUT)
-    create_project_button = Locator(By.CSS_SELECTOR, 'button.btn-success:nth-child(1)', settings.LONG_TIMEOUT)
+    identity = Locator(
+        By.CSS_SELECTOR, '#osfHome > div.prereg-banner', settings.LONG_TIMEOUT
+    )
+    create_project_button = Locator(
+        By.CSS_SELECTOR, 'button.btn-success:nth-child(1)', settings.LONG_TIMEOUT
+    )
     view_meetings_button = Locator(By.XPATH, '//a[text()="View meetings"]')
     view_preprints_button = Locator(By.XPATH, '//a[text()="View preprints"]')
-    new_and_noteworthy = Locator(By.CSS_SELECTOR, '#osfHome > div.newAndNoteworthy > div > div:nth-child(2) > div > div > div:nth-child(1) > div:nth-child(1) > div > h4', settings.LONG_TIMEOUT)
-    first_popular_project_entry = Locator(By.CLASS_NAME, 'public-projects-item', settings.LONG_TIMEOUT)
-    popular_projects = Locator(By.CSS_SELECTOR, '#osfHome > div.newAndNoteworthy > div > div:nth-child(2) > div > div > div:nth-child(1) > div:nth-child(2) > div > h4', settings.LONG_TIMEOUT)
-    institutions_carousel_left_arrow = Locator(By.CSS_SELECTOR, '.left.carousel-control')
-    institutions_carousel_right_arrow = Locator(By.CSS_SELECTOR, '.right.carousel-control')
+    new_and_noteworthy = Locator(
+        By.CSS_SELECTOR,
+        '#osfHome > div.newAndNoteworthy > div > div:nth-child(2) > div > div > div:nth-child(1) > div:nth-child(1) > div > h4',
+        settings.LONG_TIMEOUT,
+    )
+    first_popular_project_entry = Locator(
+        By.CLASS_NAME, 'public-projects-item', settings.LONG_TIMEOUT
+    )
+    popular_projects = Locator(
+        By.CSS_SELECTOR,
+        '#osfHome > div.newAndNoteworthy > div > div:nth-child(2) > div > div > div:nth-child(1) > div:nth-child(2) > div > h4',
+        settings.LONG_TIMEOUT,
+    )
+    institutions_carousel_left_arrow = Locator(
+        By.CSS_SELECTOR, '.left.carousel-control'
+    )
+    institutions_carousel_right_arrow = Locator(
+        By.CSS_SELECTOR, '.right.carousel-control'
+    )
 
     # Group Locators
-    institution_carousel_logos = GroupLocator(By.CSS_SELECTOR, '.carousel-inner .img-circle')
+    institution_carousel_logos = GroupLocator(
+        By.CSS_SELECTOR, '.carousel-inner .img-circle'
+    )
 
     # Components
     create_project_modal = ComponentLocator(components.CreateProjectModal)

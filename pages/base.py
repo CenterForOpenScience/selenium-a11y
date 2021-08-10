@@ -1,14 +1,14 @@
-import settings
-
 import urllib.parse
 from time import sleep
+
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
-from components.navbars import HomeNavbar
-from base.locators import BaseElement, ComponentLocator
+import settings
 from base.exceptions import HttpError, PageException
+from base.locators import BaseElement, ComponentLocator
+from components.navbars import HomeNavbar
 
 
 class BasePage(BaseElement):
@@ -33,7 +33,9 @@ class BasePage(BaseElement):
 
         if expect_redirect_to:
             if self.url not in self.driver.current_url:
-                raise PageException('Unexpected url structure: `{}`'.format(self.driver.current_url))
+                raise PageException(
+                    'Unexpected url structure: `{}`'.format(self.driver.current_url)
+                )
             expect_redirect_to(self.driver, verify=True)
         else:
             self.check_page()
@@ -58,7 +60,9 @@ class BasePage(BaseElement):
         if not self.verify():
             # handle any specific kind of error before go to page exception
             self.error_handling()
-            raise PageException('Unexpected page structure: `{}`'.format(self.driver.current_url))
+            raise PageException(
+                'Unexpected page structure: `{}`'.format(self.driver.current_url)
+            )
 
     def verify(self):
         """Verify that you are on the expected page by confirming the page's `identity`
@@ -88,6 +92,7 @@ class OSFBasePage(BasePage):
     """
     Note: All pages must have a unique identity or overwrite `verify`
     """
+
     url = settings.OSF_HOME
     navbar = ComponentLocator(HomeNavbar)
 
