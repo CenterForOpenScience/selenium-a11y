@@ -15,7 +15,8 @@ from pages.base import GuidBasePage, OSFBasePage
 
 class ProjectPage(GuidBasePage):
 
-    identity = Locator(By.CSS_SELECTOR, '#overview > nav#projectSubnav')
+    # identity = Locator(By.CSS_SELECTOR, '#overview > nav#projectSubnav')
+    identity = Locator(By.CSS_SELECTOR, 'nav#projectSubnav')
     title = Locator(By.ID, 'nodeTitleEditable', settings.LONG_TIMEOUT)
     title_input = Locator(By.CSS_SELECTOR, '.form-inline input')
     title_edit_submit_button = Locator(By.CSS_SELECTOR, '.editable-submit')
@@ -105,9 +106,55 @@ class FilesPage(GuidBasePage):
         By.CSS_SELECTOR, '#folderRow .fangorn-toolbar-icon'
     )
     delete_modal = Locator(By.CSS_SELECTOR, 'span.btn:nth-child(1)')
+    loading_indicator = Locator(
+        By.CSS_SELECTOR, '#treeGrid > .ball-scale', settings.LONG_TIMEOUT
+    )
 
 
 """Note that the class FilesPage in pages/project.py is used for test_project_files.py.
 The class FileWidget in components/project.py is used for tests test_file_widget_loads
 and test_addon_files_load in test_project.py.
 In the future, we may want to put all files tests in one place."""
+
+
+class FileViewPage(GuidBasePage):
+
+    identity = Locator(By.ID, 'fileTitleEditable', settings.LONG_TIMEOUT)
+    file_nav_loading_indicator = Locator(
+        By.CSS_SELECTOR,
+        '#file-navigation > div > div > #grid > div > .ball-scale',
+        settings.LONG_TIMEOUT,
+    )
+
+
+class WikiPage(GuidBasePage):
+    base_url = settings.OSF_HOME + '/{guid}/wiki/'
+
+    identity = Locator(By.ID, 'wikiName')
+
+
+class RegistrationsPage(GuidBasePage):
+    base_url = settings.OSF_HOME + '/{guid}/registrations/'
+
+    identity = Locator(By.CSS_SELECTOR, '[data-test-registrations-container]')
+
+
+class ContributorsPage(GuidBasePage):
+    base_url = settings.OSF_HOME + '/{guid}/contributors/'
+
+    identity = Locator(By.ID, 'manageContributors')
+
+
+class AddonsPage(GuidBasePage):
+    base_url = settings.OSF_HOME + '/{guid}/addons/'
+
+    identity = Locator(By.ID, 'selectAddon')
+
+
+class SettingsPage(GuidBasePage):
+    base_url = settings.OSF_HOME + '/{guid}/settings/'
+
+    identity = Locator(By.ID, 'projectSettings')
+    email_notifications_loading_indicator = Locator(
+        By.CSS_SELECTOR, '#grid > div > .ball-scale'
+    )
