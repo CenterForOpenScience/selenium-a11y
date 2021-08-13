@@ -84,12 +84,18 @@ def delete_all_quickfiles(session, quickfiles_url):
         delete_file(session, delete_url)
 
 
-def get_all_institutions(session):
+def get_all_institutions(session=None, data_type='names'):
+    if not session:
+        session = get_default_session()
     url = '/v2/institutions/'
     data = session.get(url)
     institutions = []
-    for institution in data['data']:
-        institutions.append(institution['attributes']['name'])
+    if data_type == 'names':
+        for institution in data['data']:
+            institutions.append(institution['attributes']['name'])
+    elif data_type == 'ids':
+        for institution in data['data']:
+            institutions.append(institution['id'])
     return institutions
 
 
