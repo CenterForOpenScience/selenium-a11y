@@ -15,7 +15,7 @@ from pages.base import GuidBasePage, OSFBasePage
 
 class ProjectPage(GuidBasePage):
 
-    identity = Locator(By.CSS_SELECTOR, '#overview > nav#projectSubnav')
+    identity = Locator(By.CSS_SELECTOR, '#projectSubnav')
     title = Locator(By.ID, 'nodeTitleEditable', settings.LONG_TIMEOUT)
     title_input = Locator(By.CSS_SELECTOR, '.form-inline input')
     title_edit_submit_button = Locator(By.CSS_SELECTOR, '.editable-submit')
