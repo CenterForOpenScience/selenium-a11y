@@ -15,8 +15,7 @@ from pages.base import GuidBasePage, OSFBasePage
 
 class ProjectPage(GuidBasePage):
 
-    # identity = Locator(By.CSS_SELECTOR, '#overview > nav#projectSubnav')
-    identity = Locator(By.CSS_SELECTOR, 'nav#projectSubnav')
+    identity = Locator(By.ID, 'projectScope')
     title = Locator(By.ID, 'nodeTitleEditable', settings.LONG_TIMEOUT)
     title_input = Locator(By.CSS_SELECTOR, '.form-inline input')
     title_edit_submit_button = Locator(By.CSS_SELECTOR, '.editable-submit')
@@ -137,6 +136,7 @@ class RegistrationsPage(GuidBasePage):
     base_url = settings.OSF_HOME + '/{guid}/registrations/'
 
     identity = Locator(By.CSS_SELECTOR, '[data-test-registrations-container]')
+    first_registration_title = Locator(By.CSS_SELECTOR, '[data-test-node-title]')
 
 
 class ContributorsPage(GuidBasePage):

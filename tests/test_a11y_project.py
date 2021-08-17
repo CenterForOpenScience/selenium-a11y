@@ -103,6 +103,10 @@ class TestAnalyticsPage:
         analytics_page = AnalyticsPage(driver, guid=default_project.id)
         analytics_page.goto()
         assert AnalyticsPage(driver, verify=True)
+        # wait until analytics graphs load
+        WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, '.keen-dataviz-stage'))
+        )
         a11y.run_axe(driver, session, 'prjAnlytcs')
 
 
@@ -115,6 +119,8 @@ class TestRegistrationsPage:
         registrations_page = RegistrationsPage(driver, guid=default_project.id)
         registrations_page.goto()
         assert RegistrationsPage(driver, verify=True)
+        # wait until Registration cards are loaded if there are any
+        registrations_page.first_registration_title.present()
         a11y.run_axe(driver, session, 'prjReg')
 
 
