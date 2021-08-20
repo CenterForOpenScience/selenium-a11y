@@ -93,6 +93,18 @@ class ForgotPasswordPage(BasePage):
     url = settings.OSF_HOME + '/forgotpassword/'
 
     identity = Locator(By.ID, 'forgotPasswordForm')
+    email_input = Locator(
+        By.CSS_SELECTOR, '#forgotPasswordForm > div > div.panel-body > input'
+    )
+    reset_password_button = Locator(
+        By.CSS_SELECTOR, '#forgotPasswordForm > div > div.panel-body > button'
+    )
+
+
+class ResetPasswordPage(BasePage):
+    url = settings.OSF_HOME + '/resetpassword/'
+
+    identity = Locator(By.ID, 'resetPasswordForm')
 
 
 class UnsupportedInstitutionLoginPage(BasePage):
