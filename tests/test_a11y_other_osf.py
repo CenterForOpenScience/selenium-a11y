@@ -1,5 +1,4 @@
 import re
-import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -126,8 +125,13 @@ class TestResetPasswordPage:
         assert ForgotPasswordPage(driver, verify=True)
         forgot_password_page.email_input.send_keys(settings.IMAP_EMAIL)
         forgot_password_page.reset_password_button.click()
-        # wait for the email to actually be sent
-        time.sleep(10)
+        # loop until the new email arrives in the inbox
+        email_count = 0
+        while email_count == 0:
+            # retrieve count of UNSEEN email messages from inbox
+            email_count = EmailAccess.get_count_of_unseen_emails_by_imap(
+                settings.IMAP_HOST, settings.IMAP_EMAIL, settings.IMAP_EMAIL_PASSWORD,
+            )
         # next we need to retrieve the email that was sent by OSF and get the link to
         #     the Reset Password page
         email_body = EmailAccess.get_latest_email_body_by_imap(

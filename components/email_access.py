@@ -36,6 +36,24 @@ class EmailAccess:
         imap_close(imap)
         return email_body
 
+    def get_count_of_unseen_emails_by_imap(imap_host, email_address, password):
+        """ This method uses Internet Message Access Protocol (IMAP) to login to an IMAP
+        enabled email address and retrieve the count of unseen emails in the account inbox.
+            Parameters:
+            - imap_host: host imap email server
+            - email_address: IMAP enabled email address
+            - password: password for the IMAP enabled email address
+            Returns the count of unseen emails in the account's inbox
+        """
+        imap = imap_connect_and_login(imap_host, email_address, password)
+        # select mail from the Inbox
+        imap.select('Inbox')
+        # filter the email list for any UNSEEN emails
+        result_uids = search('UNSEEN', None, imap)
+        uids_list = result_uids[0].split()
+        imap_close(imap)
+        return len(uids_list)
+
     # TODO: Create methods to return other pieces of email besides just body as above
     #       or to return multiple emails.
 
@@ -77,5 +95,10 @@ def search(key, value, imap):
         Returns collection of unique identifiers (uids) for emails that match search
            criteria
     """
-    response, uids = imap.search(None, key, '"{}"'.format(value))
+    if value is None:
+        # If no value is passed in then just search with the key - for use with
+        # special search parameters like UNSEEN or FLAGGED
+        response, uids = imap.search(None, key)
+    else:
+        response, uids = imap.search(None, key, '"{}"'.format(value))
     return uids
