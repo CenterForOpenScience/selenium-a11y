@@ -51,7 +51,9 @@ class MeetingDetailPage(BaseMeetingsPage):
     # test url functionality
     url = settings.OSF_HOME + '/view/'
 
-    identity = Locator(By.CSS_SELECTOR, 'button[data-test-meeting-toggle-panel-button]')
+    identity = Locator(
+        By.CSS_SELECTOR, 'div._toggle-button-and-homepage-link-container_1h8tly'
+    )
     meeting_title = Locator(By.CSS_SELECTOR, 'h1[data-test-meeting-name]')
     entry_download_button = Locator(
         By.CSS_SELECTOR,
