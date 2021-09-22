@@ -284,6 +284,17 @@ def get_providers_list(session=None, type='preprints'):
     return session.get(url)['data']
 
 
+def get_provider(session=None, type='registrations', provider_id='osf'):
+    """Return the data for an individual provider. The default type is registrations but
+    it can also be used for a preprints or collections provider.  The default provider_id
+    is 'osf'
+    """
+    if not session:
+        session = get_default_session()
+    url = '/v2/providers/' + type + '/' + provider_id
+    return session.get(url)['data']
+
+
 def get_provider_submission_status(provider):
     """Return the boolean attribute `allow_submissions` from the dictionary object (provider)
     """
