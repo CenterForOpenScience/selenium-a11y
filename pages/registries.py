@@ -99,8 +99,8 @@ class RegistriesModerationModeratorsPage(BaseRegistriesPage):
     identity = Locator(By.CSS_SELECTOR, '[data-test-moderator-row]')
 
 
-class RegistriesModerationNotificationsPage(BaseRegistriesPage):
-    url_addition = 'moderation/notifications'
+class RegistriesModerationSettingsPage(BaseRegistriesPage):
+    url_addition = 'moderation/settings'
     identity = Locator(By.CSS_SELECTOR, '[data-test-subscription-list]')
 
 

@@ -18,7 +18,7 @@ from pages.registries import (
     RegistriesDiscoverPage,
     RegistriesLandingPage,
     RegistriesModerationModeratorsPage,
-    RegistriesModerationNotificationsPage,
+    RegistriesModerationSettingsPage,
     RegistriesModerationSubmissionsPage,
 )
 
@@ -862,9 +862,9 @@ class TestBrandedRegistrationsProviders:
 # we do not currently have a user setup as a moderator for any of the registries in production
 @markers.dont_run_on_prod
 class TestModerationPages:
-    """To test the Moderation pages we must login as a user that has been setup as a
-    moderator for one of the registry providers that has moderation enabled.  We are
-    using the egap registry since it exists in all testing environments and has the
+    """To test the Moderation pages we must login as a user that has been setup as an
+    administrator for one of the registry providers that has moderation enabled.  We
+    are using the egap registry since it exists in all testing environments and has the
     moderation process enabled in each environment.
     """
 
@@ -903,18 +903,16 @@ class TestModerationPages:
         )
         a11y.run_axe(driver, session, 'regmodmod')
 
-    def test_accessibility_moderation_notifications(
+    def test_accessibility_moderation_settings(
         self, driver, session, provider, must_be_logged_in
     ):
-        notifications_page = RegistriesModerationNotificationsPage(
-            driver, provider=provider
-        )
-        notifications_page.goto()
-        assert RegistriesModerationNotificationsPage(driver, verify=True)
+        settings_page = RegistriesModerationSettingsPage(driver, provider=provider)
+        settings_page.goto()
+        assert RegistriesModerationSettingsPage(driver, verify=True)
         # wait for notifications list to load before calling axe
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-subscription-list-row]')
             )
         )
-        a11y.run_axe(driver, session, 'regmodnot')
+        a11y.run_axe(driver, session, 'regmodset')

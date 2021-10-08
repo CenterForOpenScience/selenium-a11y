@@ -7,12 +7,10 @@ from pages.base import OSFBasePage
 
 class MyRegistrationsPage(OSFBasePage):
     url = settings.OSF_HOME + '/registries/my-registrations/'
-    # identity = Locator(By.CSS_SELECTOR, 'div[data-analytics-scope="Registries"]')
     identity = Locator(
         By.CSS_SELECTOR, 'div[data-analytics-scope="My Registrations page"]'
     )
 
-    # drafts_tab = Locator(By.XPATH, '//a[text()="Drafts"]')
     drafts_tab = Locator(By.CSS_SELECTOR, '[data-test-my-registrations-nav="drafts"]')
     no_drafts_message = Locator(By.CSS_SELECTOR, 'p[data-test-draft-list-no-drafts]')
     draft_registration_title = Locator(
