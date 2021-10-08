@@ -62,7 +62,7 @@ class TestRegistrationDetailPage:
             # institutions as setup in the testing environments typically include the
             # specific environment in their names.  EX: The Center For Open Science [Stage2]
             if settings.STAGE1:
-                # need to drop the 1 since they usually just use 'Stage' instead of 'Stage1'
+                # Need to drop the 1 since they usually just use 'Stage' instead of 'Stage1'
                 environment = 'stage'
             else:
                 environment = settings.DOMAIN
@@ -72,7 +72,7 @@ class TestRegistrationDetailPage:
         discover_page.loading_indicator.here_then_gone()
         search_results = discover_page.search_results
         assert search_results
-        # open the first non-withdrawn registration in the search results
+        # Open the first non-withdrawn registration in the search results
         target_registration = discover_page.get_first_non_withdrawn_registration()
         target_registration.click()
         detail_page = RegistrationDetailPage(driver, verify=True)
@@ -80,14 +80,14 @@ class TestRegistrationDetailPage:
         a11y.run_axe(driver, session, 'regdet')
 
 
-# user two with registrations is not setup in production
+# User two with registrations is not setup in production
 @markers.dont_run_on_prod
 class TestMyRegistrationsPage:
     def test_accessibility(self, driver, session, must_be_logged_in_as_user_two):
         my_registrations_page = MyRegistrationsPage(driver)
         my_registrations_page.goto()
         assert MyRegistrationsPage(driver, verify=True)
-        # wait for node cards to be visible before calling axe
+        # Wait for node cards to be visible before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-node-card]'))
         )
@@ -102,7 +102,7 @@ class TestAddNewRegistrationPage:
         a11y.run_axe(driver, session, 'addnewreg')
 
 
-# user two with registrations is not setup in production
+# User two with registrations is not setup in production
 @markers.dont_run_on_prod
 class TestDraftRegistrationPages:
     @pytest.fixture()
@@ -114,7 +114,7 @@ class TestDraftRegistrationPages:
         my_registrations_page = MyRegistrationsPage(driver)
         my_registrations_page.goto()
         my_registrations_page.drafts_tab.click()
-        # wait for draft cards to load on page
+        # Wait for draft cards to load on page
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-draft-registration-card]')
@@ -145,7 +145,7 @@ class TestDraftRegistrationPages:
         Open-Ended Registration and then capture it's draft id so that we can use it to
         navigate to it's Summary page.
         """
-        # capture the draft id from the first Open-Ended Registration that is listed
+        # Capture the draft id from the first Open-Ended Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Open-Ended Registration'
         )
@@ -154,7 +154,7 @@ class TestDraftRegistrationPages:
         )
         summary_page.goto()
         assert summary_page.page_heading.text == 'Summary'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -172,7 +172,7 @@ class TestDraftRegistrationPages:
         Qualitative Preregistration and then capture it's draft id so that we can use it to
         navigate to it's Study Information page.
         """
-        # capture the draft id from the first Qualitative Preregistration that is listed
+        # Capture the draft id from the first Qualitative Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Qualitative Preregistration'
         )
@@ -193,7 +193,7 @@ class TestDraftRegistrationPages:
         Qualitative Preregistration and then capture it's draft id so that we can use it to
         navigate to it's Study Information page.
         """
-        # capture the draft id from the first Qualitative Preregistration that is listed
+        # Capture the draft id from the first Qualitative Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Qualitative Preregistration'
         )
@@ -214,7 +214,7 @@ class TestDraftRegistrationPages:
         find the card for a Qualitative Preregistration and then capture it's draft
         id so that we can use it to navigate to it's Miscellaneous page.
         """
-        # capture the draft id from the first Qualitative Preregistration that is listed
+        # Capture the draft id from the first Qualitative Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Qualitative Preregistration'
         )
@@ -235,7 +235,7 @@ class TestDraftRegistrationPages:
         Preregistration and then capture it's draft id so that we can use it to navigate
         to it's Design Plan page.
         """
-        # capture the draft id from the first OSF Preregistration that is listed
+        # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'OSF Preregistration'
         )
@@ -244,7 +244,7 @@ class TestDraftRegistrationPages:
         )
         design_plan_page.goto()
         assert design_plan_page.page_heading.text == 'Design Plan'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -262,7 +262,7 @@ class TestDraftRegistrationPages:
         Preregistration and then capture it's draft id so that we can use it to navigate
         to it's Design Plan page.
         """
-        # capture the draft id from the first OSF Preregistration that is listed
+        # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'OSF Preregistration'
         )
@@ -271,7 +271,7 @@ class TestDraftRegistrationPages:
         )
         sampling_plan_page.goto()
         assert sampling_plan_page.page_heading.text == 'Sampling Plan'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -287,7 +287,7 @@ class TestDraftRegistrationPages:
         Preregistration and then capture it's draft id so that we can use it to navigate
         to it's Variables page.
         """
-        # capture the draft id from the first OSF Preregistration that is listed
+        # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'OSF Preregistration'
         )
@@ -296,7 +296,7 @@ class TestDraftRegistrationPages:
         )
         variables_page.goto()
         assert variables_page.page_heading.text == 'Variables'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -314,7 +314,7 @@ class TestDraftRegistrationPages:
         Preregistration and then capture it's draft id so that we can use it to navigate
         to it's Analysis Plan page.
         """
-        # capture the draft id from the first OSF Preregistration that is listed
+        # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'OSF Preregistration'
         )
@@ -323,7 +323,7 @@ class TestDraftRegistrationPages:
         )
         analysis_plan_page.goto()
         assert analysis_plan_page.page_heading.text == 'Analysis Plan'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -341,7 +341,8 @@ class TestDraftRegistrationPages:
         a Registered Report Protocol Preregistration and then capture it's draft id so that we
         can use it to navigate to it's Publication Information page.
         """
-        # capture the draft id from the first OSF Preregistration that is listed
+        # Capture the draft id from the first Registered Report Protocol Preregistration
+        # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Registered Report Protocol Preregistration'
         )
@@ -364,7 +365,8 @@ class TestDraftRegistrationPages:
         Registered Report Protocol Preregistration and then capture it's draft id so that we
         can use it to navigate to it's Publication Information page.
         """
-        # capture the draft id from the first OSF Preregistration that is listed
+        # Capture the draft id from the first Registered Report Protocol Preregistration
+        # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Registered Report Protocol Preregistration'
         )
@@ -373,7 +375,7 @@ class TestDraftRegistrationPages:
         )
         manuscript_page.goto()
         assert manuscript_page.page_heading.text == 'Manuscript'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -389,7 +391,7 @@ class TestDraftRegistrationPages:
         the card for an Registered Report Protocol Preregistration and then capture it's
         draft id so that we can use it to navigate to it's Other page.
         """
-        # capture the draft id from the first Registered Report Protocol Preregistration
+        # Capture the draft id from the first Registered Report Protocol Preregistration
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Registered Report Protocol Preregistration'
@@ -399,7 +401,7 @@ class TestDraftRegistrationPages:
         )
         other_page.goto()
         assert other_page.page_heading.text == 'Other'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -419,7 +421,7 @@ class TestDraftRegistrationPages:
         can use it to navigate to it's Preregistration Template from AsPredicted.org
         page.
         """
-        # capture the draft id from the first Preregistration Template from AsPredicted.org
+        # Capture the draft id from the first Preregistration Template from AsPredicted.org
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Preregistration Template from AsPredicted.org'
@@ -448,7 +450,7 @@ class TestDraftRegistrationPages:
         we can use it to navigate to it's OSF-Standard Pre-Data Collection Registration
         page.
         """
-        # capture the draft id from the first OSF-Standard Pre-Data Collection Registration
+        # Capture the draft id from the first OSF-Standard Pre-Data Collection Registration
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'OSF-Standard Pre-Data Collection Registration'
@@ -477,7 +479,7 @@ class TestDraftRegistrationPages:
         so that we can use it to navigate to it's Hypotheses - Essential elements
         page.
         """
-        # capture the draft id from the first Pre-Registration in Social Psychology
+        # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Pre-Registration in Social Psychology'
@@ -502,7 +504,7 @@ class TestDraftRegistrationPages:
         Psychology draft and then capture it's draft id so that we can use it to
         navigate to it's Recommended elements page.
         """
-        # capture the draft id from the first Pre-Registration in Social Psychology
+        # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Pre-Registration in Social Psychology'
@@ -512,7 +514,7 @@ class TestDraftRegistrationPages:
         )
         recommended_elements_page.goto()
         assert recommended_elements_page.page_heading.text == 'Recommended elements'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -531,7 +533,7 @@ class TestDraftRegistrationPages:
         Pre-Registration in Social Psychology draft and then capture it's draft id
         so that we can use it to navigate to it's Methods - Essential elements page.
         """
-        # capture the draft id from the first Pre-Registration in Social Psychology
+        # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Pre-Registration in Social Psychology'
@@ -541,7 +543,7 @@ class TestDraftRegistrationPages:
         )
         methods_page.goto()
         assert methods_page.page_heading.text == 'B. Methods - Essential elements'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -561,7 +563,7 @@ class TestDraftRegistrationPages:
         so that we can use it to navigate to it's Analysis Plan - Essential elements
         page.
         """
-        # capture the draft id from the first Pre-Registration in Social Psychology
+        # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Pre-Registration in Social Psychology'
@@ -589,7 +591,7 @@ class TestDraftRegistrationPages:
         Psychology draft and then capture it's draft id so that we can use it to
         navigate to it's Final questions page.
         """
-        # capture the draft id from the first Pre-Registration in Social Psychology
+        # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Pre-Registration in Social Psychology'
@@ -613,7 +615,7 @@ class TestDraftRegistrationPages:
         and then capture it's draft id so that we can use it to navigate to it's
         The Nature of the Effect page.
         """
-        # capture the draft id from the first Replication Recipe (Brandt et al., 2013):
+        # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Replication Recipe (Brandt et al., 2013): Pre-Registration'
@@ -637,7 +639,7 @@ class TestDraftRegistrationPages:
         capture it's draft id so that we can use it to navigate to it's Designing
         the Replication Study page.
         """
-        # capture the draft id from the first Replication Recipe (Brandt et al., 2013):
+        # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Replication Recipe (Brandt et al., 2013): Pre-Registration'
@@ -662,7 +664,7 @@ class TestDraftRegistrationPages:
         use it to navigate to it's Documenting Differences between the Original and
         Replication Study page.
         """
-        # capture the draft id from the first Replication Recipe (Brandt et al., 2013):
+        # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Replication Recipe (Brandt et al., 2013): Pre-Registration'
@@ -691,7 +693,7 @@ class TestDraftRegistrationPages:
         then capture it's draft id so that we can use it to navigate to it's Analysis
         and Replication Evaluation page.
         """
-        # capture the draft id from the first Replication Recipe (Brandt et al., 2013):
+        # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Replication Recipe (Brandt et al., 2013): Pre-Registration'
@@ -720,7 +722,7 @@ class TestDraftRegistrationPages:
         then capture it's draft id so that we can use it to navigate to it's
         Registering the Replication Attempt page.
         """
-        # capture the draft id from the first Replication Recipe (Brandt et al., 2013):
+        # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Post-Completion that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Replication Recipe (Brandt et al., 2013): Post-Completion'
@@ -748,7 +750,7 @@ class TestDraftRegistrationPages:
         (Brandt et al., 2013): Post-Completion draft and then capture it's draft id
         so that we can use it to navigate to it's Reporting the Replication page.
         """
-        # capture the draft id from the first Replication Recipe (Brandt et al., 2013):
+        # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Post-Completion that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Replication Recipe (Brandt et al., 2013): Post-Completion'
@@ -773,7 +775,7 @@ class TestDraftRegistrationPages:
         draft and then capture it's draft id so that we can use it to navigate to
         it's Data Description page.
         """
-        # capture the draft id from the first Secondary Data Preregistration that
+        # Capture the draft id from the first Secondary Data Preregistration that
         # is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Secondary Data Preregistration'
@@ -783,7 +785,7 @@ class TestDraftRegistrationPages:
         )
         data_description_page.goto()
         assert data_description_page.page_heading.text == 'Data Description'
-        # wait for file widget to load before calling axe
+        # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
@@ -802,7 +804,7 @@ class TestDraftRegistrationPages:
         draft and then capture it's draft id so that we can use it to navigate to
         it's Knowledge of Data page.
         """
-        # capture the draft id from the first Secondary Data Preregistration that
+        # Capture the draft id from the first Secondary Data Preregistration that
         # is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'Secondary Data Preregistration'
@@ -824,7 +826,7 @@ class TestDraftRegistrationPages:
         Preregistration and then capture it's draft id so that we can use it to navigate
         to it's Other page.
         """
-        # capture the draft id from the first OSF Preregistration that is listed
+        # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
             'OSF Preregistration'
         )
@@ -859,7 +861,7 @@ class TestBrandedRegistrationsProviders:
         a11y.run_axe(driver, session, page_name)
 
 
-# we do not currently have a user setup as a moderator for any of the registries in production
+# We do not currently have a user setup as an administrator for any of the registries in production
 @markers.dont_run_on_prod
 class TestModerationPages:
     """To test the Moderation pages we must login as a user that has been setup as an
@@ -880,7 +882,7 @@ class TestModerationPages:
         )
         submissions_page.goto()
         assert RegistriesModerationSubmissionsPage(driver, verify=True)
-        # wait for registration table to load before calling axe
+        # Wait for registration table to load before calling axe
         if submissions_page.no_registrations_message.absent():
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located(
@@ -895,7 +897,7 @@ class TestModerationPages:
         moderators_page = RegistriesModerationModeratorsPage(driver, provider=provider)
         moderators_page.goto()
         assert RegistriesModerationModeratorsPage(driver, verify=True)
-        # wait for moderators table to load before calling axe
+        # Wait for moderators table to load before calling axe
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-moderator-row]')
@@ -909,7 +911,7 @@ class TestModerationPages:
         settings_page = RegistriesModerationSettingsPage(driver, provider=provider)
         settings_page.goto()
         assert RegistriesModerationSettingsPage(driver, verify=True)
-        # wait for notifications list to load before calling axe
+        # Wait for notifications list to load before calling axe
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-subscription-list-row]')
