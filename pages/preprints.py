@@ -168,3 +168,72 @@ class PreprintDetailPage(GuidBasePage, BasePreprintPage):
     title = Locator(By.ID, 'preprintTitle', settings.LONG_TIMEOUT)
     view_page = Locator(By.ID, 'view-page')
     authors_load_indicator = Locator(By.CSS_SELECTOR, '.comma-list > .ball-pulse')
+
+
+class ReviewsDashboardPage(OSFBasePage):
+    url = settings.OSF_HOME + '/reviews'
+    identity = Locator(By.CLASS_NAME, '_reviews-dashboard-header_jdu5ey')
+
+
+class BaseReviewsPage(OSFBasePage):
+    """The base page from which all preprint provider review pages inherit.
+    """
+
+    base_url = settings.OSF_HOME + '/reviews/preprints/'
+    url_addition = ''
+    navbar = ComponentLocator(PreprintsNavbar)
+    title = Locator(By.CLASS_NAME, '_provider-title_hcnzoe')
+
+    def __init__(self, driver, verify=False, provider=None):
+        self.provider = provider
+        if provider:
+            self.provider_id = provider['id']
+            self.provider_name = provider['attributes']['name']
+
+        super().__init__(driver, verify)
+
+    @property
+    def url(self):
+        """Set the URL based on the provider domain.
+        """
+        return urljoin(self.base_url, self.provider_id) + '/' + self.url_addition
+
+    def verify(self):
+        """Return true if you are on the expected page.
+        Checks both the general page identity and the branding.
+        """
+        if self.provider:
+            return super().verify() and self.provider_name in self.title.text
+        return super().verify()
+
+
+class ReviewsSubmissionsPage(BaseReviewsPage):
+    identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
+    no_submissions = Locator(
+        By.CSS_SELECTOR,
+        'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
+    )
+
+
+class ReviewsWithdrawalsPage(BaseReviewsPage):
+    url_addition = 'withdrawals'
+    identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
+    no_requests = Locator(
+        By.CSS_SELECTOR,
+        'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
+    )
+
+
+class ReviewsModeratorsPage(BaseReviewsPage):
+    url_addition = 'moderators'
+    identity = Locator(By.CLASS_NAME, 'moderator-list-row')
+
+
+class ReviewsNotificationsPage(BaseReviewsPage):
+    url_addition = 'notifications'
+    identity = Locator(By.CLASS_NAME, '_notification-list-heading-container_kchmy0')
+
+
+class ReviewsSettingsPage(BaseReviewsPage):
+    url_addition = 'settings'
+    identity = Locator(By.CLASS_NAME, '_reviews-settings_1r3x0j')

@@ -1,5 +1,6 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -12,6 +13,12 @@ from pages.preprints import (
     PreprintDiscoverPage,
     PreprintLandingPage,
     PreprintSubmitPage,
+    ReviewsDashboardPage,
+    ReviewsModeratorsPage,
+    ReviewsNotificationsPage,
+    ReviewsSettingsPage,
+    ReviewsSubmissionsPage,
+    ReviewsWithdrawalsPage,
 )
 
 
@@ -132,3 +139,101 @@ class TestBrandedProviders:
         assert PreprintLandingPage(driver, verify=True)
         page_name = 'bp_' + provider['id']
         a11y.run_axe(driver, session, page_name)
+
+
+# We do not currently have a user setup as an administrator or noderator for any of the
+# preprint providers in production
+@markers.dont_run_on_prod
+class TestPreprintReviewsDashboardPage:
+    """To test the Reviews Dashboard page we must login as a user that has been
+    setup as an administrator or moderator for at least one of the preprint providers
+    that has moderation enabled.
+    """
+
+    def test_accessibility(self, driver, session, must_be_logged_in):
+        dashboard_page = ReviewsDashboardPage(driver)
+        dashboard_page.goto()
+        assert ReviewsDashboardPage(driver, verify=True)
+        # Wait for list of preprints to load before calling axe
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'div._action-body_zlyyw2'))
+        )
+        a11y.run_axe(driver, session, 'revdash')
+
+
+# We do not currently have a user setup as an administrator or noderator for any of the
+# preprint providers in production
+@markers.dont_run_on_prod
+class TestProviderReviewsPages:
+    """To test the provider specific Reviews pages we must login as a user that has been
+    setup as an administrator or moderator for one of the preprint providers that has
+    moderation enabled.  We are using MarXiv as the preprint provider since it exists
+    in all testing environments and has the moderation process enabled in each
+    environment.
+    """
+
+    @pytest.fixture
+    def provider(self, driver):
+        return osf_api.get_provider(type='preprints', provider_id='marxiv')
+
+    def test_accessibility_reviews_submissions(
+        self, driver, session, provider, must_be_logged_in
+    ):
+        submissions_page = ReviewsSubmissionsPage(driver, provider=provider)
+        submissions_page.goto()
+        assert ReviewsSubmissionsPage(driver, verify=True)
+        # Wait for table to load before calling axe
+        if submissions_page.no_submissions.absent():
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, '_submission-info_xkm0pa')
+                )
+            )
+        a11y.run_axe(driver, session, 'revsub')
+
+    def test_accessibility_reviews_withdrawals(
+        self, driver, session, provider, must_be_logged_in
+    ):
+        withdrawals_page = ReviewsWithdrawalsPage(driver, provider=provider)
+        withdrawals_page.goto()
+        assert ReviewsWithdrawalsPage(driver, verify=True)
+        # Wait for table to load before calling axe
+        if withdrawals_page.no_requests.absent():
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, '_submission-info_17iwzt')
+                )
+            )
+        a11y.run_axe(driver, session, 'revwthdrwls')
+
+    def test_accessibility_reviews_moderators(
+        self, driver, session, provider, must_be_logged_in
+    ):
+        moderators_page = ReviewsModeratorsPage(driver, provider=provider)
+        moderators_page.goto()
+        assert ReviewsModeratorsPage(driver, verify=True)
+        # Wait for moderators list to load before calling axe
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CLASS_NAME, '_moderator-name_f83dob'))
+        )
+        a11y.run_axe(driver, session, 'revmod')
+
+    def test_accessibility_reviews_notifications(
+        self, driver, session, provider, must_be_logged_in
+    ):
+        notifications_page = ReviewsNotificationsPage(driver, provider=provider)
+        notifications_page.goto()
+        assert ReviewsNotificationsPage(driver, verify=True)
+        # Wait for notifications elements load before calling axe
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'notification-title'))
+        )
+        a11y.run_axe(driver, session, 'revnot')
+
+    def test_accessibility_reviews_settings(
+        self, driver, session, provider, must_be_logged_in
+    ):
+        settings_page = ReviewsSettingsPage(driver, provider=provider)
+        settings_page.goto()
+        assert ReviewsSettingsPage(driver, verify=True)
+        a11y.run_axe(driver, session, 'revset')
