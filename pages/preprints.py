@@ -155,6 +155,11 @@ class PreprintDiscoverPage(BasePreprintPage):
 
     identity = Locator(By.ID, 'share-logo')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    search_box = Locator(By.ID, 'searchBox')
+    sort_button = Locator(By.ID, 'sortBy')
+    sort_option_newest_to_oldest = Locator(
+        By.CSS_SELECTOR, '#sortByOptionList > li:nth-child(3) > button'
+    )
 
     # Group Locators
     search_results = GroupLocator(By.CSS_SELECTOR, '.search-result h4 > a')

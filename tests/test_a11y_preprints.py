@@ -1,6 +1,7 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -97,17 +98,26 @@ class TestPreprintDiscoverPage:
         a11y.run_axe(driver, session, 'prepdisc')
 
 
-# TODO: Need to figure out a way to run this test in testing environments - some way
-#     to search on the Discover page and guarantee that the search results will be
-#     from current environment
-@pytest.mark.skipif(
-    not settings.PRODUCTION, reason='Cannot test on stagings as they share SHARE'
-)
 class TestPreprintDetailPage:
     def test_accessibility(self, driver, session):
         discover_page = PreprintDiscoverPage(driver)
         discover_page.goto()
         assert PreprintDiscoverPage(driver, verify=True)
+        if not settings.PRODUCTION:
+            # Since all of the testing environments use the same SHARE server, we need
+            # to enter a value in the search input box that will ensure that the results
+            # are specific to the current environment.  We can do this by searching for
+            # the test environment url in the identifiers metadata field.
+            environment_url = settings.OSF_HOME[8:]  # Need to strip out "https://"
+            search_text = 'identifiers:"' + environment_url + '"'
+            discover_page.search_box.send_keys_deliberately(search_text)
+            discover_page.search_box.send_keys(Keys.ENTER)
+            if settings.STAGE2:
+                # Stage 2 has a lot of old preprint data that is still listed in search
+                # results but does not actually have preprint detail pages so we need to
+                # sort the results so that the newest preprints are listed first.
+                discover_page.sort_button.click()
+                discover_page.sort_option_newest_to_oldest.click()
         discover_page.loading_indicator.here_then_gone()
         # click on first entry in search results to open the Preprint Detail page
         discover_page.search_results[0].click()
