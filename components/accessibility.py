@@ -7,24 +7,45 @@ import settings
 
 
 class ApplyA11yRules:
-    def run_axe(driver, session, page_name, write_files=True, terminal_errors=True):
+    def run_axe(
+        driver,
+        session,
+        page_name,
+        write_files=True,
+        terminal_errors=True,
+        exclude_best_practice=False,
+    ):
         """ Use the axe testing engine to perform accessibility checks on a web page
             Parameters:
             - page_name - string - unique identifier for the web page being tested
                 - used as part of file name when writing results files
             - write_files - boolean - used to determine whether or not to write results
                 files - default = True
-            - terminal_errors - boolean - used to deteremine whether or not to output
+            - terminal_errors - boolean - used to determine whether or not to output
                 errors to terminal window - default = True
+            - exclude_best_practice - boolean - used to determine whether or not to
+                exclude the Best Practice rule set when performing accessibility check.
+                - default = False
         """
         axe = Axe(driver)
         # Inject axe-core javascript into page.
         axe.inject()
         # Run axe accessibility checks.
-        # TODO: Currently applying all axe rules - parammaterize this so that in the
-        #       future we can run with more options. (i.e. only WCAG 2A rules, or
-        #       excluding Best Practice rules, etc.)
-        results = axe.run()
+        if exclude_best_practice:
+            # When exclude_best_practice parameter is set to True, then we want to run
+            # axe with only the WCAG rule sets.
+            results = axe.run(
+                options={
+                    'runOnly': {
+                        'type': 'tag',
+                        'values': ['wcag2a', 'wcag2aa', 'wcag21aa'],
+                    }
+                }
+            )
+        else:
+            # This runs axe with all available rule sets which includes WCAG and Best
+            # Practoce rules.
+            results = axe.run()
         if write_files:
             write_results_files(axe, results, page_name)
         if terminal_errors:
