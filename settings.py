@@ -171,3 +171,7 @@ IMAP_EMAIL = env('IMAP_EMAIL')
 # Password for IMAP enabled email account - NOT OSF password
 IMAP_EMAIL_PASSWORD = env('IMAP_EMAIL_PASSWORD')
 IMAP_HOST = env('IMAP_HOST')
+
+# User with existing draft registrations
+A11Y_REGISTRATIONS_USER = env('A11Y_REGISTRATIONS_USER')
+A11Y_REGISTRATIONS_PASSWORD = env('A11Y_REGISTRATIONS_PASSWORD')
