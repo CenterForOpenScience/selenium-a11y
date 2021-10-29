@@ -139,7 +139,5 @@ class DraftRegistrationGenericPage(BaseRegistrationDraftPage):
 class DraftRegistrationReviewPage(BaseRegistrationDraftPage):
     url_addition = 'review'
     identity = Locator(
-        By.CSS_SELECTOR,
-        'button[data-test-toggle-anchor-nav-button]',
-        settings.LONG_TIMEOUT,
+        By.CSS_SELECTOR, '[data-test-toggle-anchor-nav-button]', settings.LONG_TIMEOUT,
     )

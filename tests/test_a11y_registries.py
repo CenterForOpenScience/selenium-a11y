@@ -8,6 +8,7 @@ import markers
 import settings
 from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
+from pages.login import safe_login
 from pages.registrations import MyRegistrationsPage
 from pages.registries import (
     DraftRegistrationGenericPage,
@@ -80,10 +81,15 @@ class TestRegistrationDetailPage:
         a11y.run_axe(driver, session, 'regdet')
 
 
-# User two with registrations is not setup in production
+# User with registrations is not setup in production
 @markers.dont_run_on_prod
 class TestMyRegistrationsPage:
-    def test_accessibility(self, driver, session, must_be_logged_in_as_user_two):
+    def test_accessibility(self, driver, session):
+        safe_login(
+            driver,
+            user=settings.A11Y_REGISTRATIONS_USER,
+            password=settings.A11Y_REGISTRATIONS_PASSWORD,
+        )
         my_registrations_page = MyRegistrationsPage(driver)
         my_registrations_page.goto()
         assert MyRegistrationsPage(driver, verify=True)
@@ -102,11 +108,20 @@ class TestAddNewRegistrationPage:
         a11y.run_axe(driver, session, 'addnewreg')
 
 
-# User two with registrations is not setup in production
+@pytest.fixture(scope='class')
+def log_in_as_user_with_draft_registrations(driver):
+    safe_login(
+        driver,
+        user=settings.A11Y_REGISTRATIONS_USER,
+        password=settings.A11Y_REGISTRATIONS_PASSWORD,
+    )
+
+
+# User with registrations is not setup in production
 @markers.dont_run_on_prod
 class TestDraftRegistrationPages:
     @pytest.fixture()
-    def my_registrations_page(self, driver, must_be_logged_in_as_user_two):
+    def my_registrations_page(self, driver, log_in_as_user_with_draft_registrations):
         """Fixture that logs in as a user that already has draft registrations created
         for the various templates/schemas and navigates to the My Registrations page
         from which the desired draft registration type can be selected.
