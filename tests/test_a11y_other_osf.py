@@ -118,37 +118,46 @@ class TestForgotPasswordPage:
 @markers.dont_run_on_prod
 class TestResetPasswordPage:
     def test_accessibility(self, driver, session):
-        # first go to Forgot Password page and enter email address and click Reset
+        # First go to Forgot Password page and enter email address and click Reset
         #     Password button
         forgot_password_page = ForgotPasswordPage(driver)
         forgot_password_page.goto()
         assert ForgotPasswordPage(driver, verify=True)
         forgot_password_page.email_input.send_keys(settings.IMAP_EMAIL)
         forgot_password_page.reset_password_button.click()
-        # loop until the new email arrives in the inbox
+        # Loop until the new email arrives in the inbox
         email_count = 0
+        loop_counter = 0
         while email_count == 0:
-            # retrieve count of UNSEEN email messages from inbox
+            # Retrieve count of UNSEEN email messages from inbox
             email_count = EmailAccess.get_count_of_unseen_emails_by_imap(
                 settings.IMAP_HOST, settings.IMAP_EMAIL, settings.IMAP_EMAIL_PASSWORD,
             )
-        # next we need to retrieve the email that was sent by OSF and get the link to
-        #     the Reset Password page
-        email_body = EmailAccess.get_latest_email_body_by_imap(
-            settings.IMAP_HOST,
-            settings.IMAP_EMAIL,
-            settings.IMAP_EMAIL_PASSWORD,
-            'Inbox',
-            'SUBJECT',
-            'Reset Password',
-        )
-        # search through the email body text and find the reset password link
-        match = re.search('/resetpassword/' + '.{42}', str(email_body))
-        # need to remove any literal carriage returns or line breaks from matched string
-        reset_URL = match.group(0).replace('=\\r\\n', '')
-        assert match is not None
-        # reconstruct the full url for the reset password link and navigate to it
-        driver.get(settings.OSF_HOME + reset_URL)
-        assert ResetPasswordPage(driver, verify=True)
-        # finally run axe to check accessibility
-        a11y.run_axe(driver, session, 'resetpwrd')
+            # To prevent an endless loop waiting for the email
+            loop_counter += 1
+            if loop_counter == 60:
+                raise Exception('No unseen emails. Verify that Reset Password email was sent.')
+                break
+
+        # Only proceed with accessibility check if there is an email
+        if email_count > 0:
+            # Next we need to retrieve the email that was sent by OSF and get the link to
+            #     the Reset Password page
+            email_body = EmailAccess.get_latest_email_body_by_imap(
+                settings.IMAP_HOST,
+                settings.IMAP_EMAIL,
+                settings.IMAP_EMAIL_PASSWORD,
+                'Inbox',
+                'SUBJECT',
+                'Reset Password',
+            )
+            # Search through the email body text and find the reset password link
+            match = re.search('/resetpassword/' + '.{42}', str(email_body))
+            # Need to remove any literal carriage returns or line breaks from matched string
+            reset_URL = match.group(0).replace('=\\r\\n', '')
+            assert match is not None
+            # Reconstruct the full url for the reset password link and navigate to it
+            driver.get(settings.OSF_HOME + reset_URL)
+            assert ResetPasswordPage(driver, verify=True)
+            # Finally run axe to check accessibility
+            a11y.run_axe(driver, session, 'resetpwrd')
