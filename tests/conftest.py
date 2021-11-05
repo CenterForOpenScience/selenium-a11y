@@ -1,3 +1,5 @@
+from distutils.util import strtobool
+
 import pytest
 from faker import Faker
 from pythosf import client
@@ -110,3 +112,48 @@ def project_with_file(session, default_project):
     else:
         osf_api.upload_fake_file(session, default_project)
     return default_project
+
+
+def pytest_addoption(parser):
+    """Accept input parameters when running pytest from command line
+    """
+    # Flag to determine whether to write accessibility output files
+    parser.addoption('--write_files', action='store')
+    # Flag to determine whether to exclude Best Practice rules from accessibility check
+    parser.addoption('--exclude_best_practice', action='store')
+
+
+@pytest.fixture()
+def write_files(pytestconfig):
+    """Fixture to use command line input to turn on or off the writing of output files
+    from the accessibility checks.  Default (True) is to write the output files.  To
+    use this when running pytest from command line add '--write_files <value>' to the
+    end of the arguments for pytest.
+    EX: 'pytest tests/test_a11y_preprints.py -s -v --write_files false'
+    Valid input values (regardless of capitalization) are:
+        True values are 'y', 'yes', 't', 'true', 'on', and '1'
+        False values are 'n', 'no', 'f', 'false', 'off', and '0'
+        Raises ValueError if input value is anything else.
+    """
+    if pytestconfig.getoption('write_files') is None:
+        return True
+    else:
+        return strtobool(pytestconfig.getoption('write_files'))
+
+
+@pytest.fixture()
+def exclude_best_practice(pytestconfig):
+    """Fixture to use command line input to exclude the Best Practice rule set from the
+    accessibility checks.  Default (False) is to include the Best Practice rules. To use
+    this when running pytest from command line add '--exclude_best_practice <value>' to
+    the end of the arguments for pytest.
+    EX: 'pytest tests/test_a11y_preprints.py -s -v --exclude_best_practice true'
+    Valid input values (regardless of capitalization) are:
+        True values are 'y', 'yes', 't', 'true', 'on', and '1'
+        False values are 'n', 'no', 'f', 'false', 'off', and '0'
+        Raises ValueError if input value is anything else.
+    """
+    if pytestconfig.getoption('exclude_best_practice') is None:
+        return False
+    else:
+        return strtobool(pytestconfig.getoption('exclude_best_practice'))

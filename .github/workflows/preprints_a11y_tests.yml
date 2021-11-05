@@ -1,0 +1,107 @@
+name: Preprints A11y Tests
+
+on:
+  workflow_call:
+    inputs:
+      domain:
+        description: 'Testing Envrionment'
+        required: true
+        default: 'stage1'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Testing Envrionment'
+        required: true
+        default: 'stage1'
+
+env:
+  DRIVER: "Remote"
+  DOMAIN: ${{ github.event.inputs.domain }}
+  NEW_USER_EMAIL: ${{ secrets.NEW_USER_EMAIL }}
+  BSTACK_USER: ${{ secrets.BROWSERSTACK_USERNAME }}
+  BSTACK_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+  CHROME_USER: ${{ secrets.CHROME_USER }}
+  CHROME_USER_TOKEN: ${{ secrets.CHROME_USER_TOKEN }}
+  EDGE_USER: ${{ secrets.EDGE_USER }}
+  EDGE_USER_TOKEN: ${{ secrets.EDGE_USER_TOKEN }}
+  FIREFOX_USER: ${{ secrets.FIREFOX_USER }}
+  FIREFOX_USER_TOKEN: ${{ secrets.FIREFOX_USER_TOKEN }}
+  USER_ONE: ${{ secrets.USER_ONE }}
+  USER_ONE_PASSWORD: ${{ secrets.USER_ONE_PASSWORD }}
+  USER_TWO: ${{ secrets.USER_TWO }}
+  USER_TWO_PASSWORD: ${{ secrets.USER_TWO_PASSWORD }}
+  DEACTIVATED_USER: ${{ secrets.DEACTIVATED_USER }}
+  DEACTIVATED_USER_PASSWORD: ${{ secrets.DEACTIVATED_USER_PASSWORD }}
+  UNCONFIRMED_USER: ${{ secrets.UNCONFIRMED_USER }}
+  UNCONFIRMED_USER_PASSWORD: ${{ secrets.UNCONFIRMED_USER_PASSWORD }}
+  CAS_2FA_USER: ${{ secrets.CAS_2FA_USER }}
+  CAS_2FA_USER_PASSWORD: ${{ secrets.CAS_2FA_USER_PASSWORD }}
+  CAS_TOS_USER: ${{ secrets.CAS_TOS_USER }}
+  CAS_TOS_USER_PASSWORD: ${{ secrets.CAS_TOS_USER_PASSWORD }}
+  DEVAPP_CLIENT_ID: ${{ secrets.DEVAPP_CLIENT_ID }}
+  DEVAPP_CLIENT_SECRET: ${{ secrets.DEVAPP_CLIENT_SECRET }}
+  IMAP_EMAIL: ${{ secrets.IMAP_EMAIL }}
+  IMAP_EMAIL_PASSWORD: ${{ secrets.IMAP_EMAIL_PASSWORD }}
+  IMAP_HOST: ${{ secrets.IMAP_HOST }}
+  A11Y_REGISTRATIONS_USER: ${{ secrets.A11Y_REGISTRATIONS_USER }}
+  A11Y_REGISTRATIONS_PASSWORD: ${{ secrets.A11Y_REGISTRATIONS_PASSWORD }}
+
+jobs:
+
+  build:
+    runs-on: ubuntu-20.04
+    env:
+      GHA_DISTRO: ubuntu-20.04
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    strategy:
+      matrix:
+        python-version: [3.6]
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache Build Requirements
+        id: pip-cache-step
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.GHA_DISTRO }}-${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
+      - name: install dependencies
+        if: steps.pip-cache-step.outputs.cache-hit != 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          invoke requirements
+
+  staging_test:
+    name: Staging tests (${{ matrix.browser }})
+    needs: build
+    runs-on: ubuntu-20.04
+    env:
+      GHA_DISTRO: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      max-parallel: 1  # run in series
+      matrix:
+        browser: [chrome, firefox, edge]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.GHA_DISTRO }}-${{ env.pythonLocation }}-${{ hashFiles('requirements.txt') }}
+      - name: run staging tests
+        env:
+          TEST_BUILD: ${{ matrix.browser }}
+        run: |
+          invoke test_preprints_accessibility
