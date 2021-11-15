@@ -55,6 +55,7 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         from selenium.webdriver.chrome.options import Options
 
         chrome_options = Options()
+        chrome_options.set_capability('unhandledPromptBehavior', 'accept')
         # disable w3c for local testing
         chrome_options.add_experimental_option('w3c', False)
         preferences = {'download.default_directory': ''}

@@ -1,13 +1,16 @@
 import pytest
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+import markers
 from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
 from pages.collections import CollectionDiscoverPage, CollectionSubmitPage
 
 
+@markers.ember_page
 class TestCollectionDiscoverPages:
     """This test will load the Discover page for each Collection Provider that exists in
     an environment.
@@ -22,15 +25,24 @@ class TestCollectionDiscoverPages:
     def provider(self, request):
         return request.param
 
-    def test_accessibility(self, session, driver, provider):
+    def test_accessibility(
+        self, session, driver, provider, write_files, exclude_best_practice
+    ):
         discover_page = CollectionDiscoverPage(driver, provider=provider)
         discover_page.goto()
         assert CollectionDiscoverPage(driver, verify=True)
         discover_page.loading_indicator.here_then_gone()
         page_name = 'cp_' + provider['id']
-        a11y.run_axe(driver, session, page_name)
+        a11y.run_axe(
+            driver,
+            session,
+            page_name,
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.ember_page
 class TestCollectionSubmitPage:
     """This test is for the Collection Submit page which is accessed by the "Add to
     Collection" link in the navigation bar of a Collection Provider.  The Collection
@@ -44,7 +56,14 @@ class TestCollectionSubmitPage:
         return osf_api.get_provider(type='collections', provider_id='characterlab')
 
     def test_accessibility(
-        self, driver, session, provider, project_with_file, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        project_with_file,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         submit_page = CollectionSubmitPage(driver, provider=provider)
         submit_page.goto()
@@ -60,4 +79,19 @@ class TestCollectionSubmitPage:
                 (By.CSS_SELECTOR, '[data-test-project-contributors-list-item-name]')
             )
         )
-        a11y.run_axe(driver, session, 'collsub')
+        a11y.run_axe(
+            driver,
+            session,
+            'collsub',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+        # Leaving this page without saving causes an alert pop-up in Chrome which will
+        # cause the next test run after this one to fail. So we want to trigger the
+        # alert here and then accept it.
+        submit_page.reload()
+        try:
+            WebDriverWait(driver, 3).until(EC.alert_is_present())
+            driver.switch_to.alert.accept()
+        except TimeoutException:
+            pass
