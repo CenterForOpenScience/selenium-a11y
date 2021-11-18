@@ -24,29 +24,49 @@ from pages.preprints import (
 
 
 class TestPreprintLandingPage:
-    def test_accessibility(self, driver, session):
+    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         landing_page = PreprintLandingPage(driver)
         landing_page.goto()
         assert PreprintLandingPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'preprints')
+        a11y.run_axe(
+            driver,
+            session,
+            'preprints',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 class TestPreprintSubmitPage:
     @pytest.mark.skipif(
         not settings.PRODUCTION, reason='This version is only for Production'
     )
-    def test_accessibility_prod(self, driver, session, must_be_logged_in):
+    def test_accessibility_prod(
+        self, driver, session, write_files, exclude_best_practice, must_be_logged_in
+    ):
         """This is a lite version of the Preprint Submit page test just for Production.
         It just navigates to the Submit page without attempting to start a new Preprint.
         """
         submit_page = PreprintSubmitPage(driver)
         submit_page.goto()
         assert PreprintSubmitPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'prepsub')
+        a11y.run_axe(
+            driver,
+            session,
+            'prepsub',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     @markers.dont_run_on_prod
     def test_accessibility_non_prod(
-        self, driver, session, project_with_file, must_be_logged_in
+        self,
+        driver,
+        session,
+        project_with_file,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         """This version of the Preprint Submit page test will run on any of the testing
         environments since it creates a fake project with file attached from which a new
@@ -76,11 +96,17 @@ class TestPreprintSubmitPage:
         submit_page.preregistration_input.send_keys_deliberately('QA Testing')
         submit_page.save_author_assertions.click()
         submit_page.basics_abstract_input.click()
-        a11y.run_axe(driver, session, 'prepsub')
+        a11y.run_axe(
+            driver,
+            session,
+            'prepsub',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 class TestPreprintDiscoverPage:
-    def test_accessibility(self, driver, session):
+    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         # The previous test (Submit page - non prod) may trigger a pop-up alert
         #     messagebox that leaving the page will cause data to not be saved.  At
         #     this point this seems to only be happening with Chrome.  If we get
@@ -95,11 +121,17 @@ class TestPreprintDiscoverPage:
         discover_page.goto()
         assert PreprintDiscoverPage(driver, verify=True)
         discover_page.loading_indicator.here_then_gone()
-        a11y.run_axe(driver, session, 'prepdisc')
+        a11y.run_axe(
+            driver,
+            session,
+            'prepdisc',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 class TestPreprintDetailPage:
-    def test_accessibility(self, driver, session):
+    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         discover_page = PreprintDiscoverPage(driver)
         discover_page.goto()
         assert PreprintDiscoverPage(driver, verify=True)
@@ -124,7 +156,13 @@ class TestPreprintDetailPage:
         detail_page = PreprintDetailPage(driver, verify=True)
         # wait for authors list to fully load so that it doesn't trigger list violation
         detail_page.authors_load_indicator.here_then_gone()
-        a11y.run_axe(driver, session, 'prepdet')
+        a11y.run_axe(
+            driver,
+            session,
+            'prepdet',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 class TestBrandedProviders:
@@ -143,12 +181,20 @@ class TestBrandedProviders:
     def provider(self, request):
         return request.param
 
-    def test_accessibility(self, session, driver, provider):
+    def test_accessibility(
+        self, session, driver, provider, write_files, exclude_best_practice
+    ):
         landing_page = PreprintLandingPage(driver, provider=provider)
         landing_page.goto()
         assert PreprintLandingPage(driver, verify=True)
         page_name = 'bp_' + provider['id']
-        a11y.run_axe(driver, session, page_name)
+        a11y.run_axe(
+            driver,
+            session,
+            page_name,
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 # We do not currently have a user setup as an administrator or noderator for any of the
@@ -160,7 +206,9 @@ class TestPreprintReviewsDashboardPage:
     that has moderation enabled.
     """
 
-    def test_accessibility(self, driver, session, must_be_logged_in):
+    def test_accessibility(
+        self, driver, session, write_files, exclude_best_practice, must_be_logged_in
+    ):
         dashboard_page = ReviewsDashboardPage(driver)
         dashboard_page.goto()
         assert ReviewsDashboardPage(driver, verify=True)
@@ -168,7 +216,13 @@ class TestPreprintReviewsDashboardPage:
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div._action-body_zlyyw2'))
         )
-        a11y.run_axe(driver, session, 'revdash')
+        a11y.run_axe(
+            driver,
+            session,
+            'revdash',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 # We do not currently have a user setup as an administrator or noderator for any of the
@@ -187,7 +241,13 @@ class TestProviderReviewsPages:
         return osf_api.get_provider(type='preprints', provider_id='marxiv')
 
     def test_accessibility_reviews_submissions(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         submissions_page = ReviewsSubmissionsPage(driver, provider=provider)
         submissions_page.goto()
@@ -199,10 +259,22 @@ class TestProviderReviewsPages:
                     (By.CLASS_NAME, '_submission-info_xkm0pa')
                 )
             )
-        a11y.run_axe(driver, session, 'revsub')
+        a11y.run_axe(
+            driver,
+            session,
+            'revsub',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_reviews_withdrawals(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         withdrawals_page = ReviewsWithdrawalsPage(driver, provider=provider)
         withdrawals_page.goto()
@@ -214,10 +286,22 @@ class TestProviderReviewsPages:
                     (By.CLASS_NAME, '_submission-info_17iwzt')
                 )
             )
-        a11y.run_axe(driver, session, 'revwthdrwls')
+        a11y.run_axe(
+            driver,
+            session,
+            'revwthdrwls',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_reviews_moderators(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         moderators_page = ReviewsModeratorsPage(driver, provider=provider)
         moderators_page.goto()
@@ -226,10 +310,22 @@ class TestProviderReviewsPages:
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, '_moderator-name_f83dob'))
         )
-        a11y.run_axe(driver, session, 'revmod')
+        a11y.run_axe(
+            driver,
+            session,
+            'revmod',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_reviews_notifications(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         notifications_page = ReviewsNotificationsPage(driver, provider=provider)
         notifications_page.goto()
@@ -238,12 +334,30 @@ class TestProviderReviewsPages:
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CLASS_NAME, 'notification-title'))
         )
-        a11y.run_axe(driver, session, 'revnot')
+        a11y.run_axe(
+            driver,
+            session,
+            'revnot',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_reviews_settings(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         settings_page = ReviewsSettingsPage(driver, provider=provider)
         settings_page.goto()
         assert ReviewsSettingsPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'revset')
+        a11y.run_axe(
+            driver,
+            session,
+            'revset',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
