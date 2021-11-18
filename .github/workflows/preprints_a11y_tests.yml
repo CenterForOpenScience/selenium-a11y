@@ -7,6 +7,7 @@ on:
         description: 'Testing Envrionment'
         required: true
         default: 'stage1'
+        type: string
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
