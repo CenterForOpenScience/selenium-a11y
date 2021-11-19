@@ -15,6 +15,7 @@ from pages.user import (
 )
 
 
+@markers.legacy_page
 class TestUserProfilePage:
     def test_accessibility(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
@@ -31,6 +32,7 @@ class TestUserProfilePage:
         )
 
 
+@markers.legacy_page
 class TestUserSettingsProfileInformationPage:
     @pytest.fixture()
     def profile_information_page(self, driver, must_be_logged_in):
@@ -153,6 +155,7 @@ class TestUserSettingsAccountSettingsPage:
         )
 
 
+@markers.legacy_page
 class TestUserSettingsConfigureAddonsPage:
     def test_accessibility(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
@@ -169,6 +172,7 @@ class TestUserSettingsConfigureAddonsPage:
         )
 
 
+@markers.legacy_page
 class TestUserSettingsNotificationsPage:
     def test_accessibility(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in

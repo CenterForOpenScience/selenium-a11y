@@ -13,3 +13,4 @@ dont_run_on_preferred_node = pytest.mark.skipif(
 )
 
 ember_page = pytest.mark.ember_page
+legacy_page = pytest.mark.legacy_page

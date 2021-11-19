@@ -20,6 +20,7 @@ from pages.project import (
 )
 
 
+@markers.legacy_page
 class TestProjectPage:
     def test_accessibility(
         self,
@@ -49,6 +50,7 @@ class TestProjectPage:
         )
 
 
+@markers.legacy_page
 class TestFilesPage:
     def test_accessibility(
         self,
@@ -76,6 +78,7 @@ class TestFilesPage:
         )
 
 
+@markers.legacy_page
 class TestFileViewPage:
     def test_accessibility(
         self,
@@ -124,6 +127,7 @@ class TestFileViewPage:
         )
 
 
+@markers.legacy_page
 class TestWikiPage:
     def test_accessibility(
         self,
@@ -210,6 +214,7 @@ class TestRegistrationsPage:
         )
 
 
+@markers.legacy_page
 class TestContributorsPage:
     def test_accessibility(
         self,
@@ -236,6 +241,7 @@ class TestContributorsPage:
         )
 
 
+@markers.legacy_page
 class TestAddonsPage:
     def test_accessibility(
         self,
@@ -262,6 +268,7 @@ class TestAddonsPage:
         )
 
 
+@markers.legacy_page
 class TestSettingsPage:
     def test_accessibility(
         self,
@@ -328,6 +335,7 @@ class TestForksPage:
         )
 
 
+@markers.legacy_page
 class TestRequestAccessPage:
     def test_accessibility(
         self,

@@ -41,7 +41,14 @@ class ApplyA11yRules:
             # element does not violate the missing form element label rule in more
             # up-to-date versions of axe-core like the browser extension tool.
             results = axe.run(
-                context={'exclude': [['#search'], ['.m-t-md'], ['._StateText_1iudhh']]},
+                context={
+                    'exclude': [
+                        ['#search'],
+                        ['.text-center'],
+                        ['._StateText_1iudhh'],
+                        ['._UpdateText_1u9k9o'],
+                    ]
+                },
                 options={
                     'runOnly': {
                         'type': 'tag',

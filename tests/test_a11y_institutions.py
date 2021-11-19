@@ -28,6 +28,7 @@ class TestInstitutionsLandingPage:
         )
 
 
+@markers.legacy_page
 class TestBrandedInstitutionPages:
     """ Test the Branded Institution Page for each institution in the environment. Use the osf api to get
     the list of institution ids and then load each branded iinstitution page and run the axe test engine.

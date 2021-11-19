@@ -52,6 +52,7 @@ class TestDashboardPage:
         )
 
 
+@markers.legacy_page
 class TestMyProjectsPage:
     def test_accessibility(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
@@ -133,6 +134,7 @@ class TestRegisterPage:
         )
 
 
+@markers.legacy_page
 class TestSearchPage:
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         search_page = SearchPage(driver)
@@ -167,6 +169,7 @@ class TestSupportPage:
         )
 
 
+@markers.legacy_page
 class TestForgotPasswordPage:
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         forgot_password_page = ForgotPasswordPage(driver)
@@ -181,6 +184,7 @@ class TestForgotPasswordPage:
         )
 
 
+@markers.legacy_page
 # For the next test we have only set up test users with IMAP enabled email address in
 #     the testing environments.
 @markers.dont_run_on_prod
