@@ -1,10 +1,11 @@
 name: Preprints A11y Tests
 
 on:
-  workflow_call:
+  repository_dispatch:
+    types: [code_deploy]
     inputs:
       domain:
-        description: 'Testing Envrionment'
+        description: 'Testing Environment'
         required: true
         default: 'stage1'
         type: string
@@ -13,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       domain:
-        description: 'Testing Envrionment'
+        description: 'Testing Environment'
         required: true
         default: 'stage1'
 
