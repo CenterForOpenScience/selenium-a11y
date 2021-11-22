@@ -20,8 +20,17 @@ from pages.project import (
 )
 
 
+@markers.legacy_page
 class TestProjectPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Project Overview page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
@@ -32,11 +41,26 @@ class TestProjectPage:
         # wait until file widget has fully loaded so that we can ensure that all sections
         # of project page have fully loaded before applying a11y rules
         project_page.file_widget.loading_indicator.here_then_gone()
-        a11y.run_axe(driver, session, 'project')
+        a11y.run_axe(
+            driver,
+            session,
+            'project',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.legacy_page
 class TestFilesPage:
-    def test_accessibility(self, driver, session, project_with_file, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        project_with_file,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Project Files page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production, then
         we are using a Preferred Node from the environment settings file.
@@ -45,11 +69,26 @@ class TestFilesPage:
         files_page.goto()
         files_page.loading_indicator.here_then_gone()
         assert FilesPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'prjFiles')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjFiles',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.legacy_page
 class TestFileViewPage:
-    def test_accessibility(self, driver, session, project_with_file, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        project_with_file,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the File View page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
@@ -79,11 +118,26 @@ class TestFileViewPage:
         WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.ID, 'mfrIframe'))
         )
-        a11y.run_axe(driver, session, 'fileView')
+        a11y.run_axe(
+            driver,
+            session,
+            'fileView',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.legacy_page
 class TestWikiPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Wiki page test we are creating a new dummy test project and then
         deleting it after we have finished unless we are running in Production, then
         we are using a Preferred Node from the environment settings file.
@@ -91,11 +145,26 @@ class TestWikiPage:
         wiki_page = WikiPage(driver, guid=default_project.id)
         wiki_page.goto()
         assert WikiPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'prjWiki')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjWiki',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.ember_page
 class TestAnalyticsPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Analytics page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
@@ -107,11 +176,26 @@ class TestAnalyticsPage:
         WebDriverWait(driver, 5).until(
             EC.visibility_of_element_located((By.CSS_SELECTOR, '.keen-dataviz-stage'))
         )
-        a11y.run_axe(driver, session, 'prjAnlytcs')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjAnlytcs',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.ember_page
 class TestRegistrationsPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Registrations page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
@@ -121,11 +205,26 @@ class TestRegistrationsPage:
         assert RegistrationsPage(driver, verify=True)
         # wait until Registration cards are loaded if there are any
         registrations_page.first_registration_title.present()
-        a11y.run_axe(driver, session, 'prjReg')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjReg',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.legacy_page
 class TestContributorsPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Contributors page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
@@ -133,11 +232,26 @@ class TestContributorsPage:
         contributors_page = ContributorsPage(driver, guid=default_project.id)
         contributors_page.goto()
         assert ContributorsPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'prjCntrb')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjCntrb',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.legacy_page
 class TestAddonsPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Add-ons page test we are creating a new dummy test project and then
         deleting it after we have finished unless we are running in Production, then we
         are using a Preferred Node from the environment settings file.
@@ -145,11 +259,26 @@ class TestAddonsPage:
         addons_page = AddonsPage(driver, guid=default_project.id)
         addons_page.goto()
         assert AddonsPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'prjAddons')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjAddons',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.legacy_page
 class TestSettingsPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Settings page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
@@ -158,12 +287,27 @@ class TestSettingsPage:
         settings_page.goto()
         settings_page.email_notifications_loading_indicator.here_then_gone()
         assert SettingsPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'prjSttngs')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjSttngs',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.ember_page
 @markers.dont_run_on_prod
 class TestForksPage:
-    def test_accessibility(self, driver, session, default_project, must_be_logged_in):
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
         """ For the Forks page test we are creating a new dummy test project and
         then deleting it after we have finished - also deleting the new fork that
         is created
@@ -182,12 +326,25 @@ class TestForksPage:
         # clean-up leftover fork
         fork_guid = forks_page.fork_link.get_attribute('data-test-node-title')
         osf_api.delete_project(session, fork_guid, None)
-        a11y.run_axe(driver, session, 'prjForks')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjForks',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.legacy_page
 class TestRequestAccessPage:
     def test_accessibility(
-        self, driver, session, default_project_page, must_be_logged_in_as_user_two
+        self,
+        driver,
+        session,
+        default_project_page,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in_as_user_two,
     ):
         """ For the Request Access page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
@@ -195,4 +352,10 @@ class TestRequestAccessPage:
         """
         default_project_page.goto(expect_redirect_to=RequestAccessPage)
         assert RequestAccessPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'prjReqAcc')
+        a11y.run_axe(
+            driver,
+            session,
+            'prjReqAcc',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )

@@ -24,34 +24,49 @@ from pages.registries import (
 )
 
 
+@markers.ember_page
 class TestRegistriesLandingPage:
-    def test_accessibility(self, driver, session):
+    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         landing_page = RegistriesLandingPage(driver)
         landing_page.goto()
         assert RegistriesLandingPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'registries')
+        a11y.run_axe(
+            driver,
+            session,
+            'registries',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.ember_page
 class TestRegistriesDiscoverPage:
     """This test is for the OSF Registries Discover Page. The other Branded Provider
     Registries Discover pages will be tested below.
     """
 
-    def test_accessibility(self, driver, session):
+    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         discover_page = RegistriesDiscoverPage(driver)
         discover_page.goto()
         assert RegistriesDiscoverPage(driver, verify=True)
         discover_page.loading_indicator.here_then_gone()
-        a11y.run_axe(driver, session, 'regdisc')
+        a11y.run_axe(
+            driver,
+            session,
+            'regdisc',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.ember_page
 class TestRegistrationDetailPage:
     """This test is for the Registration Detail Page for a submitted registration. It
     accesses a submitted registration from the search results on the Registries Discover
     page.
     """
 
-    def test_accessibility(self, driver, session):
+    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         discover_page = RegistriesDiscoverPage(driver)
         discover_page.goto()
         assert RegistriesDiscoverPage(driver, verify=True)
@@ -78,13 +93,20 @@ class TestRegistrationDetailPage:
         target_registration.click()
         detail_page = RegistrationDetailPage(driver, verify=True)
         detail_page.loading_indicator.here_then_gone()
-        a11y.run_axe(driver, session, 'regdet')
+        a11y.run_axe(
+            driver,
+            session,
+            'regdet',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 # User with registrations is not setup in production
 @markers.dont_run_on_prod
+@markers.ember_page
 class TestMyRegistrationsPage:
-    def test_accessibility(self, driver, session):
+    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         safe_login(
             driver,
             user=settings.A11Y_REGISTRATIONS_USER,
@@ -97,15 +119,30 @@ class TestMyRegistrationsPage:
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-node-card]'))
         )
-        a11y.run_axe(driver, session, 'myreg')
+        a11y.run_axe(
+            driver,
+            session,
+            'myreg',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
+@markers.ember_page
 class TestAddNewRegistrationPage:
-    def test_accessibility(self, driver, session, must_be_logged_in):
+    def test_accessibility(
+        self, driver, session, write_files, exclude_best_practice, must_be_logged_in
+    ):
         add_new_registration_page = RegistrationAddNewPage(driver)
         add_new_registration_page.goto()
         assert RegistrationAddNewPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'addnewreg')
+        a11y.run_axe(
+            driver,
+            session,
+            'addnewreg',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 @pytest.fixture(scope='class')
@@ -139,7 +176,10 @@ class TestDraftRegistrationPages:
         assert draft_cards
         return my_registrations_page
 
-    def test_accessibility_metadata_page(self, driver, session, my_registrations_page):
+    @markers.ember_page
+    def test_accessibility_metadata_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
         """This test is for checking the accessibility of the Draft Registration Metadata
         page.  We can just pick the first draft registration that is listed, since the
         Metadata page is the same for all schemas.
@@ -150,9 +190,18 @@ class TestDraftRegistrationPages:
         metadata_page = DraftRegistrationMetadataPage(driver, draft_id=draft_id)
         metadata_page.goto()
         assert DraftRegistrationMetadataPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'drftregmeta')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregmeta',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
-    def test_accessibility_summary_page(self, driver, session, my_registrations_page):
+    @markers.ember_page
+    def test_accessibility_summary_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
         """This test is for checking the accessibility of the Draft Registration Summary
         Page which is typically the second page on an Open-Ended Registration template.
         Since the user also has other types of draft registrations, we must search through
@@ -175,10 +224,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregsum')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregsum',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_study_information_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration Study
         Information Page which is the second page on a Qualitative Preregistration template.
@@ -196,10 +251,16 @@ class TestDraftRegistrationPages:
         )
         study_information_page.goto()
         assert study_information_page.page_heading.text == 'Study Information'
-        a11y.run_axe(driver, session, 'drftregstudy')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregstudy',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_data_collection_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration Data
         Collection Page which is the fourth page on a Qualitative Preregistration template.
@@ -217,10 +278,16 @@ class TestDraftRegistrationPages:
         )
         data_collection_page.goto()
         assert data_collection_page.page_heading.text == 'Data Collection'
-        a11y.run_axe(driver, session, 'drftregdatacol')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregdatacol',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_miscellaneous_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Miscellaneous Page which is the sixth page on a Qualitative Preregistration
@@ -238,10 +305,16 @@ class TestDraftRegistrationPages:
         )
         miscellaneous_page.goto()
         assert miscellaneous_page.page_heading.text == 'Miscellaneous'
-        a11y.run_axe(driver, session, 'drftregmisc')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregmisc',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_design_plan_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration Design
         Plan Page which is the third page on an OSF Preregistration template.  Since the
@@ -265,10 +338,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregdesign')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregdesign',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_sampling_plan_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration Sampling
         Plan Page which is the fourth page on an OSF Preregistration template.  Since the
@@ -292,9 +371,17 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregsampling')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregsampling',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
-    def test_accessibility_variables_page(self, driver, session, my_registrations_page):
+    def test_accessibility_variables_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
         """This test is for checking the accessibility of the Draft Registration Variables
         Page which is the fifth page on an OSF Preregistration template.  Since the user
         also has other types of draft registrations, we must search through the cards on
@@ -317,10 +404,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregvariables')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregvariables',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_analysis_plan_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration Analysis
         Plan Page which is the sixth page on an OSF Preregistration template.  Since the
@@ -344,10 +437,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftreganalysis')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftreganalysis',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_publication_information_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration Publication
         Information Page which is the second page on a Registered Report Protocol Preregistration
@@ -368,10 +467,16 @@ class TestDraftRegistrationPages:
         assert (
             publication_information_page.page_heading.text == 'Publication Information'
         )
-        a11y.run_axe(driver, session, 'drftregpubinfo')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregpubinfo',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_manuscript_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration Manuscript
         Page which is the second page on a Registered Report Protocol Preregistration template.
@@ -396,9 +501,17 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregmnscrpt')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregmnscrpt',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
-    def test_accessibility_other_page(self, driver, session, my_registrations_page):
+    def test_accessibility_other_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
         """This test is for checking the accessibility of the Draft Registration Other
         Page which is the fourth page on a Registered Report Protocol Preregistration
         template.  Since the user also has other types of draft registrations, we must
@@ -422,10 +535,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregother')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregother',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_prereg_template_aspredicted_org_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Preregistration Template from AsPredicted.org Page which is the second page on
@@ -451,10 +570,16 @@ class TestDraftRegistrationPages:
             prereg_template_page.page_heading.text
             == 'Preregistration Template from AsPredicted.org'
         )
-        a11y.run_axe(driver, session, 'drftregasprdct')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregasprdct',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_osf_standard_predata_collection_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         OSF-Standard Pre-Data Collection Registration Page which is the second page on
@@ -480,10 +605,16 @@ class TestDraftRegistrationPages:
             predata_collection_page.page_heading.text
             == 'OSF-Standard Pre-Data Collection Registration'
         )
-        a11y.run_axe(driver, session, 'drftregpredata')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregpredata',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_hypotheses_essential_elements_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Hypotheses - Essential elements Page which is the second page on a
@@ -506,10 +637,16 @@ class TestDraftRegistrationPages:
         )
         hypotheses_page.goto()
         assert hypotheses_page.page_heading.text == 'A. Hypotheses - Essential elements'
-        a11y.run_axe(driver, session, 'drftreghypotheses')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftreghypotheses',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_recommended_elements_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Recommended elements Page which is the third page on a Pre-Registration in
@@ -535,10 +672,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregrecelems')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregrecelems',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_methods_essential_elements_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Methods - Essential elements Page which is the fourth page on a
@@ -564,10 +707,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregmethods')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregmethods',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_analysis_plan_essential_elements_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Analysis Plan - Essential elements Page which is the sixth page on a
@@ -593,10 +742,16 @@ class TestDraftRegistrationPages:
             analysis_plan_page.page_heading.text
             == 'C. Analysis plan - Essential elements'
         )
-        a11y.run_axe(driver, session, 'drftregaplnelems')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregaplnelems',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_final_questions_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Final questions Page which is the eighth page on a Pre-Registration in
@@ -616,10 +771,16 @@ class TestDraftRegistrationPages:
         )
         final_questions_page.goto()
         assert final_questions_page.page_heading.text == 'Final questions'
-        a11y.run_axe(driver, session, 'drftregfnlqustns')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregfnlqustns',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_nature_of_the_effect_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         The Nature of the Effect Page which is the second page on a Replication
@@ -640,10 +801,16 @@ class TestDraftRegistrationPages:
         )
         nature_effect_page.goto()
         assert nature_effect_page.page_heading.text == 'The Nature of the Effect'
-        a11y.run_axe(driver, session, 'drftregnateff')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregnateff',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_designing_replication_study_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Designing the Replication Study Page which is the third page on a Replication
@@ -664,10 +831,16 @@ class TestDraftRegistrationPages:
         )
         design_study_page.goto()
         assert design_study_page.page_heading.text == 'Designing the Replication Study'
-        a11y.run_axe(driver, session, 'drftregdesrepstdy')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregdesrepstdy',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_documenting_differences_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Documenting Differences between the Original and Replication Study Page which
@@ -694,10 +867,16 @@ class TestDraftRegistrationPages:
             documenting_differences_page.page_heading.text
             == 'Documenting Differences between the Original and Replication Study'
         )
-        a11y.run_axe(driver, session, 'drftregdocdiff')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregdocdiff',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_analysis_replication_evaluation_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Analysis and Replication Evaluation Page which is the fifth page on a
@@ -723,10 +902,16 @@ class TestDraftRegistrationPages:
             analysis_replication_eval_page.page_heading.text
             == 'Analysis and Replication Evaluation'
         )
-        a11y.run_axe(driver, session, 'drftregrepeval')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregrepeval',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_registering_replication_attempt_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Registering the Replication Attempt Page which is the second page on a
@@ -752,10 +937,16 @@ class TestDraftRegistrationPages:
             registering_replication_page.page_heading.text
             == 'Registering the Replication Attempt'
         )
-        a11y.run_axe(driver, session, 'drftregrepatt')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregrepatt',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_reporting_replication_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Reporting the Replication Page which is the second page on a Replication Recipe
@@ -777,10 +968,16 @@ class TestDraftRegistrationPages:
         assert (
             reporting_replication_page.page_heading.text == 'Reporting the Replication'
         )
-        a11y.run_axe(driver, session, 'drftregreprep')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregreprep',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_data_description_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Data Description Page which is the third page on a Secondary Data
@@ -806,10 +1003,16 @@ class TestDraftRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-files-list-for]')
             )
         )
-        a11y.run_axe(driver, session, 'drftregdatadesc')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregdatadesc',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_knowledge_of_data_page(
-        self, driver, session, my_registrations_page
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
     ):
         """This test is for checking the accessibility of the Draft Registration
         Knowledge of Data Page which is the fifth page on a Secondary Data
@@ -829,9 +1032,18 @@ class TestDraftRegistrationPages:
         )
         data_knowledge_page.goto()
         assert data_knowledge_page.page_heading.text == 'Knowledge of Data'
-        a11y.run_axe(driver, session, 'drftregknowdata')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregknowdata',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
-    def test_accessibility_review_page(self, driver, session, my_registrations_page):
+    @markers.ember_page
+    def test_accessibility_review_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
         """This test is for checking the accessibility of the Draft Registration Review
         Page which is the final page of any template.  In this case we are using an OSF
         Preregistration draft registration since it is one of the longer templates and
@@ -848,7 +1060,13 @@ class TestDraftRegistrationPages:
         review_page = DraftRegistrationReviewPage(driver, draft_id=draft_id)
         review_page.goto()
         assert DraftRegistrationReviewPage(driver, verify=True)
-        a11y.run_axe(driver, session, 'drftregreview')
+        a11y.run_axe(
+            driver,
+            session,
+            'drftregreview',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 class TestBrandedRegistrationsProviders:
@@ -867,17 +1085,26 @@ class TestBrandedRegistrationsProviders:
     def provider(self, request):
         return request.param
 
-    def test_accessibility(self, session, driver, provider):
+    def test_accessibility(
+        self, session, driver, provider, write_files, exclude_best_practice
+    ):
         discover_page = RegistriesDiscoverPage(driver, provider=provider)
         discover_page.goto()
         assert RegistriesDiscoverPage(driver, verify=True)
         discover_page.loading_indicator.here_then_gone()
         page_name = 'br_' + provider['id']
-        a11y.run_axe(driver, session, page_name)
+        a11y.run_axe(
+            driver,
+            session,
+            page_name,
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 # We do not currently have a user setup as an administrator for any of the registries in production
 @markers.dont_run_on_prod
+@markers.ember_page
 class TestModerationPages:
     """To test the Moderation pages we must login as a user that has been setup as an
     administrator for one of the registry providers that has moderation enabled.  We
@@ -890,7 +1117,13 @@ class TestModerationPages:
         return osf_api.get_provider(provider_id='egap')
 
     def test_accessibility_moderation_submissions(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         submissions_page = RegistriesModerationSubmissionsPage(
             driver, provider=provider
@@ -904,10 +1137,22 @@ class TestModerationPages:
                     (By.CSS_SELECTOR, '[data-test-registration-list-card]')
                 )
             )
-        a11y.run_axe(driver, session, 'regmodsub')
+        a11y.run_axe(
+            driver,
+            session,
+            'regmodsub',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_moderation_moderators(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         moderators_page = RegistriesModerationModeratorsPage(driver, provider=provider)
         moderators_page.goto()
@@ -918,10 +1163,22 @@ class TestModerationPages:
                 (By.CSS_SELECTOR, '[data-test-moderator-row]')
             )
         )
-        a11y.run_axe(driver, session, 'regmodmod')
+        a11y.run_axe(
+            driver,
+            session,
+            'regmodmod',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
     def test_accessibility_moderation_settings(
-        self, driver, session, provider, must_be_logged_in
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
     ):
         settings_page = RegistriesModerationSettingsPage(driver, provider=provider)
         settings_page.goto()
@@ -932,4 +1189,10 @@ class TestModerationPages:
                 (By.CSS_SELECTOR, '[data-test-subscription-list-row]')
             )
         )
-        a11y.run_axe(driver, session, 'regmodset')
+        a11y.run_axe(
+            driver,
+            session,
+            'regmodset',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
