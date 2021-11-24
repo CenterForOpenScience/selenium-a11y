@@ -86,6 +86,18 @@ def test_ember_accessibility(ctx):
 
 
 @task
+def test_legacy_accessibility(ctx):
+    """Run the accessibility test for Legacy pages on the browser defined by TEST_BUILD.
+    This task will be invoked after 'osf.io' has been deployed to any testing
+    environment.   In order to be included in this test run the test must have the
+    pytest marker 'legacy_page'.
+    """
+    test_with_retries(
+        ctx, 'Legacy Pages', _get_test_file_list(), module=['-m', 'legacy_page']
+    )
+
+
+@task
 def test_preprints_accessibility(ctx):
     """Run the accessibility test for Preprints on the browser defined by TEST_BUILD.
     This task will be invoked after 'ember-osf-preprints' has been deployed to any
