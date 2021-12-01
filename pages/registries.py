@@ -86,8 +86,16 @@ class RegistrationAddNewPage(BaseRegistriesPage):
         return urljoin(self.base_url, self.provider_id) + '/' + self.url_addition
 
 
-class RegistriesModerationSubmissionsPage(BaseRegistriesPage):
-    url_addition = 'moderation/submissions'
+class RegistriesModerationSubmittedPage(BaseRegistriesPage):
+    url_addition = 'moderation/submitted'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type]')
+    no_registrations_message = Locator(
+        By.CSS_SELECTOR, '[data-test-registration-list-none]'
+    )
+
+
+class RegistriesModerationPendingPage(BaseRegistriesPage):
+    url_addition = 'moderation/pending'
     identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type]')
     no_registrations_message = Locator(
         By.CSS_SELECTOR, '[data-test-registration-list-none]'

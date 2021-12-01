@@ -19,8 +19,9 @@ from pages.registries import (
     RegistriesDiscoverPage,
     RegistriesLandingPage,
     RegistriesModerationModeratorsPage,
+    RegistriesModerationPendingPage,
     RegistriesModerationSettingsPage,
-    RegistriesModerationSubmissionsPage,
+    RegistriesModerationSubmittedPage,
 )
 
 
@@ -1116,7 +1117,7 @@ class TestModerationPages:
     def provider(self, driver):
         return osf_api.get_provider(provider_id='egap')
 
-    def test_accessibility_moderation_submissions(
+    def test_accessibility_moderation_submitted(
         self,
         driver,
         session,
@@ -1125,13 +1126,11 @@ class TestModerationPages:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        submissions_page = RegistriesModerationSubmissionsPage(
-            driver, provider=provider
-        )
-        submissions_page.goto()
-        assert RegistriesModerationSubmissionsPage(driver, verify=True)
+        submitted_page = RegistriesModerationSubmittedPage(driver, provider=provider)
+        submitted_page.goto()
+        assert RegistriesModerationSubmittedPage(driver, verify=True)
         # Wait for registration table to load before calling axe
-        if submissions_page.no_registrations_message.absent():
+        if submitted_page.no_registrations_message.absent():
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located(
                     (By.CSS_SELECTOR, '[data-test-registration-list-card]')
@@ -1141,6 +1140,33 @@ class TestModerationPages:
             driver,
             session,
             'regmodsub',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    def test_accessibility_moderation_pending(
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        pending_page = RegistriesModerationPendingPage(driver, provider=provider)
+        pending_page.goto()
+        assert RegistriesModerationPendingPage(driver, verify=True)
+        # Wait for registration table to load before calling axe
+        if pending_page.no_registrations_message.absent():
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, '[data-test-registration-list-card]')
+                )
+            )
+        a11y.run_axe(
+            driver,
+            session,
+            'regmodpend',
             write_files=write_files,
             exclude_best_practice=exclude_best_practice,
         )
