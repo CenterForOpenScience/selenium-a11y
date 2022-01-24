@@ -75,6 +75,14 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
             'application/excel, text/comma-separated-values, text/xml, application/xml',
         )
         driver = driver_cls(firefox_profile=ffp)
+    elif driver_name == 'Edge' and not settings.HEADLESS:
+        from msedge.selenium_tools import Edge
+
+        # Need to set the flag so that we use the newer Chromium based version of Edge
+        # instead of older IE based version of Edge
+        desired_capabilities = {'ms:edgeChromium': True}
+        driver = Edge(desired_capabilities=desired_capabilities)
+
     else:
         driver = driver_cls()
 
