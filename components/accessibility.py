@@ -47,6 +47,7 @@ class ApplyA11yRules:
                         ['.text-center'],
                         ['._StateText_1iudhh'],
                         ['._UpdateText_1u9k9o'],
+                        ['#oneTimePassword'],
                     ]
                 },
                 options={
