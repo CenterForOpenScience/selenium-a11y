@@ -124,7 +124,7 @@ class GenericCASPage(BasePage):
         '#content > div > section > section.text-without-mdi.text-center.text-bold.text-large.margin-large-vertical.title',
     )
     status_message = Locator(
-        By.CSS_SELECTOR, '#content > div > section > section.card-message > h2'
+        By.CSS_SELECTOR, '#content > div > section > section.card-message > h1'
     )
     error_detail = Locator(
         By.CSS_SELECTOR, '#content > div > section > section.card-message > pre'
@@ -137,7 +137,7 @@ class CASAuthorizationPage(BasePage):
     identity = Locator(By.CLASS_NAME, 'login-section')
     navbar_brand = Locator(By.CLASS_NAME, 'cas-brand-text')
     status_message = Locator(
-        By.CSS_SELECTOR, '#content > div > section > section.card-message > h2'
+        By.CSS_SELECTOR, '#content > div > section > section.card-message > h1'
     )
     allow_button = Locator(By.ID, 'allow')
     deny_button = Locator(By.ID, 'deny')
