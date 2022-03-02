@@ -29,7 +29,6 @@ class UserProfilePage(GuidBasePage):
     public_components = GroupLocator(
         By.CSS_SELECTOR, '#publicComponents .list-group-item'
     )
-    quickfiles = GroupLocator(By.CSS_SELECTOR, '#quickFiles .list-group-item')
 
 
 class BaseUserSettingsPage(OSFBasePage):

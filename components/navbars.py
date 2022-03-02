@@ -58,7 +58,6 @@ class EmberNavbar(HomeNavbar):
 
     logout_link = Locator(By.CSS_SELECTOR, '[data-test-ad-logout]')
     my_projects_link = Locator(By.CSS_SELECTOR, '[data-test-nav-my-projects-link]')
-    my_quick_files_link = Locator(By.CSS_SELECTOR, '[data-test-nav-quickfiles-link]')
 
 
 class PreprintsNavbar(EmberNavbar):
