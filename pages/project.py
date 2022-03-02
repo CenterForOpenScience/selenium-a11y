@@ -60,6 +60,7 @@ class MyProjectsPage(OSFBasePage):
     first_collection_remove_button = Locator(
         By.CSS_SELECTOR, '[data-target="#removeColl"]', settings.QUICK_TIMEOUT
     )
+    empty_collection_indicator = Locator(By.CLASS_NAME, 'db-non-load-template')
 
     # Components
     create_collection_modal = ComponentLocator(CreateCollectionModal)
