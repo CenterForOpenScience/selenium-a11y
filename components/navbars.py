@@ -19,7 +19,9 @@ class HomeNavbar(BaseElement):
     support_link = Locator(By.ID, 'navbar-support')
     donate_link = Locator(By.ID, 'navbar-donate')
 
-    user_dropdown = Locator(By.CSS_SELECTOR, 'ul.navbar-nav > li:nth-child(6) > a')
+    user_dropdown = Locator(
+        By.CSS_SELECTOR, 'ul.navbar-nav > li.secondary-nav-dropdown'
+    )
     user_dropdown_profile = Locator(
         By.CSS_SELECTOR, 'ul.dropdown-menu-right > li:nth-child(1)'
     )
@@ -56,7 +58,6 @@ class EmberNavbar(HomeNavbar):
 
     logout_link = Locator(By.CSS_SELECTOR, '[data-test-ad-logout]')
     my_projects_link = Locator(By.CSS_SELECTOR, '[data-test-nav-my-projects-link]')
-    my_quick_files_link = Locator(By.CSS_SELECTOR, '[data-test-nav-quickfiles-link]')
 
 
 class PreprintsNavbar(EmberNavbar):
