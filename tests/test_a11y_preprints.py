@@ -184,17 +184,27 @@ class TestBrandedProviders:
     def test_accessibility(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        landing_page = PreprintLandingPage(driver, provider=provider)
-        landing_page.goto()
-        assert PreprintLandingPage(driver, verify=True)
-        page_name = 'bp_' + provider['id']
-        a11y.run_axe(
-            driver,
-            session,
-            page_name,
-            write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
-        )
+        # As of January 24, 2022, the Engineering Archive ('engrxiv') preprint provider
+        # has switched away from using OSF as their preprint service.  Therefore the
+        # web page that OSF automatically redirects to is no longer based on the OSF
+        # Preprints landing/discover page design.  However, they remain in our active
+        # preprint provider list in the OSF api due to legal issues that are still being
+        # worked out.  The best guess is that the transition will be completed (and
+        # engrxiv removed from the api list) by the end of the first quarter of 2022
+        # (i.e. end of March).  So to prevent this test from failing in Production
+        # for 'engrxiv' we are going to skip the following steps for this provider.
+        if 'engrxiv' not in provider['id']:
+            landing_page = PreprintLandingPage(driver, provider=provider)
+            landing_page.goto()
+            assert PreprintLandingPage(driver, verify=True)
+            page_name = 'bp_' + provider['id']
+            a11y.run_axe(
+                driver,
+                session,
+                page_name,
+                write_files=write_files,
+                exclude_best_practice=exclude_best_practice,
+            )
 
 
 # We do not currently have a user setup as an administrator or noderator for any of the
