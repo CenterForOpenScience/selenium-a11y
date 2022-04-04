@@ -16,6 +16,8 @@ from pages.registries import (
     DraftRegistrationReviewPage,
     RegistrationAddNewPage,
     RegistrationDetailPage,
+    RegistrationFileDetailPage,
+    RegistrationFileListPage,
     RegistriesDiscoverPage,
     RegistriesLandingPage,
     RegistriesModerationModeratorsPage,
@@ -153,6 +155,111 @@ def log_in_as_user_with_draft_registrations(driver):
         user=settings.A11Y_REGISTRATIONS_USER,
         password=settings.A11Y_REGISTRATIONS_PASSWORD,
     )
+
+
+# User with registrations is not setup in production
+@markers.dont_run_on_prod
+class TestSubmittedRegistrationPages:
+    @pytest.fixture()
+    def my_registrations_page(self, driver, log_in_as_user_with_draft_registrations):
+        """Fixture that logs in as a user that already has submitted registrations
+        and navigates to the My Registrations page from which the desired registration
+        can be selected.
+        """
+        my_registrations_page = MyRegistrationsPage(driver)
+        my_registrations_page.goto()
+        # Wait for registration cards to load on page
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-node-card]'))
+        )
+        registration_cards = my_registrations_page.registration_cards
+        assert registration_cards
+        return my_registrations_page
+
+    @markers.ember_page
+    def test_accessibility_files_list_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
+        """This test is for checking the accessibility of the Registration File List
+        Page of a submitted registration.  First search through the registration cards
+        on the Submitted tab of the My Registration Page for the registration that has
+        files (searching by registration title).  When you find the desired registration
+        get the registration node id from its link and then use the node id to navigate
+        to the Files List page for this registration.
+        """
+        registration_node = my_registrations_page.get_node_id_by_title(
+            'Registration With Files for A11y Testing'
+        )
+        registration_file_list_page = RegistrationFileListPage(
+            driver, guid=registration_node
+        )
+        registration_file_list_page.goto()
+        assert RegistrationFileListPage(driver, verify=True)
+        # Click the 'Archive of OSF Storage' button to expand the list of files
+        registration_file_list_page.file_list_button.click()
+        # Wait for file list items to load on page
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '[data-test-file-list-item]')
+            )
+        )
+        a11y.run_axe(
+            driver,
+            session,
+            'regfilelist',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    @markers.ember_page
+    def test_accessibility_file_detail_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
+        """This test is for checking the accessibility of the Registration File Detail
+        Page of a submitted registration.  First search through the registration cards
+        on the Submitted tab of the My Registration Page for the registration that has
+        files (searching by registration title).  When you find the desired registration
+        get the registration node id from its link and then use the node id to navigate
+        to the Files List page for this registration.  Then click the first file link
+        to open the File Detail page for that file.
+        """
+        registration_node = my_registrations_page.get_node_id_by_title(
+            'Registration With Files for A11y Testing'
+        )
+        registration_file_list_page = RegistrationFileListPage(
+            driver, guid=registration_node
+        )
+        registration_file_list_page.goto()
+        assert RegistrationFileListPage(driver, verify=True)
+        # Click the 'Archive of OSF Storage' button to expand the list of files
+        registration_file_list_page.file_list_button.click()
+        # Wait for file list items to load on page
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '[data-test-file-list-item]')
+            )
+        )
+        # Click the first file from the list to open the File Detail page in a new tab
+        registration_file_list_page.scroll_into_view(
+            registration_file_list_page.first_file_link.element
+        )
+        registration_file_list_page.first_file_link.click()
+        # Wait for the new tab to open - window count should then = 2
+        WebDriverWait(driver, 5).until(EC.number_of_windows_to_be(2))
+        # Switch focus to the new tab
+        driver.switch_to.window(driver.window_handles[1])
+        assert RegistrationFileDetailPage(driver)
+        # Wait for File Renderer to load
+        WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, 'iframe'))
+        )
+        a11y.run_axe(
+            driver,
+            session,
+            'regfiledet',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 # User with registrations is not setup in production

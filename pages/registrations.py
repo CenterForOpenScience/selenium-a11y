@@ -34,6 +34,7 @@ class MyRegistrationsPage(OSFBasePage):
     draft_registration_cards = GroupLocator(
         By.CSS_SELECTOR, 'div[data-test-draft-registration-card]'
     )
+    registration_cards = GroupLocator(By.CSS_SELECTOR, 'div[data-test-node-card]')
 
     def get_first_draft_id_by_template(self, template_name):
         for draft_card in self.draft_registration_cards:
@@ -44,3 +45,13 @@ class MyRegistrationsPage(OSFBasePage):
                 ).get_attribute('href')
                 draft_id = url.split('drafts/', 1)[1]
                 return draft_id
+
+    def get_node_id_by_title(self, title):
+        for registration_card in self.registration_cards:
+            node_title = registration_card.find_element_by_css_selector(
+                '[data-test-node-title]'
+            )
+            if title in node_title.text:
+                url = node_title.get_attribute('href')
+                node_id = url.split('osf.io/', 1)[1]
+                return node_id
