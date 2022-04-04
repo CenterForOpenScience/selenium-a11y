@@ -65,9 +65,32 @@ class RegistriesDiscoverPage(BaseRegistriesPage):
                 )
 
 
-class RegistrationDetailPage(GuidBasePage):
+class BaseSubmittedRegistrationPage(GuidBasePage):
+    base_url = settings.OSF_HOME
+    url_addition = ''
+
+    @property
+    def url(self):
+        return self.base_url + '/' + self.guid + '/' + self.url_addition
+
+
+class RegistrationDetailPage(BaseSubmittedRegistrationPage):
+    """This is the Registration Overview Page"""
+
     identity = Locator(By.CSS_SELECTOR, '[data-test-registration-title]')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale', settings.LONG_TIMEOUT)
+
+
+class RegistrationFileListPage(BaseSubmittedRegistrationPage):
+    url_addition = 'files'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-file-providers-list]')
+    file_list_button = Locator(By.CSS_SELECTOR, '[data-test-file-list-link]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    first_file_link = Locator(By.CSS_SELECTOR, '[data-analytics-name="Open file"]')
+
+
+class RegistrationFileDetailPage(GuidBasePage):
+    identity = Locator(By.CSS_SELECTOR, '[data-test-file-renderer')
 
 
 class RegistrationAddNewPage(BaseRegistriesPage):
