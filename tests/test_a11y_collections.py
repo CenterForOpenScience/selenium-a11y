@@ -17,8 +17,7 @@ class TestCollectionDiscoverPages:
     """
 
     def providers():
-        """Return all collection providers.
-        """
+        """Return all collection providers."""
         return osf_api.get_providers_list(type='collections')
 
     @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])

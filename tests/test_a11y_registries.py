@@ -770,7 +770,9 @@ class TestDraftRegistrationPages:
             'Pre-Registration in Social Psychology'
         )
         recommended_elements_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='2-recommended-elements',
+            driver,
+            draft_id=draft_id,
+            url_addition='2-recommended-elements',
         )
         recommended_elements_page.goto()
         assert recommended_elements_page.page_heading.text == 'Recommended elements'
@@ -805,7 +807,9 @@ class TestDraftRegistrationPages:
             'Pre-Registration in Social Psychology'
         )
         methods_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='3-b-methods---essential-elements',
+            driver,
+            draft_id=draft_id,
+            url_addition='3-b-methods---essential-elements',
         )
         methods_page.goto()
         assert methods_page.page_heading.text == 'B. Methods - Essential elements'
@@ -1070,7 +1074,9 @@ class TestDraftRegistrationPages:
             'Replication Recipe (Brandt et al., 2013): Post-Completion'
         )
         reporting_replication_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='2-reporting-the-replication',
+            driver,
+            draft_id=draft_id,
+            url_addition='2-reporting-the-replication',
         )
         reporting_replication_page.goto()
         assert (
@@ -1101,7 +1107,9 @@ class TestDraftRegistrationPages:
             'Secondary Data Preregistration'
         )
         data_description_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='2-data-description',
+            driver,
+            draft_id=draft_id,
+            url_addition='2-data-description',
         )
         data_description_page.goto()
         assert data_description_page.page_heading.text == 'Data Description'
@@ -1136,7 +1144,9 @@ class TestDraftRegistrationPages:
             'Secondary Data Preregistration'
         )
         data_knowledge_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='4-knowledge-of-data',
+            driver,
+            draft_id=draft_id,
+            url_addition='4-knowledge-of-data',
         )
         data_knowledge_page.goto()
         assert data_knowledge_page.page_heading.text == 'Knowledge of Data'
@@ -1185,8 +1195,7 @@ class TestBrandedRegistrationsProviders:
     """
 
     def providers():
-        """Return all registration providers.
-        """
+        """Return all registration providers."""
         return osf_api.get_providers_list(type='registrations')
 
     @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])

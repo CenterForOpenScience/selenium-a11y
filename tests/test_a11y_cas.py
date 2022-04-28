@@ -32,7 +32,7 @@ class TestCASLoginPage:
 
 @markers.dont_run_on_prod
 class TestLogin2FAPage:
-    """ This test logs in as a user with 2 Factor Authentication enabled. After entering
+    """This test logs in as a user with 2 Factor Authentication enabled. After entering
     their login credentials as normal the user is then directed to a 2 Factor Authentication
     page.
     """
@@ -53,7 +53,7 @@ class TestLogin2FAPage:
 
 @markers.dont_run_on_prod
 class TestLoginToSPage:
-    """ This test logs in as a user that has not accepted the OSF Terms of Service.  After
+    """This test logs in as a user that has not accepted the OSF Terms of Service.  After
     entering their login credentials as normal the user is then directed to a Terms of
     Service acceptance page.
     """
@@ -124,7 +124,7 @@ class TestUnsupportedInstitutionLoginPage:
 
 
 class TestInstitutionForgotPasswordPage:
-    """ Test the Forgot Password page that is reached from the Unsupported Institution
+    """Test the Forgot Password page that is reached from the Unsupported Institution
     Login Page. This Forgot Password page is different from the other Forgot Password
     page in OSF.
     """
@@ -148,8 +148,7 @@ class TestInstitutionForgotPasswordPage:
 
 class TestGenericCASExceptionPage:
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
-        """ Test the Service not authorized exception page by having an invalid service in the url
-        """
+        """Test the Service not authorized exception page by having an invalid service in the url"""
         driver.get(settings.CAS_DOMAIN + '/login?service=https://noservice.osf.io/')
         assert GenericCASPage(driver, verify=True)
         a11y.run_axe(
@@ -166,7 +165,7 @@ class TestCASOauthAuthorizationPage:
     def test_accessibility(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
     ):
-        """ Test the CAS Oauth Authorization page by building an authorization url using
+        """Test the CAS Oauth Authorization page by building an authorization url using
         the required parameters and then navigating to that url. No need to complete the
         authorization process since we just want to evaluate the authorization page for
         accessibility compliance.

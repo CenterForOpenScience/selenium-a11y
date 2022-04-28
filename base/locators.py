@@ -128,8 +128,8 @@ class BaseLocator:
 
     def get_element(self, driver, attribute_name):
         """Must be implemented by every Locator subclass. Defines how a locator is used within
-         a page (or element). Ultimately is a locator's return value when used in the PageObject model.
-         """
+        a page (or element). Ultimately is a locator's return value when used in the PageObject model.
+        """
         raise NotImplementedError
 
 

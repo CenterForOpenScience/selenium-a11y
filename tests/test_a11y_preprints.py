@@ -173,8 +173,7 @@ class TestBrandedProviders:
     """
 
     def providers():
-        """Return all preprint providers.
-        """
+        """Return all preprint providers."""
         return osf_api.get_providers_list()
 
     @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])

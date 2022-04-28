@@ -150,14 +150,12 @@ def login(driver, user=settings.USER_ONE, password=settings.USER_ONE_PASSWORD):
 
 
 def safe_login(driver, user=settings.USER_ONE, password=settings.USER_ONE_PASSWORD):
-    """Raise a LoginError if login fails.
-    """
+    """Raise a LoginError if login fails."""
     login(driver, user=user, password=password)
     if not OSFBasePage(driver).is_logged_in():
         raise LoginError('Login failed')
 
 
 def logout(driver):
-    """Log the user out.
-    """
+    """Log the user out."""
     driver.get(settings.OSF_HOME + '/logout/')

@@ -10,8 +10,7 @@ from pages.base import GuidBasePage, OSFBasePage
 
 
 class BasePreprintPage(OSFBasePage):
-    """The base page from which all preprint pages inherit.
-    """
+    """The base page from which all preprint pages inherit."""
 
     base_url = settings.OSF_HOME + '/preprints/'
     url_addition = ''
@@ -28,8 +27,7 @@ class BasePreprintPage(OSFBasePage):
 
     @property
     def url(self):
-        """Set the URL based on the provider domain.
-        """
+        """Set the URL based on the provider domain."""
         if self.provider and self.provider_id != 'osf':
             if self.provider['attributes']['domain_redirect_enabled']:
                 return urljoin(self.provider_domain, self.url_addition)
@@ -181,8 +179,7 @@ class ReviewsDashboardPage(OSFBasePage):
 
 
 class BaseReviewsPage(OSFBasePage):
-    """The base page from which all preprint provider review pages inherit.
-    """
+    """The base page from which all preprint provider review pages inherit."""
 
     base_url = settings.OSF_HOME + '/reviews/preprints/'
     url_addition = ''
@@ -199,8 +196,7 @@ class BaseReviewsPage(OSFBasePage):
 
     @property
     def url(self):
-        """Set the URL based on the provider domain.
-        """
+        """Set the URL based on the provider domain."""
         return urljoin(self.base_url, self.provider_id) + '/' + self.url_addition
 
     def verify(self):

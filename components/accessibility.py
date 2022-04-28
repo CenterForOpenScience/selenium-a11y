@@ -15,17 +15,17 @@ class ApplyA11yRules:
         terminal_errors=True,
         exclude_best_practice=False,
     ):
-        """ Use the axe testing engine to perform accessibility checks on a web page
-            Parameters:
-            - page_name - string - unique identifier for the web page being tested
-                - used as part of file name when writing results files
-            - write_files - boolean - used to determine whether or not to write results
-                files - default = True
-            - terminal_errors - boolean - used to determine whether or not to output
-                errors to terminal window - default = True
-            - exclude_best_practice - boolean - used to determine whether or not to
-                exclude the Best Practice rule set when performing accessibility check.
-                - default = False
+        """Use the axe testing engine to perform accessibility checks on a web page
+        Parameters:
+        - page_name - string - unique identifier for the web page being tested
+            - used as part of file name when writing results files
+        - write_files - boolean - used to determine whether or not to write results
+            files - default = True
+        - terminal_errors - boolean - used to determine whether or not to output
+            errors to terminal window - default = True
+        - exclude_best_practice - boolean - used to determine whether or not to
+            exclude the Best Practice rule set when performing accessibility check.
+            - default = False
         """
         axe = Axe(driver)
         # Inject axe-core javascript into page.
@@ -76,7 +76,7 @@ class ApplyA11yRules:
 
 
 def write_results_files(axe, results, page_name):
-    """ Write results to output .json files (3 separate files for passes, violations,
+    """Write results to output .json files (3 separate files for passes, violations,
     and incomplete) and also convert each .json file to a .csv file.  So there should
     be 6 separate files created for each execution of axe.  We are using the Panda
     library to convert .json to .csv files.

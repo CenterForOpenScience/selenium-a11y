@@ -7,7 +7,6 @@ class HttpError(PageException):
 
 
 class LoginError(PageException):
-    """Error used when driver is in an unexpected login state.
-    """
+    """Error used when driver is in an unexpected login state."""
 
     pass
