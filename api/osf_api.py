@@ -121,8 +121,7 @@ def delete_all_user_projects(session, user=None):
 
 
 def delete_project(session, guid, user=None):
-    """Delete a single project. Simply pass in the guid
-    """
+    """Delete a single project. Simply pass in the guid"""
     if not user:
         user = current_user(session)
     nodes_url = user.relationships.nodes['links']['related']['href']
@@ -135,8 +134,7 @@ def delete_project(session, guid, user=None):
 
 
 def create_custom_collection(session):
-    """Create a new custom collection. You can modify the title of the collection here as well.
-    """
+    """Create a new custom collection. You can modify the title of the collection here as well."""
     collections_url = '{}/v2/collections/'.format(session.api_base_url)
 
     payload = {
@@ -147,8 +145,7 @@ def create_custom_collection(session):
 
 
 def delete_custom_collections(session):
-    """Delete all custom collections for the current user.
-    """
+    """Delete all custom collections for the current user."""
     collections_url = '{}/v2/collections/'.format(session.api_base_url)
     data = session.get(collections_url)
 
@@ -161,8 +158,7 @@ def delete_custom_collections(session):
 # TODO rename this to get_node_providers, and create new function that actually IS get_node_addons -
 #  note, this is confusing, talk to BrianG before we change this
 def get_node_addons(session, node_id):
-    """Return a list of the names of all the addons connected to the given node.
-    """
+    """Return a list of the names of all the addons connected to the given node."""
     url = '/v2/nodes/{}/files/'.format(node_id)
     data = session.get(url, query_parameters={'page[size]': 20})
     providers = []
@@ -222,8 +218,7 @@ def upload_fake_file(
 
 
 def delete_addon_files(session, provider, current_browser, guid):
-    """Delete all files for the given addon.
-    """
+    """Delete all files for the given addon."""
     files_url = '{}/v2/nodes/{}/files/{}/'.format(session.api_base_url, guid, provider)
 
     data = session.get(url=files_url, query_parameters={'page[size]': 20})
@@ -245,8 +240,7 @@ def delete_file(session, delete_url):
 
 
 def get_providers_list(session=None, type='preprints'):
-    """Return the providers list data. The default is the preprint providers list.
-    """
+    """Return the providers list data. The default is the preprint providers list."""
     if not session:
         session = get_default_session()
     url = '/v2/providers/' + type
@@ -265,14 +259,13 @@ def get_provider(session=None, type='registrations', provider_id='osf'):
 
 
 def get_provider_submission_status(provider):
-    """Return the boolean attribute `allow_submissions` from the dictionary object (provider)
-    """
+    """Return the boolean attribute `allow_submissions` from the dictionary object (provider)"""
     return provider['attributes']['allow_submissions']
 
 
 def get_providers_total(provider_name, session):
-    """ Return the total number of preprints for a given service provider.
-        Note: Reformat provider names to all lowercase and remove white spaces.
+    """Return the total number of preprints for a given service provider.
+    Note: Reformat provider names to all lowercase and remove white spaces.
     """
     provider_url = '/v2/providers/preprints/{}/preprints/'.format(
         provider_name.lower().replace(' ', '')
@@ -281,7 +274,10 @@ def get_providers_total(provider_name, session):
 
 
 def connect_provider_root_to_node(
-    session, provider, external_account_id, node_id=settings.PREFERRED_NODE,
+    session,
+    provider,
+    external_account_id,
+    node_id=settings.PREFERRED_NODE,
 ):
     """Initialize the node<=>addon connection, add the given external_account_id, and configure it
     to connect to the root folder of the provider."""

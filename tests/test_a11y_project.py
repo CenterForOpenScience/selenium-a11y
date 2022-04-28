@@ -31,7 +31,7 @@ class TestProjectPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Project Overview page test we are creating a new dummy test project
+        """For the Project Overview page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """
@@ -61,7 +61,7 @@ class TestFilesPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Project Files page test we are creating a new dummy test project and
+        """For the Project Files page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production, then
         we are using a Preferred Node from the environment settings file.
         """
@@ -89,7 +89,7 @@ class TestFileViewPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the File View page test we are creating a new dummy test project and
+        """For the File View page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """
@@ -138,7 +138,7 @@ class TestWikiPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Wiki page test we are creating a new dummy test project and then
+        """For the Wiki page test we are creating a new dummy test project and then
         deleting it after we have finished unless we are running in Production, then
         we are using a Preferred Node from the environment settings file.
         """
@@ -165,7 +165,7 @@ class TestAnalyticsPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Analytics page test we are creating a new dummy test project and
+        """For the Analytics page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """
@@ -196,7 +196,7 @@ class TestRegistrationsPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Registrations page test we are creating a new dummy test project
+        """For the Registrations page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """
@@ -225,7 +225,7 @@ class TestContributorsPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Contributors page test we are creating a new dummy test project
+        """For the Contributors page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """
@@ -252,7 +252,7 @@ class TestAddonsPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Add-ons page test we are creating a new dummy test project and then
+        """For the Add-ons page test we are creating a new dummy test project and then
         deleting it after we have finished unless we are running in Production, then we
         are using a Preferred Node from the environment settings file.
         """
@@ -279,7 +279,7 @@ class TestSettingsPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Settings page test we are creating a new dummy test project and
+        """For the Settings page test we are creating a new dummy test project and
         then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """
@@ -308,7 +308,7 @@ class TestForksPage:
         exclude_best_practice,
         must_be_logged_in,
     ):
-        """ For the Forks page test we are creating a new dummy test project and
+        """For the Forks page test we are creating a new dummy test project and
         then deleting it after we have finished - also deleting the new fork that
         is created
         """
@@ -346,7 +346,7 @@ class TestRequestAccessPage:
         exclude_best_practice,
         must_be_logged_in_as_user_two,
     ):
-        """ For the Request Access page test we are creating a new dummy test project
+        """For the Request Access page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """

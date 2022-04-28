@@ -5,7 +5,7 @@ class EmailAccess:
     def get_latest_email_body_by_imap(
         imap_host, email_address, password, mailbox, search_key, search_value
     ):
-        """ This method uses Internet Message Access Protocol (IMAP) to login to an IMAP
+        """This method uses Internet Message Access Protocol (IMAP) to login to an IMAP
         enabled email address and retrieve the body of the latest email that matches the
         provided search criteria.
             Parameters:
@@ -37,7 +37,7 @@ class EmailAccess:
         return email_body
 
     def get_count_of_unseen_emails_by_imap(imap_host, email_address, password):
-        """ This method uses Internet Message Access Protocol (IMAP) to login to an IMAP
+        """This method uses Internet Message Access Protocol (IMAP) to login to an IMAP
         enabled email address and retrieve the count of unseen emails in the account inbox.
             Parameters:
             - imap_host: host imap email server
@@ -59,12 +59,12 @@ class EmailAccess:
 
 
 def imap_connect_and_login(imap_host, email_address, password):
-    """ Function to make SSL connection to IMP host and login with the given credentials
-        Parameters:
-        - imap_host: host imap email server
-        - email_address: IMAP enabled email address
-        - password: password for the IMAP enabled email address
-        Returns IMAP connected object
+    """Function to make SSL connection to IMP host and login with the given credentials
+    Parameters:
+    - imap_host: host imap email server
+    - email_address: IMAP enabled email address
+    - password: password for the IMAP enabled email address
+    Returns IMAP connected object
     """
     imap = imaplib.IMAP4_SSL(imap_host)
     imap.login(email_address, password)
@@ -72,16 +72,16 @@ def imap_connect_and_login(imap_host, email_address, password):
 
 
 def imap_close(imap):
-    """ Function that closes the current email mailbox and logs out of the email account
-        Parameters:
-        - imap: IMAP connected object
+    """Function that closes the current email mailbox and logs out of the email account
+    Parameters:
+    - imap: IMAP connected object
     """
     imap.close()
     imap.logout()
 
 
 def search(key, value, imap):
-    """ Function to search through emails for a given key value pair and return a
+    """Function to search through emails for a given key value pair and return a
     filtered email list.
     EX: result_uids = search('FROM', 'openscienceframework-noreply@osf.io', con)
         Parameters:

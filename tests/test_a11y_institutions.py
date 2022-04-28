@@ -30,13 +30,12 @@ class TestInstitutionsLandingPage:
 
 @markers.legacy_page
 class TestBrandedInstitutionPages:
-    """ Test the Branded Institution Page for each institution in the environment. Use the osf api to get
+    """Test the Branded Institution Page for each institution in the environment. Use the osf api to get
     the list of institution ids and then load each branded iinstitution page and run the axe test engine.
     """
 
     def institutions():
-        """ Return all institution ids.
-        """
+        """Return all institution ids."""
         return osf_api.get_all_institutions(data_type='ids')
 
     @pytest.fixture(params=institutions())
@@ -74,7 +73,7 @@ class TestInstitutionAdminDashboardPage:
     def test_accessibility(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
     ):
-        """ Test using the COS admin dahsboard page - user must already be setup as an admin for the
+        """Test using the COS admin dahsboard page - user must already be setup as an admin for the
         COS institution in each environment through the OSF admin app.
         """
         dashboard_page = InstitutionAdminDashboardPage(driver, institution_id='cos')

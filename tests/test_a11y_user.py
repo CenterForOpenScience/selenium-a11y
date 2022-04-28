@@ -48,8 +48,7 @@ class TestUserSettingsProfileInformationPage:
         exclude_best_practice,
         profile_information_page,
     ):
-        """ Test Name Tab (default) of User Settings Profile Information Page
-        """
+        """Test Name Tab (default) of User Settings Profile Information Page"""
         assert ProfileInformationPage(driver, verify=True)
         a11y.run_axe(
             driver,
@@ -67,8 +66,7 @@ class TestUserSettingsProfileInformationPage:
         exclude_best_practice,
         profile_information_page,
     ):
-        """ Test Social Tab of User Settings Profile Information Page
-        """
+        """Test Social Tab of User Settings Profile Information Page"""
         # Running Axe in the previous step leaves you at the bottom of the page, so we
         # need to scroll back up to the Social tab link before we can click it and then
         # run Axe again.
@@ -93,8 +91,7 @@ class TestUserSettingsProfileInformationPage:
         exclude_best_practice,
         profile_information_page,
     ):
-        """ Test Employment Tab of User Settings Profile Information Page
-        """
+        """Test Employment Tab of User Settings Profile Information Page"""
         # Running Axe in the previous step leaves you at the bottom of the page, so we
         # need to scroll back up to the Employment tab link before we can click it and then
         # run Axe again.
@@ -119,8 +116,7 @@ class TestUserSettingsProfileInformationPage:
         exclude_best_practice,
         profile_information_page,
     ):
-        """ Test Education Tab of User Settings Profile Information Page
-        """
+        """Test Education Tab of User Settings Profile Information Page"""
         # Running Axe in the previous step leaves you at the bottom of the page, so we
         # need to scroll back up to the Education tab link before we can click it and then
         # run Axe again.

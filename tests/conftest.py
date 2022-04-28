@@ -78,8 +78,8 @@ def delete_user_projects_at_setup(session):
 @pytest.fixture
 def default_project(session):
     """Creates a new project through the api and returns it. Deletes the project at the end of the test run.
-     If PREFERRED_NODE is set, returns the APIDetail of preferred node.
-     """
+    If PREFERRED_NODE is set, returns the APIDetail of preferred node.
+    """
     if settings.PREFERRED_NODE:
         yield osf_api.get_node(session)
     else:
@@ -115,8 +115,7 @@ def project_with_file(session, default_project):
 
 
 def pytest_addoption(parser):
-    """Accept input parameters when running pytest from command line
-    """
+    """Accept input parameters when running pytest from command line"""
     # Flag to determine whether to write accessibility output files
     parser.addoption('--write_files', action='store')
     # Flag to determine whether to exclude Best Practice rules from accessibility check

@@ -8,8 +8,7 @@ from pages.base import OSFBasePage
 
 
 class BaseCollectionPage(OSFBasePage):
-    """The base page from which all collection pages inherit.
-    """
+    """The base page from which all collection pages inherit."""
 
     base_url = settings.OSF_HOME + '/collections/'
     url_addition = ''
@@ -24,8 +23,7 @@ class BaseCollectionPage(OSFBasePage):
 
     @property
     def url(self):
-        """Set the URL based on the provider domain.
-        """
+        """Set the URL based on the provider domain."""
         return urljoin(self.base_url, self.provider_id) + '/' + self.url_addition
 
 

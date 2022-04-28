@@ -24,8 +24,7 @@ class BaseRegistriesPage(OSFBasePage):
 
     @property
     def url(self):
-        """Set the URL based on the provider
-        """
+        """Set the URL based on the provider"""
         if self.provider and self.provider_id != 'osf':
             return urljoin(self.base_url, self.provider_id) + '/' + self.url_addition
         return self.base_url + self.url_addition
@@ -170,5 +169,7 @@ class DraftRegistrationGenericPage(BaseRegistrationDraftPage):
 class DraftRegistrationReviewPage(BaseRegistrationDraftPage):
     url_addition = 'review'
     identity = Locator(
-        By.CSS_SELECTOR, '[data-test-toggle-anchor-nav-button]', settings.LONG_TIMEOUT,
+        By.CSS_SELECTOR,
+        '[data-test-toggle-anchor-nav-button]',
+        settings.LONG_TIMEOUT,
     )

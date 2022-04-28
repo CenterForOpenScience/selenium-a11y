@@ -149,7 +149,9 @@ class TestResetPasswordPage:
         while email_count == 0:
             # Retrieve count of UNSEEN email messages from inbox
             email_count = EmailAccess.get_count_of_unseen_emails_by_imap(
-                settings.IMAP_HOST, settings.IMAP_EMAIL, settings.IMAP_EMAIL_PASSWORD,
+                settings.IMAP_HOST,
+                settings.IMAP_EMAIL,
+                settings.IMAP_EMAIL_PASSWORD,
             )
             # To prevent an endless loop waiting for the email
             loop_counter += 1
