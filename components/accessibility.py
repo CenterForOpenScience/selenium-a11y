@@ -33,23 +33,17 @@ class ApplyA11yRules:
         # Run axe accessibility checks.
         if exclude_best_practice:
             # When exclude_best_practice parameter is set to True, then we want to run
-            # axe with only the WCAG rule sets.  Also excluding element with id 'search'
-            # which is a bit of a hack since the python version of axe that we are using
-            # is outdated and is failing on the search input box on the Registry Discover
-            # pages (including all of the branded registry providers) since the search
-            # input box has an explicit label that has hidden style attributes. The
-            # element does not violate the missing form element label rule in more
-            # up-to-date versions of axe-core like the browser extension tool.
+            # axe with only the WCAG rule sets.
             results = axe.run(
-                context={
-                    'exclude': [
-                        ['#search'],
-                        ['.text-center'],
-                        ['._StateText_1iudhh'],
-                        ['._UpdateText_1u9k9o'],
-                        ['#oneTimePassword'],
-                    ]
-                },
+                # context={
+                #     'exclude': [
+                #         ['#search'],
+                #         ['.text-center'],
+                #         ['._StateText_1iudhh'],
+                #         ['._UpdateText_1u9k9o'],
+                #         ['#oneTimePassword'],
+                #     ]
+                # },
                 options={
                     'runOnly': {
                         'type': 'tag',

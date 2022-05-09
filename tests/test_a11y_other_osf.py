@@ -1,6 +1,9 @@
 import re
 
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 import markers
 import settings
@@ -21,6 +24,9 @@ class TestOSFHomePage:
         landing_page = LandingPage(driver)
         landing_page.goto()
         assert LandingPage(driver, verify=True)
+        # Need to wait for page to fully load (especially backgrounds and css styling)
+        # in order to avoid some false color contrast failures.
+        landing_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -38,6 +44,12 @@ class TestDashboardPage:
         dashboard_page = DashboardPage(driver)
         dashboard_page.goto()
         assert DashboardPage(driver, verify=True)
+        # Need to wait for institutions carousel to load
+        WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, '[data-test-institution-carousel-item]')
+            )
+        )
         a11y.run_axe(
             driver,
             session,

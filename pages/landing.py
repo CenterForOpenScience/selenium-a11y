@@ -10,6 +10,8 @@ from pages.base import OSFBasePage
 class LandingPage(OSFBasePage):
     identity = Locator(By.CSS_SELECTOR, '._heroHeader_1qc5dv', settings.LONG_TIMEOUT)
 
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
     # Components
     navbar = ComponentLocator(EmberNavbar)
     sign_up_form = ComponentLocator(SignUpForm)
