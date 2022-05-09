@@ -10,7 +10,7 @@ environs==3.0.0
 faker==0.9.0
 pre-commit==1.18.3
 ipdb==0.12.2
-axe-selenium-python==2.1.6
+git+https://github.com/DougCorell/axe-selenium-python.git@fix/update-axe-core-441#egg=axe-selenium-python
 pandas==1.2.4
 isort==5.9.3
 black==22.3.0
