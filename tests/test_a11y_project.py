@@ -50,7 +50,7 @@ class TestProjectPage:
         )
 
 
-@markers.legacy_page
+@markers.ember_page
 class TestFilesPage:
     def test_accessibility(
         self,
@@ -67,7 +67,10 @@ class TestFilesPage:
         """
         files_page = FilesPage(driver, guid=project_with_file.id)
         files_page.goto()
-        files_page.loading_indicator.here_then_gone()
+        # Wait until at least one of the files in the list is present
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-select-file]'))
+        )
         assert FilesPage(driver, verify=True)
         a11y.run_axe(
             driver,
@@ -78,7 +81,7 @@ class TestFilesPage:
         )
 
 
-@markers.legacy_page
+@markers.ember_page
 class TestFileViewPage:
     def test_accessibility(
         self,
@@ -95,28 +98,23 @@ class TestFileViewPage:
         """
         files_page = FilesPage(driver, guid=project_with_file.id)
         files_page.goto()
-        files_page.loading_indicator.here_then_gone()
-        # Wait until fangorn has loaded at least one of the files in the tree
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '#tb-tbody div[data-level="3"]')
-            )
+        # Wait until at least one of the files in the list is present
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-select-file]'))
         )
-        WebDriverWait(driver, 10).until(
-            EC.invisibility_of_element_located(
-                (By.CSS_SELECTOR, '#tb-tbody .fa-refresh')
-            )
-        )
-        for file in files_page.fangorn_rows:
+        for file in files_page.file_rows:
             # open the first text file you find
             if '.txt' in file.text:
                 file.click()
                 break
-        file_view_page = FileViewPage(driver, verify=True)
-        # wait for file navigation menu and iframe to load before running axe
-        file_view_page.file_nav_loading_indicator.here_then_gone()
+        # Wait for the new tab to open - window count should then = 2
+        WebDriverWait(driver, 5).until(EC.number_of_windows_to_be(2))
+        # Switch focus to the new tab
+        driver.switch_to.window(driver.window_handles[1])
+        assert FileViewPage(driver, verify=True)
+        # wait for iframe to load before running axe
         WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.ID, 'mfrIframe'))
+            EC.visibility_of_element_located((By.CSS_SELECTOR, '#mfrIframeParent'))
         )
         a11y.run_axe(
             driver,

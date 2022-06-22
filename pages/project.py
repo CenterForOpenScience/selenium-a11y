@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 
 import settings
-from api import osf_api
 from base.locators import ComponentLocator, GroupLocator, Locator
 from components.dashboard import (
     CreateCollectionModal,
@@ -98,33 +97,14 @@ class ForksPage(GuidBasePage):
 class FilesPage(GuidBasePage):
     base_url = settings.OSF_HOME + '/{guid}/files/'
 
-    identity = Locator(By.CSS_SELECTOR, '#treeGrid')
-    session = osf_api.get_default_session()
-    fangorn_rows = GroupLocator(By.CSS_SELECTOR, '#tb-tbody .fg-file-links')
-    fangorn_addons = GroupLocator(By.CSS_SELECTOR, "div[data-level='2']")
-    file_action_buttons = GroupLocator(
-        By.CSS_SELECTOR, '#folderRow .fangorn-toolbar-icon'
-    )
-    delete_modal = Locator(By.CSS_SELECTOR, 'span.btn:nth-child(1)')
-    loading_indicator = Locator(
-        By.CSS_SELECTOR, '#treeGrid > .ball-scale', settings.LONG_TIMEOUT
-    )
+    identity = Locator(By.CSS_SELECTOR, '[data-test-file-search]')
 
-
-"""Note that the class FilesPage in pages/project.py is used for test_project_files.py.
-The class FileWidget in components/project.py is used for tests test_file_widget_loads
-and test_addon_files_load in test_project.py.
-In the future, we may want to put all files tests in one place."""
+    file_rows = GroupLocator(By.CSS_SELECTOR, 'span[data-test-file-name]')
 
 
 class FileViewPage(GuidBasePage):
 
-    identity = Locator(By.ID, 'fileTitleEditable', settings.LONG_TIMEOUT)
-    file_nav_loading_indicator = Locator(
-        By.CSS_SELECTOR,
-        '#file-navigation > div > div > #grid > div > .ball-scale',
-        settings.LONG_TIMEOUT,
-    )
+    identity = Locator(By.CSS_SELECTOR, 'h2[data-test-filename]')
 
 
 class WikiPage(GuidBasePage):
