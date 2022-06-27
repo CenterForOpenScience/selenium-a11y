@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 import markers
+import settings
 from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
 from pages.project import (
@@ -196,11 +197,33 @@ class TestRegistrationsPage:
     ):
         """For the Registrations page test we are creating a new dummy test project
         and then deleting it after we have finished unless we are running in Production,
-        then we are using a Preferred Node from the environment settings file.
+        then we are using a Preferred Node from the environment settings file.  Also
+        if not running in Production, then we are creating a draft registration that
+        will appear on the Draft Registrations tab of the Project Registrations page.
         """
         registrations_page = RegistrationsPage(driver, guid=default_project.id)
         registrations_page.goto()
         assert RegistrationsPage(driver, verify=True)
+        if not settings.PRODUCTION:
+            # First get the list of allowed registration schemas for OSF in a name and
+            # id pair list. Then loop through the list to pull out just the id for the
+            # Open-Ended Registration schema. We'll need this schema id to create the
+            # draft.
+            schema_list = osf_api.get_registration_schemas_for_provider(
+                provider_id='osf'
+            )
+            for schema in schema_list:
+                if schema[0] == 'Open-Ended Registration':
+                    schema_id = schema[1]
+                    break
+            # Use the api to create a draft registration for the temporary project
+            osf_api.create_draft_registration(
+                session, node_id=default_project.id, schema_id=schema_id
+            )
+            # Reload the page so that the draft is visible on the Drafts tab
+            registrations_page.reload()
+            registrations_page.draft_registrations_tab.click()
+            registrations_page.draft_registration_card.click()
         # wait until Registration cards are loaded if there are any
         registrations_page.first_registration_title.present()
         a11y.run_axe(

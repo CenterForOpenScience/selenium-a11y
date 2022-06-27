@@ -118,6 +118,10 @@ class RegistrationsPage(GuidBasePage):
 
     identity = Locator(By.CSS_SELECTOR, '[data-test-registrations-container]')
     first_registration_title = Locator(By.CSS_SELECTOR, '[data-test-node-title]')
+    draft_registrations_tab = Locator(By.CSS_SELECTOR, '[data-test-drafts-tab]')
+    draft_registration_card = Locator(
+        By.CSS_SELECTOR, '[data-test-draft-registration-card]'
+    )
 
 
 class ContributorsPage(GuidBasePage):
