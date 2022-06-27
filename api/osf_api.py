@@ -330,3 +330,43 @@ def connect_provider_root_to_node(
         raw_body=json.dumps(raw_payload),
     )
     return addon
+
+
+def get_registration_schemas_for_provider(session=None, provider_id='osf'):
+    """Returns a list of allowed registration schemas for an individual provider.  The
+    list will be a paired list of schema names and ids.  The The default provider_id is
+    'osf'.
+    """
+    if not session:
+        session = get_default_session()
+    url = 'v2/providers/registrations/{}/schemas/'.format(provider_id)
+    # NOTE: Using '50' as the page size query parameter here. We don't actually have 50
+    # total registration schemas. It's under 30 at this time, but using 50 here gives us
+    # plenty of room to add more schemas without having to update this function.
+    data = session.get(url, query_parameters={'page[size]': 50})['data']
+    if data is None:
+        return None
+    return [[schema['attributes']['name'], schema['id']] for schema in data]
+
+
+def create_draft_registration(session, node_id=None, schema_id=None):
+    """Create a new draft registration for a given project node."""
+    if not session:
+        session = get_default_session()
+    url = '/v2/nodes/{}/draft_registrations/'.format(node_id)
+    raw_payload = {
+        'data': {
+            'type': 'draft_registrations',
+            'relationships': {
+                'registration_schema': {
+                    'data': {
+                        'id': schema_id,
+                        'type': 'registration-schemas',
+                    }
+                }
+            },
+        },
+    }
+    session.post(
+        url=url, item_type='draft_registrations', raw_body=json.dumps(raw_payload)
+    )
