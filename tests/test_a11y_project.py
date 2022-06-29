@@ -97,33 +97,42 @@ class TestFileViewPage:
         then deleting it after we have finished unless we are running in Production,
         then we are using a Preferred Node from the environment settings file.
         """
-        files_page = FilesPage(driver, guid=project_with_file.id)
-        files_page.goto()
-        # Wait until at least one of the files in the list is present
-        WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-select-file]'))
-        )
-        for file in files_page.file_rows:
-            # open the first text file you find
-            if '.txt' in file.text:
-                file.click()
-                break
-        # Wait for the new tab to open - window count should then = 2
-        WebDriverWait(driver, 5).until(EC.number_of_windows_to_be(2))
-        # Switch focus to the new tab
-        driver.switch_to.window(driver.window_handles[1])
-        assert FileViewPage(driver, verify=True)
-        # wait for iframe to load before running axe
-        WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, '#mfrIframeParent'))
-        )
-        a11y.run_axe(
-            driver,
-            session,
-            'fileView',
-            write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
-        )
+        try:
+            files_page = FilesPage(driver, guid=project_with_file.id)
+            files_page.goto()
+            # Wait until at least one of the files in the list is present
+            WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, '[data-test-select-file]')
+                )
+            )
+            for file in files_page.file_rows:
+                # open the first text file you find
+                if '.txt' in file.text:
+                    file.click()
+                    break
+            # Wait for the new tab to open - window count should then = 2
+            WebDriverWait(driver, 5).until(EC.number_of_windows_to_be(2))
+            # Switch focus to the new tab
+            driver.switch_to.window(driver.window_handles[1])
+            assert FileViewPage(driver, verify=True)
+            # wait for iframe to load before running axe
+            WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, '#mfrIframeParent'))
+            )
+            a11y.run_axe(
+                driver,
+                session,
+                'fileView',
+                write_files=write_files,
+                exclude_best_practice=exclude_best_practice,
+            )
+        finally:
+            # Close the second tab that was opened. We do not want subsequent tests to
+            # use the second tab.
+            driver.close()
+            # Switch focus back to the first tab
+            driver.switch_to.window(driver.window_handles[0])
 
 
 @markers.legacy_page
