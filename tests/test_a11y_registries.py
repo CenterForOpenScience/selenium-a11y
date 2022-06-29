@@ -239,27 +239,34 @@ class TestSubmittedRegistrationPages:
                 (By.CSS_SELECTOR, '[data-test-file-list-item]')
             )
         )
-        # Click the first file from the list to open the File Detail page in a new tab
-        registration_file_list_page.scroll_into_view(
-            registration_file_list_page.first_file_link.element
-        )
-        registration_file_list_page.first_file_link.click()
-        # Wait for the new tab to open - window count should then = 2
-        WebDriverWait(driver, 5).until(EC.number_of_windows_to_be(2))
-        # Switch focus to the new tab
-        driver.switch_to.window(driver.window_handles[1])
-        assert RegistrationFileDetailPage(driver)
-        # Wait for File Renderer to load
-        WebDriverWait(driver, 5).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, 'iframe'))
-        )
-        a11y.run_axe(
-            driver,
-            session,
-            'regfiledet',
-            write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
-        )
+        try:
+            # Click the first file from the list to open the File Detail page in a new tab
+            registration_file_list_page.scroll_into_view(
+                registration_file_list_page.first_file_link.element
+            )
+            registration_file_list_page.first_file_link.click()
+            # Wait for the new tab to open - window count should then = 2
+            WebDriverWait(driver, 5).until(EC.number_of_windows_to_be(2))
+            # Switch focus to the new tab
+            driver.switch_to.window(driver.window_handles[1])
+            assert RegistrationFileDetailPage(driver)
+            # Wait for File Renderer to load
+            WebDriverWait(driver, 5).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, 'iframe'))
+            )
+            a11y.run_axe(
+                driver,
+                session,
+                'regfiledet',
+                write_files=write_files,
+                exclude_best_practice=exclude_best_practice,
+            )
+        finally:
+            # Close the second tab that was opened. We do not want subsequent tests to
+            # use the second tab.
+            driver.close()
+            # Switch focus back to the first tab
+            driver.switch_to.window(driver.window_handles[0])
 
 
 # User with registrations is not setup in production
