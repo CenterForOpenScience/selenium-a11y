@@ -18,6 +18,7 @@ from pages.registries import (
     RegistrationDetailPage,
     RegistrationFileDetailPage,
     RegistrationFileListPage,
+    RegistrationResourcesPage,
     RegistriesDiscoverPage,
     RegistriesLandingPage,
     RegistriesModerationModeratorsPage,
@@ -168,6 +169,10 @@ class TestSubmittedRegistrationPages:
         """
         my_registrations_page = MyRegistrationsPage(driver)
         my_registrations_page.goto()
+        # Set the cookie that prevents the New Feature popover from appearing on
+        # submitted registration pages since this popover can get in the way of other
+        # actions.
+        driver.add_cookie({'name': 'outputFeaturePopover', 'value': '1'})
         # Wait for registration cards to load on page
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-node-card]'))
@@ -198,7 +203,7 @@ class TestSubmittedRegistrationPages:
         # Click the 'Archive of OSF Storage' button to expand the list of files
         registration_file_list_page.file_list_button.click()
         # Wait for file list items to load on page
-        WebDriverWait(driver, 5).until(
+        WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-file-list-item]')
             )
@@ -234,7 +239,7 @@ class TestSubmittedRegistrationPages:
         # Click the 'Archive of OSF Storage' button to expand the list of files
         registration_file_list_page.file_list_button.click()
         # Wait for file list items to load on page
-        WebDriverWait(driver, 5).until(
+        WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-test-file-list-item]')
             )
@@ -267,6 +272,39 @@ class TestSubmittedRegistrationPages:
             driver.close()
             # Switch focus back to the first tab
             driver.switch_to.window(driver.window_handles[0])
+
+    @markers.ember_page
+    def test_accessibility_resources_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
+        """This test is for checking the accessibility of the Registration Resources
+        Page of a submitted registration.  First search through the registration cards
+        on the Submitted tab of the My Registration Page for the registration that has
+        resources (searching by registration title).  When you find the desired
+        registration get the registration node id from its link and then use the node
+        id to navigate to the Resources page for this registration.
+        """
+        registration_node = my_registrations_page.get_node_id_by_title(
+            'Registration With Files for A11y Testing'
+        )
+        registration_resources_page = RegistrationResourcesPage(
+            driver, guid=registration_node
+        )
+        registration_resources_page.goto()
+        assert RegistrationResourcesPage(driver, verify=True)
+        # Wait for first resource card to load on page
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '[data-test-resource-card-type]')
+            )
+        )
+        a11y.run_axe(
+            driver,
+            session,
+            'regresources',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
 
 
 # User with registrations is not setup in production
