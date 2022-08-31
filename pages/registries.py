@@ -92,6 +92,11 @@ class RegistrationFileDetailPage(GuidBasePage):
     identity = Locator(By.CSS_SELECTOR, '[data-test-file-renderer')
 
 
+class RegistrationResourcesPage(BaseSubmittedRegistrationPage):
+    url_addition = 'resources'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-add-resource-section]')
+
+
 class RegistrationAddNewPage(BaseRegistriesPage):
     url_addition = 'new'
     identity = Locator(
