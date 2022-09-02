@@ -17,6 +17,12 @@ on:
         description: 'Testing Environment'
         required: true
         default: 'stage1'
+        type: choice
+        options:
+        - test
+        - stage1
+        - stage2
+        - stage3
 
 env:
   DRIVER: "Remote"
