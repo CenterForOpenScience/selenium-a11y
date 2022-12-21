@@ -7,18 +7,31 @@ from selenium.webdriver.support.ui import WebDriverWait
 import markers
 from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
-from pages.collections import CollectionDiscoverPage, CollectionSubmitPage
+from pages.collections import (
+    CollectionDiscoverPage,
+    CollectionModerationAcceptedPage,
+    CollectionModerationModeratorsPage,
+    CollectionModerationPendingPage,
+    CollectionModerationRejectedPage,
+    CollectionModerationRemovedPage,
+    CollectionModerationSettingsPage,
+    CollectionSubmitPage,
+)
 
 
 @markers.ember_page
 class TestCollectionDiscoverPages:
-    """This test will load the Discover page for each Collection Provider that exists in
-    an environment.
+    """This test will load the Discover page for each active Collection Provider that
+    exists in an environment.
     """
 
     def providers():
-        """Return all collection providers."""
-        return osf_api.get_providers_list(type='collections')
+        """Return collection providers to be used in Discover page test. The list of
+        collections in some environments (i.e. Staging2) has gotten very long, so a way
+        to narrow the list is to set allow_submssions to False in the admin app and we
+        can then skip those old testing collections."""
+        all_prov = osf_api.get_providers_list(type='collections')
+        return [prov for prov in all_prov if prov['attributes']['allow_submissions']]
 
     @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])
     def provider(self, request):
@@ -94,3 +107,145 @@ class TestCollectionSubmitPage:
             driver.switch_to.alert.accept()
         except TimeoutException:
             pass
+
+
+# We do not currently have a user setup as an administrator for any of the collections
+# in production
+@markers.dont_run_on_prod
+@markers.ember_page
+class TestModerationPages:
+    """To test the Moderation pages we must login as a user that has been setup as an
+    administrator or moderator for one of the collection providers that has moderation
+    enabled.  We are using the 'selenium' collection since it exists in all testing
+    environments and has the moderation process enabled in each environment.
+    """
+
+    @pytest.fixture
+    def provider(self, driver):
+        return osf_api.get_provider(type='collections', provider_id='selenium')
+
+    def test_accessibility_moderation_pending(
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        pending_page = CollectionModerationPendingPage(driver, provider=provider)
+        pending_page.goto()
+        assert CollectionModerationPendingPage(driver, verify=True)
+        pending_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'colmodpend',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    def test_accessibility_moderation_accepted(
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        accepted_page = CollectionModerationAcceptedPage(driver, provider=provider)
+        accepted_page.goto()
+        assert CollectionModerationAcceptedPage(driver, verify=True)
+        accepted_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'colmodacpt',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    def test_accessibility_moderation_rejected(
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        rejected_page = CollectionModerationRejectedPage(driver, provider=provider)
+        rejected_page.goto()
+        assert CollectionModerationRejectedPage(driver, verify=True)
+        rejected_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'colmodrej',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    def test_accessibility_moderation_removed(
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        removed_page = CollectionModerationRemovedPage(driver, provider=provider)
+        removed_page.goto()
+        assert CollectionModerationRemovedPage(driver, verify=True)
+        removed_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'colmodrem',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    def test_accessibility_moderation_moderators(
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        moderators_page = CollectionModerationModeratorsPage(driver, provider=provider)
+        moderators_page.goto()
+        assert CollectionModerationModeratorsPage(driver, verify=True)
+        moderators_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'colmodmods',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    def test_accessibility_moderation_settings(
+        self,
+        driver,
+        session,
+        provider,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        settings_page = CollectionModerationSettingsPage(driver, provider=provider)
+        settings_page.goto()
+        assert CollectionModerationSettingsPage(driver, verify=True)
+        settings_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'colmodset',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
