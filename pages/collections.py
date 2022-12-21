@@ -48,3 +48,41 @@ class CollectionSubmitPage(BaseCollectionPage):
     project_metadata_save = Locator(
         By.CSS_SELECTOR, '[data-test-project-metadata-save-button]'
     )
+
+
+class CollectionModerationPendingPage(BaseCollectionPage):
+    url_addition = 'moderation/all?state=pending#'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type="pending"]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
+class CollectionModerationAcceptedPage(BaseCollectionPage):
+    url_addition = 'moderation/all?state=accepted#'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type="accepted"]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
+class CollectionModerationRejectedPage(BaseCollectionPage):
+    url_addition = 'moderation/all?state=rejected'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type="rejected"]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
+class CollectionModerationRemovedPage(BaseCollectionPage):
+    url_addition = 'moderation/all?state=removed'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type="removed"]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
+class CollectionModerationModeratorsPage(BaseCollectionPage):
+    url_addition = 'moderation/moderators'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-moderator-row]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
+class CollectionModerationSettingsPage(BaseCollectionPage):
+    url_addition = 'moderation/settings'
+    identity = Locator(
+        By.CSS_SELECTOR, '[data-test-collections-moderation-settings-heading]'
+    )
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
