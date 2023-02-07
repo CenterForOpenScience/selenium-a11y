@@ -170,10 +170,7 @@ class TestSubmittedRegistrationPages:
         """
         my_registrations_page = MyRegistrationsPage(driver)
         my_registrations_page.goto()
-        # Set the cookie that prevents the New Feature popover from appearing on
-        # submitted registration pages since this popover can get in the way of other
-        # actions.
-        driver.add_cookie({'name': 'outputFeaturePopover', 'value': '1'})
+
         # Wait for registration cards to load on page
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-node-card]'))

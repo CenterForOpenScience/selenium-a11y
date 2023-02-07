@@ -68,6 +68,14 @@ class BaseSubmittedRegistrationPage(GuidBasePage):
     base_url = settings.OSF_HOME
     url_addition = ''
 
+    def __init__(self, driver, verify=False, guid=''):
+        # Set the cookie that prevents the New Feature popover from appearing on
+        # submitted registration pages since this popover can get in the way of other
+        # actions.
+        driver.add_cookie({'name': 'metadataFeaturePopover', 'value': '1'})
+
+        super().__init__(driver, verify, guid)
+
     @property
     def url(self):
         return self.base_url + '/' + self.guid + '/' + self.url_addition
