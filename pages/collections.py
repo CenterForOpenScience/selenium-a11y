@@ -38,6 +38,7 @@ class CollectionSubmitPage(BaseCollectionPage):
     url_addition = 'submit'
 
     identity = Locator(By.CSS_SELECTOR, 'div[data-test-collections-submit-sections]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
     project_selector = Locator(
         By.CSS_SELECTOR, 'span[class="ember-power-select-placeholder"]'
     )
