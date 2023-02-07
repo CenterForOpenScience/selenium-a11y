@@ -13,6 +13,7 @@ from pages.project import (
     FilesPage,
     FileViewPage,
     ForksPage,
+    MetadataPage,
     ProjectPage,
     RegistrationsPage,
     RequestAccessPage,
@@ -46,6 +47,34 @@ class TestProjectPage:
             driver,
             session,
             'project',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+
+@markers.ember_page
+class TestMetadataPage:
+    def test_accessibility(
+        self,
+        driver,
+        session,
+        default_project,
+        write_files,
+        exclude_best_practice,
+        must_be_logged_in,
+    ):
+        """For the Project Metadata page test we are creating a new dummy test project
+        and then deleting it after we have finished unless we are running in Production,
+        then we are using a Preferred Node from the environment settings file.
+        """
+        metadata_page = MetadataPage(driver, guid=default_project.id)
+        metadata_page.goto()
+        assert MetadataPage(driver, verify=True)
+        metadata_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'prjMeta',
             write_files=write_files,
             exclude_best_practice=exclude_best_practice,
         )

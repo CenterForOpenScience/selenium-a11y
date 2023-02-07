@@ -18,6 +18,7 @@ from pages.registries import (
     RegistrationDetailPage,
     RegistrationFileDetailPage,
     RegistrationFileListPage,
+    RegistrationMetadataPage,
     RegistrationResourcesPage,
     RegistriesDiscoverPage,
     RegistriesLandingPage,
@@ -302,6 +303,34 @@ class TestSubmittedRegistrationPages:
             driver,
             session,
             'regresources',
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
+        )
+
+    @markers.ember_page
+    def test_accessibility_metadata_page(
+        self, driver, session, write_files, exclude_best_practice, my_registrations_page
+    ):
+        """This test is for checking the accessibility of the Registration Metadata
+        Page of a submitted registration.  First search through the registration cards
+        on the Submitted tab of the My Registration Page for a specific registration
+        (searching by registration title).  When you find the desired registration get
+        the registration node id from its link and then use the node id to navigate to
+        the Meatadata page for this registration.
+        """
+        registration_node = my_registrations_page.get_node_id_by_title(
+            'Registration With Files for A11y Testing'
+        )
+        registration_metadata_page = RegistrationMetadataPage(
+            driver, guid=registration_node
+        )
+        registration_metadata_page.goto()
+        assert RegistrationMetadataPage(driver, verify=True)
+        registration_metadata_page.loading_indicator.here_then_gone()
+        a11y.run_axe(
+            driver,
+            session,
+            'regmeta',
             write_files=write_files,
             exclude_best_practice=exclude_best_practice,
         )

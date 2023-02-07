@@ -97,6 +97,12 @@ class RegistrationResourcesPage(BaseSubmittedRegistrationPage):
     identity = Locator(By.CSS_SELECTOR, '[data-test-add-resource-section]')
 
 
+class RegistrationMetadataPage(BaseSubmittedRegistrationPage):
+    url_addition = 'metadata'
+    identity = Locator(By.CSS_SELECTOR, '[data-test-edit-resource-metadata-button]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
 class RegistrationAddNewPage(BaseRegistriesPage):
     url_addition = 'new'
     identity = Locator(

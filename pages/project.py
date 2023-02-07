@@ -68,6 +68,13 @@ class MyProjectsPage(OSFBasePage):
     project_created_modal = ComponentLocator(ProjectCreatedModal)
 
 
+class MetadataPage(GuidBasePage):
+    base_url = settings.OSF_HOME + '/{guid}/metadata/'
+
+    identity = Locator(By.CSS_SELECTOR, 'div[data-analytics-scope="Node"]')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-pulse')
+
+
 class AnalyticsPage(GuidBasePage):
     base_url = settings.OSF_HOME + '/{guid}/analytics/'
 
