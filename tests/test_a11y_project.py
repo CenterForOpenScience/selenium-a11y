@@ -211,7 +211,7 @@ class TestAnalyticsPage:
         assert AnalyticsPage(driver, verify=True)
         # wait until analytics graphs load
         WebDriverWait(driver, 5).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, '.keen-dataviz-stage'))
+            EC.visibility_of_element_located((By.CSS_SELECTOR, '[data-test-analytics-chart]'))
         )
         a11y.run_axe(
             driver,
