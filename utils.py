@@ -21,19 +21,19 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         command_executor = 'http://{}:{}@hub.browserstack.com:80/wd/hub'.format(
             settings.BSTACK_USER, settings.BSTACK_KEY
         )
-        # DeprecationWarning: Please use FirefoxOptions to set browser profile
-        from selenium.webdriver import FirefoxProfile
 
-        ffp = FirefoxProfile()
+        from selenium.webdriver.firefox.options import Options
+
+        ffo = Options()
         # Set the default download location [0=Desktop, 1=Downloads, 2=Specified location]
-        ffp.set_preference('browser.download.folderList', 2)
+        ffo.set_preference('browser.download.folderList', 2)
         # Specify the download directory
-        ffp.set_preference('browser.download.dir', 'Users/Public/Downloads')
+        ffo.set_preference('browser.download.dir', 'Users/Public/Downloads')
         # Disable the OS-level pop-up modal
-        ffp.set_preference('browser.download.manager.showWhenStarting', False)
-        ffp.set_preference('browser.helperApps.alwaysAsk.force', False)
+        ffo.set_preference('browser.download.manager.showWhenStarting', False)
+        ffo.set_preference('browser.helperApps.alwaysAsk.force', False)
         # Specify the file types supported by the download
-        ffp.set_preference(
+        ffo.set_preference(
             'browser.helperApps.neverAsk.saveToDisk',
             'text/plain, application/octet-stream, application/binary, text/csv, application/csv, '
             'application/excel, text/comma-separated-values, text/xml, application/xml',
@@ -41,7 +41,7 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         driver = driver_cls(
             command_executor=command_executor,
             desired_capabilities=desired_capabilities,
-            browser_profile=ffp,
+            options=ffo,
         )
     elif driver_name == 'Chrome' and settings.HEADLESS:
         from selenium.webdriver.chrome.options import Options
@@ -50,7 +50,7 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('window-size=1200x600')
-        driver = driver_cls(chrome_options=chrome_options)
+        driver = driver_cls(options=chrome_options)
     elif driver_name == 'Chrome' and not settings.HEADLESS:
         from selenium.webdriver.chrome.options import Options
 
@@ -60,27 +60,23 @@ def launch_driver(driver_name=settings.DRIVER, desired_capabilities=None):
         chrome_options.add_experimental_option('w3c', False)
         preferences = {'download.default_directory': ''}
         chrome_options.add_experimental_option('prefs', preferences)
-        driver = driver_cls(chrome_options=chrome_options)
+        driver = driver_cls(options=chrome_options)
     elif driver_name == 'Firefox' and not settings.HEADLESS:
-        from selenium.webdriver import FirefoxProfile
         from selenium.webdriver.firefox.options import Options
 
-        ffp = FirefoxProfile()
+        ffo = Options()
         # Set the default download location [0=Desktop, 1=Downloads, 2=Specified location]
-        ffp.set_preference('browser.download.folderList', 1)
-        ffp.set_preference('browser.download.manager.showWhenStarting', False)
-        ffp.set_preference('browser.helperApps.alwaysAsk.force', False)
-        ffp.set_preference(
+        ffo.set_preference('browser.download.folderList', 1)
+        ffo.set_preference('browser.download.manager.showWhenStarting', False)
+        ffo.set_preference('browser.helperApps.alwaysAsk.force', False)
+        ffo.set_preference(
             'browser.helperApps.neverAsk.saveToDisk',
             'text/plain, application/octet-stream, application/binary, text/csv, application/csv, '
             'application/excel, text/comma-separated-values, text/xml, application/xml',
         )
-        # Force Firefox to open links in new tab instead of new browser window. Have to
-        # use Options instead of Firefox Profile because the profile preference doesn't
-        # work.
-        ffo = Options()
+        # Force Firefox to open links in new tab instead of new browser window.
         ffo.set_preference('browser.link.open_newwindow', 3)
-        driver = driver_cls(firefox_profile=ffp, options=ffo)
+        driver = driver_cls(options=ffo)
     elif driver_name == 'Edge' and not settings.HEADLESS:
         from msedge.selenium_tools import Edge
 
