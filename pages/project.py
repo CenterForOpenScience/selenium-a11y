@@ -78,7 +78,7 @@ class MetadataPage(GuidBasePage):
 class AnalyticsPage(GuidBasePage):
     base_url = settings.OSF_HOME + '/{guid}/analytics/'
 
-    identity = Locator(By.CSS_SELECTOR, '._Counts_1mhar6')
+    identity = Locator(By.CSS_SELECTOR, '[data-test-analytics-page-heading]')
     private_project_message = Locator(By.CSS_SELECTOR, '._PrivateProject_1mhar6')
     disabled_chart = Locator(By.CSS_SELECTOR, '._Chart_1hff7g _Blurred_1hff7g')
 
@@ -87,9 +87,11 @@ class ForksPage(GuidBasePage):
     base_url = settings.OSF_HOME + '/{guid}/forks/'
 
     identity = Locator(By.CSS_SELECTOR, '._Forks_1xlord')
-    new_fork_button = Locator(By.CSS_SELECTOR, '._Forks__new-fork_1xlord .btn-success')
-    create_fork_modal_button = Locator(By.CSS_SELECTOR, '.modal-footer .btn-info')
-    cancel_modal_button = Locator(By.CSS_SELECTOR, '.modal-footer .btn-default')
+    new_fork_button = Locator(By.CSS_SELECTOR, '[data-test-new-fork-button]')
+    create_fork_modal_button = Locator(
+        By.CSS_SELECTOR, '[data-test-confirm-create-fork]'
+    )
+    cancel_modal_button = Locator(By.CSS_SELECTOR, '[data-test-cancel-create-fork]')
     info_toast = Locator(By.CSS_SELECTOR, '.toast-info')
     fork_link = Locator(By.CSS_SELECTOR, 'a[data-analytics-name="Title"]')
     fork_authors = Locator(By.CSS_SELECTOR, 'div[class="_NodeCard__authors_1i3kzz"]')
@@ -98,7 +100,7 @@ class ForksPage(GuidBasePage):
     )
 
     # Group Locators
-    listed_forks = GroupLocator(By.CSS_SELECTOR, '.list-group-item')
+    listed_forks = GroupLocator(By.CSS_SELECTOR, '._list-group-item_8wsr4d')
 
 
 class FilesPage(GuidBasePage):
