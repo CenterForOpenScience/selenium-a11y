@@ -19,9 +19,7 @@ class HomeNavbar(BaseElement):
     support_link = Locator(By.ID, 'navbar-support')
     donate_link = Locator(By.ID, 'navbar-donate')
 
-    user_dropdown = Locator(
-        By.CSS_SELECTOR, 'ul.navbar-nav > li.secondary-nav-dropdown'
-    )
+    user_dropdown = Locator(By.CSS_SELECTOR, '[data-test-auth-dropdown]')
     user_dropdown_profile = Locator(
         By.CSS_SELECTOR, 'ul.dropdown-menu-right > li:nth-child(1)'
     )

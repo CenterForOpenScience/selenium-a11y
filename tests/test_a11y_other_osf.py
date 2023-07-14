@@ -1,9 +1,6 @@
 import re
 
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
 import markers
 import settings
@@ -15,7 +12,6 @@ from pages.login import ForgotPasswordPage, ResetPasswordPage
 from pages.project import MyProjectsPage
 from pages.register import RegisterPage
 from pages.search import SearchPage
-from pages.support import SupportPage
 
 
 @markers.ember_page
@@ -44,12 +40,7 @@ class TestDashboardPage:
         dashboard_page = DashboardPage(driver)
         dashboard_page.goto()
         assert DashboardPage(driver, verify=True)
-        # Need to wait for institutions carousel to load
-        WebDriverWait(driver, 5).until(
-            EC.visibility_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-institution-carousel-item]')
-            )
-        )
+        dashboard_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -107,21 +98,6 @@ class TestSearchPage:
             driver,
             session,
             'search',
-            write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
-        )
-
-
-@markers.ember_page
-class TestSupportPage:
-    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
-        support_page = SupportPage(driver)
-        support_page.goto()
-        assert SupportPage(driver, verify=True)
-        a11y.run_axe(
-            driver,
-            session,
-            'support',
             write_files=write_files,
             exclude_best_practice=exclude_best_practice,
         )

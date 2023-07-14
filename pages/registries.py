@@ -50,9 +50,7 @@ class RegistriesDiscoverPage(BaseRegistriesPage):
     )
 
     # Group Locators
-    search_results = GroupLocator(
-        By.CSS_SELECTOR, '._RegistriesSearchResult__Title_1wvii8'
-    )
+    search_results = GroupLocator(By.CSS_SELECTOR, '._title_1wvii8')
 
     def get_first_non_withdrawn_registration(self):
         for result in self.search_results:
