@@ -370,3 +370,16 @@ def create_draft_registration(session, node_id=None, schema_id=None):
     session.post(
         url=url, item_type='draft_registrations', raw_body=json.dumps(raw_payload)
     )
+
+
+def get_most_recent_preprint_node_id(session=None):
+    """Return the most recently published preprint node id"""
+    if not session:
+        session = get_default_session()
+    url = '/v2/preprints/'
+    data = session.get(url)['data']
+    if data:
+        for preprint in data:
+            if preprint['attributes']['is_published']:
+                return preprint['id']
+    return None

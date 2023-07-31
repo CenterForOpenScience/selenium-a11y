@@ -1,10 +1,9 @@
 from urllib.parse import urljoin
 
-import pytest
 from selenium.webdriver.common.by import By
 
 import settings
-from base.locators import ComponentLocator, GroupLocator, Locator
+from base.locators import ComponentLocator, Locator
 from components.navbars import PreprintsNavbar
 from pages.base import GuidBasePage, OSFBasePage
 
@@ -145,23 +144,6 @@ class PreprintSubmitPage(BasePreprintPage):
         '.modal-footer button.btn-success:nth-child(2)',
         settings.LONG_TIMEOUT,
     )
-
-
-@pytest.mark.usefixtures('must_be_logged_in')
-class PreprintDiscoverPage(BasePreprintPage):
-    url_addition = 'discover'
-
-    identity = Locator(By.ID, 'share-logo')
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
-    search_box = Locator(By.ID, 'searchBox')
-    sort_button = Locator(By.ID, 'sortBy')
-    sort_option_newest_to_oldest = Locator(
-        By.CSS_SELECTOR, '#sortByOptionList > li:nth-child(3) > button'
-    )
-
-    # Group Locators
-    search_results = GroupLocator(By.CSS_SELECTOR, '.search-result h4 > a')
-    no_results = GroupLocator(By.CSS_SELECTOR, '.search-results-section .text-muted')
 
 
 class PreprintDetailPage(GuidBasePage, BasePreprintPage):

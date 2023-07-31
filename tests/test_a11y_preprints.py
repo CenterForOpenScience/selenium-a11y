@@ -1,7 +1,6 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -11,7 +10,6 @@ from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
 from pages.preprints import (
     PreprintDetailPage,
-    PreprintDiscoverPage,
     PreprintLandingPage,
     PreprintSubmitPage,
     ReviewsDashboardPage,
@@ -105,7 +103,7 @@ class TestPreprintSubmitPage:
         )
 
 
-class TestPreprintDiscoverPage:
+class TestPreprintDetailPage:
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         # The previous test (Submit page - non prod) may trigger a pop-up alert
         #     messagebox that leaving the page will cause data to not be saved.  At
@@ -117,43 +115,14 @@ class TestPreprintDiscoverPage:
             driver.switch_to.alert.accept()
         except TimeoutException:
             pass
-        discover_page = PreprintDiscoverPage(driver)
-        discover_page.goto()
-        assert PreprintDiscoverPage(driver, verify=True)
-        discover_page.loading_indicator.here_then_gone()
-        a11y.run_axe(
-            driver,
-            session,
-            'prepdisc',
-            write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
-        )
 
+        # Use api to get the most recent publisged preprint and then navigate to the
+        # detail page for that preprint
+        preprint_node = osf_api.get_most_recent_preprint_node_id()
+        detail_page = PreprintDetailPage(driver, guid=preprint_node)
+        detail_page.goto()
+        assert PreprintDetailPage(driver, verify=True)
 
-class TestPreprintDetailPage:
-    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
-        discover_page = PreprintDiscoverPage(driver)
-        discover_page.goto()
-        assert PreprintDiscoverPage(driver, verify=True)
-        if not settings.PRODUCTION:
-            # Since all of the testing environments use the same SHARE server, we need
-            # to enter a value in the search input box that will ensure that the results
-            # are specific to the current environment.  We can do this by searching for
-            # the test environment url in the identifiers metadata field.
-            environment_url = settings.OSF_HOME[8:]  # Need to strip out "https://"
-            search_text = 'identifiers:"' + environment_url + '"'
-            discover_page.search_box.send_keys_deliberately(search_text)
-            discover_page.search_box.send_keys(Keys.ENTER)
-            if settings.STAGE2:
-                # Stage 2 has a lot of old preprint data that is still listed in search
-                # results but does not actually have preprint detail pages so we need to
-                # sort the results so that the newest preprints are listed first.
-                discover_page.sort_button.click()
-                discover_page.sort_option_newest_to_oldest.click()
-        discover_page.loading_indicator.here_then_gone()
-        # click on first entry in search results to open the Preprint Detail page
-        discover_page.search_results[0].click()
-        detail_page = PreprintDetailPage(driver, verify=True)
         # wait for authors list to fully load so that it doesn't trigger list violation
         detail_page.authors_load_indicator.here_then_gone()
         a11y.run_axe(
