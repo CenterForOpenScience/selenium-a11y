@@ -1,6 +1,5 @@
 import pytest
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -190,10 +189,7 @@ class TestPreprintReviewsDashboardPage:
         dashboard_page = ReviewsDashboardPage(driver)
         dashboard_page.goto()
         assert ReviewsDashboardPage(driver, verify=True)
-        # Wait for list of preprints to load before calling axe
-        WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'div._action-body_zlyyw2'))
-        )
+        dashboard_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -209,14 +205,14 @@ class TestPreprintReviewsDashboardPage:
 class TestProviderReviewsPages:
     """To test the provider specific Reviews pages we must login as a user that has been
     setup as an administrator or moderator for one of the preprint providers that has
-    moderation enabled.  We are using MarXiv as the preprint provider since it exists
+    moderation enabled.  We are using selpremod as the preprint provider since it exists
     in all testing environments and has the moderation process enabled in each
     environment.
     """
 
     @pytest.fixture
     def provider(self, driver):
-        return osf_api.get_provider(type='preprints', provider_id='marxiv')
+        return osf_api.get_provider(type='preprints', provider_id='selpremod')
 
     def test_accessibility_reviews_submissions(
         self,
@@ -227,16 +223,17 @@ class TestProviderReviewsPages:
         exclude_best_practice,
         must_be_logged_in,
     ):
+        # There is a weird routing issue where you have to go to the Reviews Dashboard
+        # page first and then you can go to the Reviews Submissions page. If you try to
+        # go directly to the Reviews Submissions page first you get redirected back to
+        # the Reviews Dashboard page anyway.
+        dashboard_page = ReviewsDashboardPage(driver)
+        dashboard_page.goto()
+        assert ReviewsDashboardPage(driver, verify=True)
         submissions_page = ReviewsSubmissionsPage(driver, provider=provider)
         submissions_page.goto()
         assert ReviewsSubmissionsPage(driver, verify=True)
-        # Wait for table to load before calling axe
-        if submissions_page.no_submissions.absent():
-            WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located(
-                    (By.CLASS_NAME, '_submission-info_xkm0pa')
-                )
-            )
+        submissions_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -257,13 +254,7 @@ class TestProviderReviewsPages:
         withdrawals_page = ReviewsWithdrawalsPage(driver, provider=provider)
         withdrawals_page.goto()
         assert ReviewsWithdrawalsPage(driver, verify=True)
-        # Wait for table to load before calling axe
-        if withdrawals_page.no_requests.absent():
-            WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located(
-                    (By.CLASS_NAME, '_submission-info_17iwzt')
-                )
-            )
+        withdrawals_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -284,10 +275,7 @@ class TestProviderReviewsPages:
         moderators_page = ReviewsModeratorsPage(driver, provider=provider)
         moderators_page.goto()
         assert ReviewsModeratorsPage(driver, verify=True)
-        # Wait for moderators list to load before calling axe
-        WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.CLASS_NAME, '_moderator-name_f83dob'))
-        )
+        moderators_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -308,10 +296,7 @@ class TestProviderReviewsPages:
         notifications_page = ReviewsNotificationsPage(driver, provider=provider)
         notifications_page.goto()
         assert ReviewsNotificationsPage(driver, verify=True)
-        # Wait for notifications elements load before calling axe
-        WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'notification-title'))
-        )
+        notifications_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -332,6 +317,7 @@ class TestProviderReviewsPages:
         settings_page = ReviewsSettingsPage(driver, provider=provider)
         settings_page.goto()
         assert ReviewsSettingsPage(driver, verify=True)
+        settings_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,

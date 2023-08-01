@@ -158,6 +158,7 @@ class PreprintDetailPage(GuidBasePage, BasePreprintPage):
 class ReviewsDashboardPage(OSFBasePage):
     url = settings.OSF_HOME + '/reviews'
     identity = Locator(By.CLASS_NAME, '_reviews-dashboard-header_jdu5ey')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
 
 class BaseReviewsPage(OSFBasePage):
@@ -191,7 +192,10 @@ class BaseReviewsPage(OSFBasePage):
 
 
 class ReviewsSubmissionsPage(BaseReviewsPage):
-    identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
+    identity = Locator(
+        By.CLASS_NAME, '_reviews-list-heading_k45x8p', settings.LONG_TIMEOUT
+    )
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
     no_submissions = Locator(
         By.CSS_SELECTOR,
         'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
@@ -201,6 +205,7 @@ class ReviewsSubmissionsPage(BaseReviewsPage):
 class ReviewsWithdrawalsPage(BaseReviewsPage):
     url_addition = 'withdrawals'
     identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
     no_requests = Locator(
         By.CSS_SELECTOR,
         'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
@@ -210,13 +215,16 @@ class ReviewsWithdrawalsPage(BaseReviewsPage):
 class ReviewsModeratorsPage(BaseReviewsPage):
     url_addition = 'moderators'
     identity = Locator(By.CLASS_NAME, 'moderator-list-row')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
 
 class ReviewsNotificationsPage(BaseReviewsPage):
     url_addition = 'notifications'
     identity = Locator(By.CLASS_NAME, '_notification-list-heading-container_kchmy0')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
 
 class ReviewsSettingsPage(BaseReviewsPage):
     url_addition = 'settings'
     identity = Locator(By.CLASS_NAME, '_reviews-settings_1r3x0j')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
