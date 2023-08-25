@@ -1,6 +1,8 @@
 import re
 
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 import markers
 import settings
@@ -83,17 +85,18 @@ class TestRegisterPage:
         )
 
 
-@markers.legacy_page
+@markers.ember_page
 class TestSearchPage:
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         search_page = SearchPage(driver)
         search_page.goto()
         assert SearchPage(driver, verify=True)
-        # Enter wildcard in search input box and press enter so that we have some search
-        #     results on the page before running accessibility test
-        search_page.search_bar.send_keys('*')
-        search_page.search_bar.send_keys(Keys.ENTER)
         search_page.loading_indicator.here_then_gone()
+        WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located(
+                (By.CSS_SELECTOR, '._result-card-container_qeqpmj')
+            )
+        )
         a11y.run_axe(
             driver,
             session,
