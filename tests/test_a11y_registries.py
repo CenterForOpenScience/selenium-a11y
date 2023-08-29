@@ -1,6 +1,5 @@
 import pytest
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -11,6 +10,7 @@ from components.accessibility import ApplyA11yRules as a11y
 from pages.login import safe_login
 from pages.registrations import MyRegistrationsPage
 from pages.registries import (
+    BrandedRegistriesDiscoverPage,
     DraftRegistrationGenericPage,
     DraftRegistrationMetadataPage,
     DraftRegistrationReviewPage,
@@ -20,7 +20,6 @@ from pages.registries import (
     RegistrationFileListPage,
     RegistrationMetadataPage,
     RegistrationResourcesPage,
-    RegistriesDiscoverPage,
     RegistriesLandingPage,
     RegistriesModerationModeratorsPage,
     RegistriesModerationPendingPage,
@@ -45,59 +44,17 @@ class TestRegistriesLandingPage:
 
 
 @markers.ember_page
-class TestRegistriesDiscoverPage:
-    """This test is for the OSF Registries Discover Page. The other Branded Provider
-    Registries Discover pages will be tested below.
-    """
-
-    def test_accessibility(self, driver, session, write_files, exclude_best_practice):
-        discover_page = RegistriesDiscoverPage(driver)
-        discover_page.goto()
-        assert RegistriesDiscoverPage(driver, verify=True)
-        discover_page.loading_indicator.here_then_gone()
-        a11y.run_axe(
-            driver,
-            session,
-            'regdisc',
-            write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
-        )
-
-
-@markers.ember_page
 class TestRegistrationDetailPage:
-    """This test is for the Registration Detail Page for a submitted registration. It
-    accesses a submitted registration from the search results on the Registries Discover
-    page.
-    """
+    """This test is for the Registration Overview Page for a submitted registration."""
 
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
-        discover_page = RegistriesDiscoverPage(driver)
-        discover_page.goto()
-        assert RegistriesDiscoverPage(driver, verify=True)
-        if not settings.PRODUCTION:
-            # Since all of the testing environments use the same SHARE server, we need
-            # to enter a value in the search input box that will ensure that the results
-            # are specific to the current environment.  We can do this by searching for
-            # the test environment in the affiliations metadata field.  The affiliated
-            # institutions as setup in the testing environments typically include the
-            # specific environment in their names.  EX: The Center For Open Science [Stage2]
-            if settings.STAGE1:
-                # Need to drop the 1 since they usually just use 'Stage' instead of 'Stage1'
-                environment = 'stage'
-            else:
-                environment = settings.DOMAIN
-            search_text = 'affiliations:' + environment
-            discover_page.search_box.send_keys_deliberately(search_text)
-            discover_page.search_box.send_keys(Keys.ENTER)
-        discover_page.loading_indicator.here_then_gone()
-        search_results = discover_page.search_results
-        assert search_results
-        # Open the first non-withdrawn registration in the search results
-        target_registration = discover_page.get_first_non_withdrawn_registration()
-        target_registration.click()
-        detail_page = RegistrationDetailPage(driver, verify=True)
-        detail_page.loading_indicator.here_then_gone()
+        # Use OSF api to get the most recent submitted and approved registration and
+        # navigate to its overview page.
+        registration_guid = osf_api.get_most_recent_registration_node_id(session)
+        registration_page = RegistrationDetailPage(driver, guid=registration_guid)
+        registration_page.goto()
+        assert RegistrationDetailPage(driver, verify=True)
+        registration_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
@@ -1259,12 +1216,6 @@ class TestDraftRegistrationPages:
 
 
 class TestBrandedRegistrationsProviders:
-    """For all the Branded Providers in each environment we are just going to load the
-    discover page since the provider pages should be structured just like the OSF Registries
-    pages which we just tested above. The only real problems that we will be looking for
-    are color contrast issues.
-    """
-
     def providers():
         """Return all registration providers."""
         return osf_api.get_providers_list(type='registrations')
@@ -1276,21 +1227,25 @@ class TestBrandedRegistrationsProviders:
     def test_accessibility(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        discover_page = RegistriesDiscoverPage(driver, provider=provider)
-        discover_page.goto()
-        assert RegistriesDiscoverPage(driver, verify=True)
-        discover_page.loading_indicator.here_then_gone()
-        page_name = 'br_' + provider['id']
-        a11y.run_axe(
-            driver,
-            session,
-            page_name,
-            write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
-        )
+        # Test for all providers except OSF since the OSF Registries Discover page no
+        # longer exists
+        if provider['id'] != 'osf':
+            discover_page = BrandedRegistriesDiscoverPage(driver, provider=provider)
+            discover_page.goto()
+            assert BrandedRegistriesDiscoverPage(driver, verify=True)
+            discover_page.loading_indicator.here_then_gone()
+            page_name = 'br_' + provider['id']
+            a11y.run_axe(
+                driver,
+                session,
+                page_name,
+                write_files=write_files,
+                exclude_best_practice=exclude_best_practice,
+            )
 
 
-# We do not currently have a user setup as an administrator for any of the registries in production
+# We do not currently have a user setup as an administrator for any of the registries
+# in production
 @markers.dont_run_on_prod
 @markers.ember_page
 class TestModerationPages:

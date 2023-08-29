@@ -8,8 +8,11 @@ from pages.base import OSFBasePage
 class SearchPage(OSFBasePage):
     url = settings.OSF_HOME + '/search/'
 
-    identity = Locator(By.ID, 'searchPageFullBar')
-    search_bar = Locator(By.ID, 'searchPageFullBar')
+    identity = Locator(By.CSS_SELECTOR, 'div[data-analytics-scope="Search page main"]')
+    search_input = Locator(
+        By.CSS_SELECTOR, '.ember-text-field.ember-view._search-input_fvrbco'
+    )
+    search_button = Locator(By.CSS_SELECTOR, 'button[data-test-search-submit]')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
     # Group Locators

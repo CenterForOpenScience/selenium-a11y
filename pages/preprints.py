@@ -1,10 +1,9 @@
 from urllib.parse import urljoin
 
-import pytest
 from selenium.webdriver.common.by import By
 
 import settings
-from base.locators import ComponentLocator, GroupLocator, Locator
+from base.locators import ComponentLocator, Locator
 from components.navbars import PreprintsNavbar
 from pages.base import GuidBasePage, OSFBasePage
 
@@ -147,23 +146,6 @@ class PreprintSubmitPage(BasePreprintPage):
     )
 
 
-@pytest.mark.usefixtures('must_be_logged_in')
-class PreprintDiscoverPage(BasePreprintPage):
-    url_addition = 'discover'
-
-    identity = Locator(By.ID, 'share-logo')
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
-    search_box = Locator(By.ID, 'searchBox')
-    sort_button = Locator(By.ID, 'sortBy')
-    sort_option_newest_to_oldest = Locator(
-        By.CSS_SELECTOR, '#sortByOptionList > li:nth-child(3) > button'
-    )
-
-    # Group Locators
-    search_results = GroupLocator(By.CSS_SELECTOR, '.search-result h4 > a')
-    no_results = GroupLocator(By.CSS_SELECTOR, '.search-results-section .text-muted')
-
-
 class PreprintDetailPage(GuidBasePage, BasePreprintPage):
     url_base = urljoin(settings.OSF_HOME, '{guid}')
 
@@ -176,6 +158,7 @@ class PreprintDetailPage(GuidBasePage, BasePreprintPage):
 class ReviewsDashboardPage(OSFBasePage):
     url = settings.OSF_HOME + '/reviews'
     identity = Locator(By.CLASS_NAME, '_reviews-dashboard-header_jdu5ey')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
 
 class BaseReviewsPage(OSFBasePage):
@@ -209,7 +192,10 @@ class BaseReviewsPage(OSFBasePage):
 
 
 class ReviewsSubmissionsPage(BaseReviewsPage):
-    identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
+    identity = Locator(
+        By.CLASS_NAME, '_reviews-list-heading_k45x8p', settings.LONG_TIMEOUT
+    )
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
     no_submissions = Locator(
         By.CSS_SELECTOR,
         'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
@@ -219,6 +205,7 @@ class ReviewsSubmissionsPage(BaseReviewsPage):
 class ReviewsWithdrawalsPage(BaseReviewsPage):
     url_addition = 'withdrawals'
     identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
     no_requests = Locator(
         By.CSS_SELECTOR,
         'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
@@ -228,13 +215,16 @@ class ReviewsWithdrawalsPage(BaseReviewsPage):
 class ReviewsModeratorsPage(BaseReviewsPage):
     url_addition = 'moderators'
     identity = Locator(By.CLASS_NAME, 'moderator-list-row')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
 
 class ReviewsNotificationsPage(BaseReviewsPage):
     url_addition = 'notifications'
     identity = Locator(By.CLASS_NAME, '_notification-list-heading-container_kchmy0')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
 
 class ReviewsSettingsPage(BaseReviewsPage):
     url_addition = 'settings'
     identity = Locator(By.CLASS_NAME, '_reviews-settings_1r3x0j')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
