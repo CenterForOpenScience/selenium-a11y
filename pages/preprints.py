@@ -146,6 +146,13 @@ class PreprintSubmitPage(BasePreprintPage):
     )
 
 
+class PreprintDiscoverPage(BasePreprintPage):
+    url_addition = 'discover'
+
+    identity = Locator(By.ID, 'share-logo')
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
 class PreprintDetailPage(GuidBasePage, BasePreprintPage):
     url_base = urljoin(settings.OSF_HOME, '{guid}')
 
