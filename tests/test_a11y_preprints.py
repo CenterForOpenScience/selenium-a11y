@@ -9,6 +9,7 @@ from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
 from pages.preprints import (
     PreprintDetailPage,
+    PreprintDiscoverPage,
     PreprintLandingPage,
     PreprintSubmitPage,
     ReviewsDashboardPage,
@@ -134,10 +135,8 @@ class TestPreprintDetailPage:
 
 
 class TestBrandedProviders:
-    """For all the Branded Providers in each environment we are just going to load the
-    landing page since the provider pages should be structured just like the OSF Preprint
-    pages which we just tested above. The only real problems that we will be looking for
-    are color contrast issues.
+    """For all of the Branded Providers in each environment we are loading both the
+    Branded Landing Page and Branded Discover Page.
     """
 
     def providers():
@@ -148,7 +147,7 @@ class TestBrandedProviders:
     def provider(self, request):
         return request.param
 
-    def test_accessibility(
+    def test_accessibility_landing(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
         # As of January 24, 2022, the Engineering Archive ('engrxiv') preprint provider
@@ -165,6 +164,31 @@ class TestBrandedProviders:
             landing_page.goto()
             assert PreprintLandingPage(driver, verify=True)
             page_name = 'bp_' + provider['id']
+            a11y.run_axe(
+                driver,
+                session,
+                page_name,
+                write_files=write_files,
+                exclude_best_practice=exclude_best_practice,
+            )
+
+    def test_accessibility_discover(
+        self, session, driver, provider, write_files, exclude_best_practice
+    ):
+        # As of January 24, 2022, the Engineering Archive ('engrxiv') preprint provider
+        # has switched away from using OSF as their preprint service.  Therefore the
+        # web page that OSF automatically redirects to is no longer based on the OSF
+        # Preprints landing/discover page design.  However, they remain in our active
+        # preprint provider list in the OSF api due to legal issues that are still being
+        # worked out.  The best guess is that the transition will be completed (and
+        # engrxiv removed from the api list) by the end of the first quarter of 2022
+        # (i.e. end of March).  So to prevent this test from failing in Production
+        # for 'engrxiv' we are going to skip the following steps for this provider.
+        if 'engrxiv' not in provider['id']:
+            discover_page = PreprintDiscoverPage(driver, provider=provider)
+            discover_page.goto()
+            assert PreprintDiscoverPage(driver, verify=True)
+            page_name = 'bp_' + provider['id'] + '_disc'
             a11y.run_axe(
                 driver,
                 session,
