@@ -43,9 +43,11 @@ cover/
 .konchrc
 *.pyc
 *.log
+.python-version
 
 # Private Info
 variables.py
 .env
 .cache/
 geckodriver.log
+a11y_results/
