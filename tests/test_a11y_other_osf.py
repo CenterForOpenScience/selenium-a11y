@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 import markers
+import pytest
 import settings
 from components.accessibility import ApplyA11yRules as a11y
 from components.email_access import EmailAccess
@@ -25,6 +26,7 @@ class TestOSFHomePage:
         # Need to wait for page to fully load (especially backgrounds and css styling)
         # in order to avoid some false color contrast failures.
         landing_page.loading_indicator.here_then_gone()
+        pytest.xfail("Nested-interactive issue documented here -> ENG-3764")
         a11y.run_axe(
             driver,
             session,
@@ -61,6 +63,8 @@ class TestMyProjectsPage:
         my_projects_page.goto()
         assert MyProjectsPage(driver, verify=True)
         my_projects_page.empty_collection_indicator.present()
+        pytest.xfail("Color-contrast issue documented here -> ENG-3616"
+                     "List issue documented here -> ENG-3146")
         a11y.run_axe(
             driver,
             session,
