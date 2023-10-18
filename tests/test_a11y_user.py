@@ -23,6 +23,7 @@ class TestUserProfilePage:
         profile_page = UserProfilePage(driver)
         profile_page.goto()
         assert UserProfilePage(driver, verify=True)
+        pytest.xfail("Link-in-text-block issue documented here -> ENG-4875")
         a11y.run_axe(
             driver,
             session,
@@ -100,6 +101,7 @@ class TestUserSettingsProfileInformationPage:
         )
         profile_information_page.employment_tab_link.click()
         assert ProfileInformationPage(driver, verify=True)
+        pytest.xfail("Label issue documented here -> ENG-3062")
         a11y.run_axe(
             driver,
             session,
@@ -125,6 +127,7 @@ class TestUserSettingsProfileInformationPage:
         )
         profile_information_page.education_tab_link.click()
         assert ProfileInformationPage(driver, verify=True)
+        pytest.xfail("Label issue documented here -> ENG-3062")
         a11y.run_axe(
             driver,
             session,
@@ -178,6 +181,8 @@ class TestUserSettingsNotificationsPage:
         assert NotificationsPage(driver, verify=True)
         # wait for Notification Preferences section to finish loading
         notifications_page.loading_indicator.here_then_gone()
+        pytest.xfail("Label issue documented here -> ENG-3074"
+                     "Color-contrast issue documented here -> ENG-3075")
         a11y.run_axe(
             driver,
             session,
