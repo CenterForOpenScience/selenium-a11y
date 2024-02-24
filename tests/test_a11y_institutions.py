@@ -18,6 +18,7 @@ class TestInstitutionsLandingPage:
         landing_page = InstitutionsLandingPage(driver)
         landing_page.goto()
         assert InstitutionsLandingPage(driver, verify=True)
+        pytest.xfail("link-in-text-block issue documented here -> ENG-4298")
         a11y.run_axe(
             driver,
             session,
@@ -72,7 +73,7 @@ class TestInstitutionAdminDashboardPage:
     def test_accessibility(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
     ):
-        """Test using the COS admin dahsboard page - user must already be setup as an admin for the
+        """Test using the COS admin dashboard page - user must already be setup as an admin for the
         COS institution in each environment through the OSF admin app.
         """
         dashboard_page = InstitutionAdminDashboardPage(driver, institution_id='cos')

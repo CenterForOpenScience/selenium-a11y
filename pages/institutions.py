@@ -15,7 +15,7 @@ class InstitutionsLandingPage(OSFBasePage):
 
     # TODO fix insitution typo
     identity = Locator(
-        By.CSS_SELECTOR, 'div[data-test-insitutions-header]', settings.VERY_LONG_TIMEOUT
+        By.CSS_SELECTOR, 'div[data-test-insitutions-header]', settings.TIMEOUT
     )
 
     search_bar = Locator(By.CSS_SELECTOR, '.ember-text-field')
