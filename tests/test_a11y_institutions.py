@@ -1,5 +1,4 @@
 import pytest
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -28,10 +27,10 @@ class TestInstitutionsLandingPage:
         )
 
 
-@markers.legacy_page
+@markers.ember_page
 class TestBrandedInstitutionPages:
     """Test the Branded Institution Page for each institution in the environment. Use the osf api to get
-    the list of institution ids and then load each branded iinstitution page and run the axe test engine.
+    the list of institution ids and then load each branded institution page and run the axe test engine.
     """
 
     def institutions():
@@ -51,9 +50,9 @@ class TestBrandedInstitutionPages:
         # first check if the collection is empty - this may often be the case in the test environments
         if institution_page.empty_collection_indicator.absent():
             # wait for projects table to start loading before calling axe
-            WebDriverWait(driver, 60).until(
-                EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, '#tb-tbody > div > div > div.tb-row')
+            WebDriverWait(driver, 5).until(
+                EC.visibility_of(
+                    institution_page.identity
                 )
             )
         page_name = 'bi_' + institution
