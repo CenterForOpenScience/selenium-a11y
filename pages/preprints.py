@@ -1,11 +1,19 @@
 from urllib.parse import urljoin
 
+import pytest
 from selenium.webdriver.common.by import By
 
 import settings
-from base.locators import ComponentLocator, Locator
+from base.locators import (
+    ComponentLocator,
+    GroupLocator,
+    Locator,
+)
 from components.navbars import PreprintsNavbar
-from pages.base import GuidBasePage, OSFBasePage
+from pages.base import (
+    GuidBasePage,
+    OSFBasePage,
+)
 
 
 class BasePreprintPage(OSFBasePage):
@@ -47,14 +55,15 @@ class BasePreprintPage(OSFBasePage):
 
 class PreprintLandingPage(BasePreprintPage):
     identity = Locator(
-        By.CSS_SELECTOR, '.ember-application .preprint-header', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR,
+        '[data-analytics-scope="preprints landing page"]',
+        settings.LONG_TIMEOUT,
     )
     add_preprint_button = Locator(
-        By.CLASS_NAME, 'preprint-submit-button', settings.LONG_TIMEOUT
+        By.CLASS_NAME, '[data-analytics-name="Add a preprint"]', settings.LONG_TIMEOUT
     )
-    search_button = Locator(By.CSS_SELECTOR, '.preprint-search .btn-default')
-    submit_navbar = Locator(By.CSS_SELECTOR, '.branded-nav > :nth-child(2)')
-    submit_button = Locator(By.CSS_SELECTOR, '.btn.btn-success')
+    search_button = Locator(By.CSS_SELECTOR, '[data-analytics-name="Search"]')
+    submit_button = Locator(By.CSS_SELECTOR, '[data-test-submit-button]')
 
 
 class PreprintSubmitPage(BasePreprintPage):
@@ -123,7 +132,11 @@ class PreprintSubmitPage(BasePreprintPage):
         By.CSS_SELECTOR, '#preprint-form-authors .btn-primary', settings.QUICK_TIMEOUT
     )
 
-    conflict_of_interest = Locator(By.ID, 'coiNo', settings.QUICK_TIMEOUT)
+    conflict_of_interest_yes = Locator(By.ID, 'coiYes', settings.QUICK_TIMEOUT)
+    conflict_of_interest_no = Locator(By.ID, 'coiNo', settings.QUICK_TIMEOUT)
+    no_coi_text_box = Locator(
+        By.CSS_SELECTOR, '[data-test-has-no-coi]', settings.QUICK_TIMEOUT
+    )
     coi_save_button = Locator(By.CSS_SELECTOR, '[data-test-coi-continue]')
 
     supplemental_create_new_project = Locator(
@@ -146,26 +159,187 @@ class PreprintSubmitPage(BasePreprintPage):
     )
 
 
+class PreprintEditPage(GuidBasePage, BasePreprintPage):
+    url_base = urljoin(settings.OSF_HOME, '{guid}')
+    url_addition = '/edit'
+
+    identity = Locator(
+        By.CSS_SELECTOR, '.m-t-md.preprint-header-preview > p:nth-child(1) > em.m-r-md'
+    )
+    basics_section = Locator(By.ID, 'preprint-form-basics')
+    basics_tags_section = Locator(By.CSS_SELECTOR, '#preprint-form-basics .tagsinput')
+    basics_tags_input = Locator(
+        By.CSS_SELECTOR, '#preprint-form-basics .tagsinput input'
+    )
+    basics_save_button = Locator(By.CSS_SELECTOR, '#preprint-form-basics .btn-primary')
+    basics_section_changes_saved_indicator = Locator(
+        By.CSS_SELECTOR,
+        '#preprint-form-basics > header > div.preprint-section-status.pull-right > span.text-success.',
+    )
+    discipline_section = Locator(By.ID, 'preprint-form-subjects')
+    discipline_save_button = Locator(
+        By.CSS_SELECTOR, '#preprint-form-subjects .btn-primary'
+    )
+    authors_save_button = Locator(
+        By.CSS_SELECTOR, '#preprint-form-authors .btn-primary', settings.QUICK_TIMEOUT
+    )
+    return_to_preprint_button = Locator(
+        By.CSS_SELECTOR,
+        'div.submit-section > div > button.btn.btn-default.btn-md.m-t-md.pull-right',
+    )
+    withdraw_preprint_button = Locator(
+        By.CSS_SELECTOR,
+        'div.submit-section > div > button.btn.btn-danger.btn-md.m-t-md.pull-right',
+    )
+
+    # Group Locators
+    primary_subjects = GroupLocator(
+        By.CSS_SELECTOR,
+        '#preprint-form-subjects > div > div > div:nth-child(2) > div:nth-child(1) > ul > li',
+    )
+
+    def select_primary_subject_by_name(self, subject_name):
+        """Select a subject from the first box in the Discipline section (i.e. 'primary'
+        subject). This function would need to be modified or another separate function
+        created to select from either of the 2 secondary subject boxes.
+        """
+        for subject in self.primary_subjects:
+            if subject.text == subject_name:
+                subject.click()
+                break
+
+
+class PreprintWithdrawPage(GuidBasePage, BasePreprintPage):
+    url_base = urljoin(settings.OSF_HOME, '{guid}')
+    url_addition = '/withdraw'
+
+    identity = Locator(
+        By.CSS_SELECTOR,
+        'section.preprint-form-block.preprint-form-section-withdraw-comment',
+    )
+    reason_for_withdrawal_textarea = Locator(By.NAME, 'explanation')
+    request_withdrawal_button = Locator(
+        By.CSS_SELECTOR,
+        'div.submit-section > button.btn.btn-danger.btn-md.m-t-md.pull-right',
+    )
+
+
+@pytest.mark.usefixtures('must_be_logged_in')
 class PreprintDiscoverPage(BasePreprintPage):
+    base_url = settings.OSF_HOME + '/search?resourceType=Preprint'
+
+    identity = Locator(
+        By.CSS_SELECTOR, 'a[data-test-topbar-object-type-link="Preprints"]'
+    )
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    search_box = Locator(By.CSS_SELECTOR, 'input[data-test-search-input]')
+    sort_button = Locator(By.CSS_SELECTOR, 'div[data-test-topbar-sort-dropdown]')
+    sort_option_newest_to_oldest = Locator(
+        By.CSS_SELECTOR, '#sortByOptionList > li:nth-child(3) > button'
+    )
+
+    # Group Locators
+    search_results = GroupLocator(By.CSS_SELECTOR, 'div[data-test-search-result-card]')
+    sort_options = GroupLocator(
+        By.CSS_SELECTOR, 'ul[class="ember-power-select-options"]'
+    )
+
+
+@pytest.mark.usefixtures('must_be_logged_in')
+class BrandedPreprintsDiscoverPage(BasePreprintPage):
     url_addition = 'discover'
 
-    identity = Locator(By.ID, 'share-logo')
+    identity = Locator(By.CSS_SELECTOR, '[data-test-search-provider-logo]')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    search_box = Locator(By.CSS_SELECTOR, 'input[data-test-search-input]')
+    sort_button = Locator(By.CSS_SELECTOR, 'div[data-test-topbar-sort-dropdown]')
+    sort_option_newest_to_oldest = Locator(
+        By.CSS_SELECTOR, '#sortByOptionList > li:nth-child(3) > button'
+    )
+    no_results = Locator(By.CSS_SELECTOR, 'div[_no-results_fvrbco]')
+
+    # Group Locators
+    search_results = GroupLocator(By.CSS_SELECTOR, 'div[data-test-search-result-card]')
 
 
 class PreprintDetailPage(GuidBasePage, BasePreprintPage):
     url_base = urljoin(settings.OSF_HOME, '{guid}')
+    identity = Locator(
+        By.CSS_SELECTOR,
+        '[data-test-preprint-header]',
+        settings.LONG_TIMEOUT,
+    )
 
-    identity = Locator(By.ID, 'preprintTitle', settings.LONG_TIMEOUT)
-    title = Locator(By.ID, 'preprintTitle', settings.LONG_TIMEOUT)
+    title = Locator(
+        By.CSS_SELECTOR, 'h1[data-test-preprint-title]', settings.LONG_TIMEOUT
+    )
     view_page = Locator(By.ID, 'view-page')
-    authors_load_indicator = Locator(By.CSS_SELECTOR, '.comma-list > .ball-pulse')
+    views_count = Locator(By.CSS_SELECTOR, '[data-test-view-count]')
+    downloads_count = Locator(By.CSS_SELECTOR, '[data-test-download-count]')
+    download_button = Locator(By.CSS_SELECTOR, '[data-test-download-button]')
+    edit_preprint_button = Locator(By.CSS_SELECTOR, 'div[class="edit-preprint-button"]')
+    default_citation = Locator(By.CSS_SELECTOR, '[data-test-default-citation="apa"]')
+
+    # Locators for the reviews app preprint detail page
+    status = Locator(By.CSS_SELECTOR, 'span._status-badge_7ivjq4')
+    status_explanation = Locator(By.CSS_SELECTOR, 'div.status-explanation')
+    withdraw_reason = Locator(By.CSS_SELECTOR, '[data-test-withdrawal-justification]')
+    make_decision_button = Locator(
+        By.CSS_SELECTOR, 'button.btn.dropdown-toggle.btn-success'
+    )
+    accept_radio_button = Locator(By.CSS_SELECTOR, 'input[value="accepted"]')
+    reject_radio_button = Locator(By.CSS_SELECTOR, 'input[value="rejected"]')
+    withdraw_radio_button = Locator(By.CSS_SELECTOR, 'input[value="withdrawn"]')
+    reason_textarea = Locator(By.CSS_SELECTOR, 'textarea.form-control.ember-text-area')
+    submit_decision_button = Locator(By.ID, 'submit-btn')
+
+    # Group Locators
+    subjects = GroupLocator(
+        By.CSS_SELECTOR,
+        '[class="subject-preview"]',
+    )
+    tags = GroupLocator(By.CSS_SELECTOR, 'div.tag-section.p-t-xs > span')
+
+
+class PendingPreprintDetailPage(PreprintDetailPage):
+    # This class is for preprints that are pending moderation
+    identity = Locator(
+        By.ID,
+        'preprintTitle',
+        settings.LONG_TIMEOUT,
+    )
+
+    # This locator needs a data-test-selector from software devs
+    title = Locator(By.ID, 'preprintTitle', settings.LONG_TIMEOUT)
 
 
 class ReviewsDashboardPage(OSFBasePage):
     url = settings.OSF_HOME + '/reviews'
     identity = Locator(By.CLASS_NAME, '_reviews-dashboard-header_jdu5ey')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    provider_group_links = GroupLocator(
+        By.CSS_SELECTOR, 'li._provider-links-component_gp8jcl'
+    )
+
+    def click_provider_group_link(self, provider_name, link_name):
+        """Search through the Provider Groups in the sidebar on the right side of the
+        Reviews Dashboard page to find the group with the given provider_name.  When
+        the provider group is found, then search through the links in the group for the
+        given link_name. Click this link when found.
+        """
+        for provider_group in self.provider_group_links:
+            group_name = provider_group.find_element_by_css_selector(
+                'span._provider-name_gp8jcl'
+            )
+            if provider_name == group_name.text:
+                links = provider_group.find_elements_by_css_selector(
+                    'ul._provider-links_gp8jcl > li > a'
+                )
+                for link in links:
+                    if link_name in link.text:
+                        link.click()
+                        break
+                break
 
 
 class BaseReviewsPage(OSFBasePage):
@@ -199,28 +373,52 @@ class BaseReviewsPage(OSFBasePage):
 
 
 class ReviewsSubmissionsPage(BaseReviewsPage):
-    identity = Locator(
-        By.CLASS_NAME, '_reviews-list-heading_k45x8p', settings.LONG_TIMEOUT
-    )
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
     no_submissions = Locator(
         By.CSS_SELECTOR,
         'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
     )
+    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    withdrawal_requests_tab = Locator(
+        By.CSS_SELECTOR,
+        'div._flex-container_hcnzoe > div:nth-child(3) > ul > li:nth-child(2) > a',
+    )
+    submissions = GroupLocator(By.CSS_SELECTOR, 'div._moderation-list-row_xkm0pa')
+
+    def click_submission_row(self, provider_id, preprint_id):
+        """Search through the rows of submitted preprints on the Reviews Submissions
+        page to find the preprint that has the given preprint_id in its url. When the
+        row is found click it to open the Preprint Detail page for that preprint.
+        """
+        for row in self.submissions:
+            url = row.find_element_by_css_selector('a').get_attribute('href')
+            node_id = url.split(provider_id + '/', 1)[1]
+            if node_id == preprint_id:
+                row.click()
+                break
 
 
 class ReviewsWithdrawalsPage(BaseReviewsPage):
     url_addition = 'withdrawals'
     identity = Locator(By.CLASS_NAME, '_reviews-list-heading_k45x8p')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
-    no_requests = Locator(
-        By.CSS_SELECTOR,
-        'div._reviews-list-body_k45x8p > div.text-center.p-v-md._moderation-list-row_xkm0pa',
-    )
+    requests = GroupLocator(By.CSS_SELECTOR, 'div._moderation-list-row_17iwzt')
+
+    def click_requests_row(self, provider_id, preprint_id):
+        """Search through the rows of requests on the Reviews Withdrawal Requests
+        page to find the preprint that has the given preprint_id in its url. When the
+        row is found click it to open the Preprint Detail page for that preprint.
+        """
+        for row in self.requests:
+            url = row.find_element_by_css_selector('a').get_attribute('href')
+            node_id = url.split(provider_id + '/', 1)[1]
+            if node_id == preprint_id:
+                row.find_element_by_css_selector('div[title]').click()
+                break
 
 
 class ReviewsModeratorsPage(BaseReviewsPage):
-    url_addition = 'moderators'
+    url_addition = '/moderators'
     identity = Locator(By.CLASS_NAME, 'moderator-list-row')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
 
@@ -235,3 +433,11 @@ class ReviewsSettingsPage(BaseReviewsPage):
     url_addition = 'settings'
     identity = Locator(By.CLASS_NAME, '_reviews-settings_1r3x0j')
     loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+
+
+class PreprintPageNotFoundPage(OSFBasePage):
+    identity = Locator(By.CSS_SELECTOR, '[data-analytics-scope="404"]')
+    page_header = Locator(
+        By.CSS_SELECTOR,
+        '[data-analytics-scope="404"] > h2',
+    )
