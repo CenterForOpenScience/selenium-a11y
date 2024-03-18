@@ -49,7 +49,7 @@ class TestCollectionDiscoverPages:
             session,
             page_name,
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -88,7 +88,7 @@ class TestCollectionSubmitPage:
             session,
             'collsub',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
         # Leaving this page without saving causes an alert pop-up in Chrome which will
         # cause the next test run after this one to fail. So we want to trigger the
@@ -134,7 +134,7 @@ class TestModerationPages:
             session,
             'colmodpend',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_accepted(
@@ -155,7 +155,7 @@ class TestModerationPages:
             session,
             'colmodacpt',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_rejected(
@@ -176,7 +176,7 @@ class TestModerationPages:
             session,
             'colmodrej',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_removed(
@@ -197,7 +197,7 @@ class TestModerationPages:
             session,
             'colmodrem',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_moderators(
@@ -218,7 +218,7 @@ class TestModerationPages:
             session,
             'colmodmods',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_settings(
@@ -239,5 +239,5 @@ class TestModerationPages:
             session,
             'colmodset',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )

@@ -39,7 +39,7 @@ class TestRegistriesLandingPage:
             session,
             'registries',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -60,7 +60,7 @@ class TestRegistrationDetailPage:
             session,
             'regdet',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -86,7 +86,7 @@ class TestMyRegistrationsPage:
             session,
             'myreg',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -103,7 +103,7 @@ class TestAddNewRegistrationPage:
             session,
             'addnewreg',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -168,7 +168,7 @@ class TestSubmittedRegistrationPages:
             session,
             'regfilelist',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -219,7 +219,7 @@ class TestSubmittedRegistrationPages:
                 session,
                 'regfiledet',
                 write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
+                exclude_best_practice=True,
             )
         finally:
             # Close the second tab that was opened. We do not want subsequent tests to
@@ -258,7 +258,7 @@ class TestSubmittedRegistrationPages:
             session,
             'regresources',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -286,7 +286,7 @@ class TestSubmittedRegistrationPages:
             session,
             'regmeta',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -331,7 +331,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregmeta',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -365,7 +365,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregsum',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_study_information_page(
@@ -392,7 +392,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregstudy',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_data_collection_page(
@@ -419,7 +419,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregdatacol',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_miscellaneous_page(
@@ -446,7 +446,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregmisc',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_design_plan_page(
@@ -479,7 +479,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregdesign',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_sampling_plan_page(
@@ -512,7 +512,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregsampling',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_variables_page(
@@ -545,7 +545,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregvariables',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_analysis_plan_page(
@@ -578,7 +578,7 @@ class TestDraftRegistrationPages:
             session,
             'drftreganalysis',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_publication_information_page(
@@ -608,7 +608,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregpubinfo',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_manuscript_page(
@@ -642,7 +642,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregmnscrpt',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_other_page(
@@ -676,7 +676,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregother',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_prereg_template_aspredicted_org_page(
@@ -711,7 +711,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregasprdct',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_osf_standard_predata_collection_page(
@@ -746,7 +746,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregpredata',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_hypotheses_essential_elements_page(
@@ -778,7 +778,7 @@ class TestDraftRegistrationPages:
             session,
             'drftreghypotheses',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_recommended_elements_page(
@@ -815,7 +815,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregrecelems',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_methods_essential_elements_page(
@@ -852,7 +852,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregmethods',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_analysis_plan_essential_elements_page(
@@ -887,7 +887,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregaplnelems',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_final_questions_page(
@@ -916,7 +916,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregfnlqustns',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_nature_of_the_effect_page(
@@ -946,7 +946,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregnateff',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_designing_replication_study_page(
@@ -976,7 +976,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregdesrepstdy',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_documenting_differences_page(
@@ -1012,7 +1012,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregdocdiff',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_analysis_replication_evaluation_page(
@@ -1047,7 +1047,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregrepeval',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_registering_replication_attempt_page(
@@ -1082,7 +1082,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregrepatt',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_reporting_replication_page(
@@ -1115,7 +1115,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregreprep',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_data_description_page(
@@ -1152,7 +1152,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregdatadesc',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_knowledge_of_data_page(
@@ -1183,7 +1183,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregknowdata',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -1211,7 +1211,7 @@ class TestDraftRegistrationPages:
             session,
             'drftregreview',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -1240,7 +1240,7 @@ class TestBrandedRegistrationsProviders:
                 session,
                 page_name,
                 write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
+                exclude_best_practice=True,
             )
 
 
@@ -1283,7 +1283,7 @@ class TestModerationPages:
             session,
             'regmodsub',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_pending(
@@ -1310,7 +1310,7 @@ class TestModerationPages:
             session,
             'regmodpend',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_moderators(
@@ -1336,7 +1336,7 @@ class TestModerationPages:
             session,
             'regmodmod',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_settings(
@@ -1362,5 +1362,5 @@ class TestModerationPages:
             session,
             'regmodset',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )

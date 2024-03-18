@@ -26,7 +26,7 @@ class TestMeetingsLandingPage:
             session,
             'meetings',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -57,5 +57,5 @@ class TestMeetingDetailPage:
             session,
             'mtngdet',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )

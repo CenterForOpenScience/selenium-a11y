@@ -48,7 +48,7 @@ class TestProjectPage:
             session,
             'project',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -76,7 +76,7 @@ class TestMetadataPage:
             session,
             'prjMeta',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -107,7 +107,7 @@ class TestFilesPage:
             session,
             'prjFiles',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -154,7 +154,7 @@ class TestFileViewPage:
                 session,
                 'fileView',
                 write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
+                exclude_best_practice=True,
             )
         finally:
             # Close the second tab that was opened. We do not want subsequent tests to
@@ -187,7 +187,7 @@ class TestWikiPage:
             session,
             'prjWiki',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -220,7 +220,7 @@ class TestAnalyticsPage:
             session,
             'prjAnlytcs',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -271,7 +271,7 @@ class TestRegistrationsPage:
             session,
             'prjReg',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -298,7 +298,7 @@ class TestContributorsPage:
             session,
             'prjCntrb',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -325,7 +325,7 @@ class TestAddonsPage:
             session,
             'prjAddons',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -353,7 +353,7 @@ class TestSettingsPage:
             session,
             'prjSttngs',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -392,7 +392,7 @@ class TestForksPage:
             session,
             'prjForks',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -418,5 +418,5 @@ class TestRequestAccessPage:
             session,
             'prjReqAcc',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )

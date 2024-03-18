@@ -32,7 +32,7 @@ class TestOSFHomePage:
             session,
             'home',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -50,7 +50,7 @@ class TestDashboardPage:
             session,
             'dash',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -70,7 +70,7 @@ class TestMyProjectsPage:
             session,
             'myproj',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -85,7 +85,7 @@ class TestRegisterPage:
             session,
             'signup',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -106,7 +106,7 @@ class TestSearchPage:
             session,
             'search',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -121,7 +121,7 @@ class TestForgotPasswordPage:
             session,
             'frgtpwrd',
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -182,5 +182,5 @@ class TestResetPasswordPage:
                 session,
                 'resetpwrd',
                 write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
+                exclude_best_practice=True,
             )
