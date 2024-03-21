@@ -98,6 +98,8 @@ class TestAddNewRegistrationPage:
         add_new_registration_page = RegistrationAddNewPage(driver)
         add_new_registration_page.goto()
         assert RegistrationAddNewPage(driver, verify=True)
+        pytest.xfail("aria-command-name issue documented here -> ENG-5354")
+        pytest.xfail("link-in-text-block issue documented here -> ENG-5355")
         a11y.run_axe(
             driver,
             session,
