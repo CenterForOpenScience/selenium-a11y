@@ -106,6 +106,7 @@ EXPECTED_PROVIDERS = env.list(
 # UPDATE 10/13/2023 - After the Search Improvements project release, OSF and other providers
 # that have moved away from OSF now redirect to https://osf.io/search?q=&resourceType=Preprint&q=
 providers_leaving_OSF = ['ecoevorxiv', 'engrxiv', 'livedata', 'osf']
+non_branded_registries = ['osf', 'assessment']
 
 OSF_HOME = domains[DOMAIN]['home']
 API_DOMAIN = domains[DOMAIN]['api']

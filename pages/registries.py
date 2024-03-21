@@ -31,7 +31,7 @@ class BaseRegistriesPage(OSFBasePage):
 
 class RegistriesLandingPage(BaseRegistriesPage):
     identity = Locator(
-        By.CSS_SELECTOR, '._RegistriesHeader_3zbd8x', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR, '[data-test-registries-list-paragraph]', settings.LONG_TIMEOUT
     )
     search_box = Locator(By.ID, 'search')
 
