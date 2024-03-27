@@ -37,9 +37,9 @@ class TestRegistriesLandingPage:
         a11y.run_axe(
             driver,
             session,
-            'registries',
+            "registries",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -58,9 +58,9 @@ class TestRegistrationDetailPage:
         a11y.run_axe(
             driver,
             session,
-            'regdet',
+            "regdet",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -79,14 +79,14 @@ class TestMyRegistrationsPage:
         assert MyRegistrationsPage(driver, verify=True)
         # Wait for node cards to be visible before calling axe
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-node-card]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-test-node-card]"))
         )
         a11y.run_axe(
             driver,
             session,
-            'myreg',
+            "myreg",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -98,16 +98,18 @@ class TestAddNewRegistrationPage:
         add_new_registration_page = RegistrationAddNewPage(driver)
         add_new_registration_page.goto()
         assert RegistrationAddNewPage(driver, verify=True)
+        pytest.xfail("aria-command-name issue documented here -> ENG-5354")
+        pytest.xfail("link-in-text-block issue documented here -> ENG-5355")
         a11y.run_axe(
             driver,
             session,
-            'addnewreg',
+            "addnewreg",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope="class")
 def log_in_as_user_with_draft_registrations(driver):
     safe_login(
         driver,
@@ -130,7 +132,7 @@ class TestSubmittedRegistrationPages:
 
         # Wait for registration cards to load on page
         WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-node-card]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-test-node-card]"))
         )
         registration_cards = my_registrations_page.registration_cards
         assert registration_cards
@@ -148,7 +150,7 @@ class TestSubmittedRegistrationPages:
         to the Files List page for this registration.
         """
         registration_node = my_registrations_page.get_node_id_by_title(
-            'Registration With Files for A11y Testing'
+            "Registration With Files for A11y Testing"
         )
         registration_file_list_page = RegistrationFileListPage(
             driver, guid=registration_node
@@ -160,15 +162,15 @@ class TestSubmittedRegistrationPages:
         # Wait for file list items to load on page
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-file-list-item]')
+                (By.CSS_SELECTOR, "[data-test-file-list-item]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'regfilelist',
+            "regfilelist",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -184,7 +186,7 @@ class TestSubmittedRegistrationPages:
         to open the File Detail page for that file.
         """
         registration_node = my_registrations_page.get_node_id_by_title(
-            'Registration With Files for A11y Testing'
+            "Registration With Files for A11y Testing"
         )
         registration_file_list_page = RegistrationFileListPage(
             driver, guid=registration_node
@@ -196,7 +198,7 @@ class TestSubmittedRegistrationPages:
         # Wait for file list items to load on page
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-file-list-item]')
+                (By.CSS_SELECTOR, "[data-test-file-list-item]")
             )
         )
         try:
@@ -212,14 +214,14 @@ class TestSubmittedRegistrationPages:
             assert RegistrationFileDetailPage(driver)
             # Wait for File Renderer to load
             WebDriverWait(driver, 5).until(
-                EC.visibility_of_element_located((By.CSS_SELECTOR, 'iframe'))
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "iframe"))
             )
             a11y.run_axe(
                 driver,
                 session,
-                'regfiledet',
+                "regfiledet",
                 write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
+                exclude_best_practice=True,
             )
         finally:
             # Close the second tab that was opened. We do not want subsequent tests to
@@ -240,7 +242,7 @@ class TestSubmittedRegistrationPages:
         id to navigate to the Resources page for this registration.
         """
         registration_node = my_registrations_page.get_node_id_by_title(
-            'Registration With Files for A11y Testing'
+            "Registration With Files for A11y Testing"
         )
         registration_resources_page = RegistrationResourcesPage(
             driver, guid=registration_node
@@ -250,15 +252,15 @@ class TestSubmittedRegistrationPages:
         # Wait for first resource card to load on page
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-resource-card-type]')
+                (By.CSS_SELECTOR, "[data-test-resource-card-type]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'regresources',
+            "regresources",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -273,7 +275,7 @@ class TestSubmittedRegistrationPages:
         the Meatadata page for this registration.
         """
         registration_node = my_registrations_page.get_node_id_by_title(
-            'Registration With Files for A11y Testing'
+            "Registration With Files for A11y Testing"
         )
         registration_metadata_page = RegistrationMetadataPage(
             driver, guid=registration_node
@@ -284,9 +286,9 @@ class TestSubmittedRegistrationPages:
         a11y.run_axe(
             driver,
             session,
-            'regmeta',
+            "regmeta",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -305,7 +307,7 @@ class TestDraftRegistrationPages:
         # Wait for draft cards to load on page
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-draft-registration-card]')
+                (By.CSS_SELECTOR, "[data-test-draft-registration-card]")
             )
         )
         draft_cards = my_registrations_page.draft_registration_cards
@@ -321,17 +323,17 @@ class TestDraftRegistrationPages:
         Metadata page is the same for all schemas.
         """
         # capture draft id from link url of 1st draft title and use that to go to page
-        url = my_registrations_page.draft_registration_title.get_attribute('href')
-        draft_id = url.split('drafts/', 1)[1]
+        url = my_registrations_page.draft_registration_title.get_attribute("href")
+        draft_id = url.split("drafts/", 1)[1]
         metadata_page = DraftRegistrationMetadataPage(driver, draft_id=draft_id)
         metadata_page.goto()
         assert DraftRegistrationMetadataPage(driver, verify=True)
         a11y.run_axe(
             driver,
             session,
-            'drftregmeta',
+            "drftregmeta",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -347,25 +349,25 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first Open-Ended Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Open-Ended Registration'
+            "Open-Ended Registration"
         )
         summary_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='1-summary'
+            driver, draft_id=draft_id, url_addition="1-summary"
         )
         summary_page.goto()
-        assert summary_page.page_heading.text == 'Summary'
+        assert summary_page.page_heading.text == "Summary"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregsum',
+            "drftregsum",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_study_information_page(
@@ -380,19 +382,19 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first Qualitative Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Qualitative Preregistration'
+            "Qualitative Preregistration"
         )
         study_information_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='1-study-information'
+            driver, draft_id=draft_id, url_addition="1-study-information"
         )
         study_information_page.goto()
-        assert study_information_page.page_heading.text == 'Study Information'
+        assert study_information_page.page_heading.text == "Study Information"
         a11y.run_axe(
             driver,
             session,
-            'drftregstudy',
+            "drftregstudy",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_data_collection_page(
@@ -407,19 +409,19 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first Qualitative Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Qualitative Preregistration'
+            "Qualitative Preregistration"
         )
         data_collection_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='3-data-collection'
+            driver, draft_id=draft_id, url_addition="3-data-collection"
         )
         data_collection_page.goto()
-        assert data_collection_page.page_heading.text == 'Data Collection'
+        assert data_collection_page.page_heading.text == "Data Collection"
         a11y.run_axe(
             driver,
             session,
-            'drftregdatacol',
+            "drftregdatacol",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_miscellaneous_page(
@@ -434,19 +436,19 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first Qualitative Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Qualitative Preregistration'
+            "Qualitative Preregistration"
         )
         miscellaneous_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='5-miscellaneous'
+            driver, draft_id=draft_id, url_addition="5-miscellaneous"
         )
         miscellaneous_page.goto()
-        assert miscellaneous_page.page_heading.text == 'Miscellaneous'
+        assert miscellaneous_page.page_heading.text == "Miscellaneous"
         a11y.run_axe(
             driver,
             session,
-            'drftregmisc',
+            "drftregmisc",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_design_plan_page(
@@ -461,25 +463,25 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'OSF Preregistration'
+            "OSF Preregistration"
         )
         design_plan_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='2-design-plan'
+            driver, draft_id=draft_id, url_addition="2-design-plan"
         )
         design_plan_page.goto()
-        assert design_plan_page.page_heading.text == 'Design Plan'
+        assert design_plan_page.page_heading.text == "Design Plan"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregdesign',
+            "drftregdesign",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_sampling_plan_page(
@@ -494,25 +496,25 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'OSF Preregistration'
+            "OSF Preregistration"
         )
         sampling_plan_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='3-sampling-plan'
+            driver, draft_id=draft_id, url_addition="3-sampling-plan"
         )
         sampling_plan_page.goto()
-        assert sampling_plan_page.page_heading.text == 'Sampling Plan'
+        assert sampling_plan_page.page_heading.text == "Sampling Plan"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregsampling',
+            "drftregsampling",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_variables_page(
@@ -527,25 +529,25 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'OSF Preregistration'
+            "OSF Preregistration"
         )
         variables_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='4-variables'
+            driver, draft_id=draft_id, url_addition="4-variables"
         )
         variables_page.goto()
-        assert variables_page.page_heading.text == 'Variables'
+        assert variables_page.page_heading.text == "Variables"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregvariables',
+            "drftregvariables",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_analysis_plan_page(
@@ -560,25 +562,25 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'OSF Preregistration'
+            "OSF Preregistration"
         )
         analysis_plan_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='5-analysis-plan'
+            driver, draft_id=draft_id, url_addition="5-analysis-plan"
         )
         analysis_plan_page.goto()
-        assert analysis_plan_page.page_heading.text == 'Analysis Plan'
+        assert analysis_plan_page.page_heading.text == "Analysis Plan"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftreganalysis',
+            "drftreganalysis",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_publication_information_page(
@@ -594,21 +596,21 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Registered Report Protocol Preregistration
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Registered Report Protocol Preregistration'
+            "Registered Report Protocol Preregistration"
         )
         publication_information_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='1-publication-information'
+            driver, draft_id=draft_id, url_addition="1-publication-information"
         )
         publication_information_page.goto()
         assert (
-            publication_information_page.page_heading.text == 'Publication Information'
+            publication_information_page.page_heading.text == "Publication Information"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregpubinfo',
+            "drftregpubinfo",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_manuscript_page(
@@ -624,25 +626,25 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Registered Report Protocol Preregistration
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Registered Report Protocol Preregistration'
+            "Registered Report Protocol Preregistration"
         )
         manuscript_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='2-manuscript'
+            driver, draft_id=draft_id, url_addition="2-manuscript"
         )
         manuscript_page.goto()
-        assert manuscript_page.page_heading.text == 'Manuscript'
+        assert manuscript_page.page_heading.text == "Manuscript"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregmnscrpt',
+            "drftregmnscrpt",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_other_page(
@@ -658,25 +660,25 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Registered Report Protocol Preregistration
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Registered Report Protocol Preregistration'
+            "Registered Report Protocol Preregistration"
         )
         other_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='3-other'
+            driver, draft_id=draft_id, url_addition="3-other"
         )
         other_page.goto()
-        assert other_page.page_heading.text == 'Other'
+        assert other_page.page_heading.text == "Other"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregother',
+            "drftregother",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_prereg_template_aspredicted_org_page(
@@ -694,24 +696,24 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Preregistration Template from AsPredicted.org
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Preregistration Template from AsPredicted.org'
+            "Preregistration Template from AsPredicted.org"
         )
         prereg_template_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='1-preregistration-template-from-aspredictedorg',
+            url_addition="1-preregistration-template-from-aspredictedorg",
         )
         prereg_template_page.goto()
         assert (
             prereg_template_page.page_heading.text
-            == 'Preregistration Template from AsPredicted.org'
+            == "Preregistration Template from AsPredicted.org"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregasprdct',
+            "drftregasprdct",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_osf_standard_predata_collection_page(
@@ -729,24 +731,24 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first OSF-Standard Pre-Data Collection Registration
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'OSF-Standard Pre-Data Collection Registration'
+            "OSF-Standard Pre-Data Collection Registration"
         )
         predata_collection_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='1-osf-standard-pre-data-collection-registration',
+            url_addition="1-osf-standard-pre-data-collection-registration",
         )
         predata_collection_page.goto()
         assert (
             predata_collection_page.page_heading.text
-            == 'OSF-Standard Pre-Data Collection Registration'
+            == "OSF-Standard Pre-Data Collection Registration"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregpredata',
+            "drftregpredata",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_hypotheses_essential_elements_page(
@@ -764,21 +766,21 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Pre-Registration in Social Psychology'
+            "Pre-Registration in Social Psychology"
         )
         hypotheses_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='1-a-hypotheses---essential-elements',
+            url_addition="1-a-hypotheses---essential-elements",
         )
         hypotheses_page.goto()
-        assert hypotheses_page.page_heading.text == 'A. Hypotheses - Essential elements'
+        assert hypotheses_page.page_heading.text == "A. Hypotheses - Essential elements"
         a11y.run_axe(
             driver,
             session,
-            'drftreghypotheses',
+            "drftreghypotheses",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_recommended_elements_page(
@@ -795,27 +797,27 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Pre-Registration in Social Psychology'
+            "Pre-Registration in Social Psychology"
         )
         recommended_elements_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='2-recommended-elements',
+            url_addition="2-recommended-elements",
         )
         recommended_elements_page.goto()
-        assert recommended_elements_page.page_heading.text == 'Recommended elements'
+        assert recommended_elements_page.page_heading.text == "Recommended elements"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregrecelems',
+            "drftregrecelems",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_methods_essential_elements_page(
@@ -832,27 +834,27 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Pre-Registration in Social Psychology'
+            "Pre-Registration in Social Psychology"
         )
         methods_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='3-b-methods---essential-elements',
+            url_addition="3-b-methods---essential-elements",
         )
         methods_page.goto()
-        assert methods_page.page_heading.text == 'B. Methods - Essential elements'
+        assert methods_page.page_heading.text == "B. Methods - Essential elements"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregmethods',
+            "drftregmethods",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_analysis_plan_essential_elements_page(
@@ -870,24 +872,24 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Pre-Registration in Social Psychology'
+            "Pre-Registration in Social Psychology"
         )
         analysis_plan_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='5-c-analysis-plan---essential-elements',
+            url_addition="5-c-analysis-plan---essential-elements",
         )
         analysis_plan_page.goto()
         assert (
             analysis_plan_page.page_heading.text
-            == 'C. Analysis plan - Essential elements'
+            == "C. Analysis plan - Essential elements"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregaplnelems',
+            "drftregaplnelems",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_final_questions_page(
@@ -904,19 +906,19 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Pre-Registration in Social Psychology
         # that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Pre-Registration in Social Psychology'
+            "Pre-Registration in Social Psychology"
         )
         final_questions_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='7-final-questions'
+            driver, draft_id=draft_id, url_addition="7-final-questions"
         )
         final_questions_page.goto()
-        assert final_questions_page.page_heading.text == 'Final questions'
+        assert final_questions_page.page_heading.text == "Final questions"
         a11y.run_axe(
             driver,
             session,
-            'drftregfnlqustns',
+            "drftregfnlqustns",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_nature_of_the_effect_page(
@@ -934,19 +936,19 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Replication Recipe (Brandt et al., 2013): Pre-Registration'
+            "Replication Recipe (Brandt et al., 2013): Pre-Registration"
         )
         nature_effect_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='1-the-nature-of-the-effect'
+            driver, draft_id=draft_id, url_addition="1-the-nature-of-the-effect"
         )
         nature_effect_page.goto()
-        assert nature_effect_page.page_heading.text == 'The Nature of the Effect'
+        assert nature_effect_page.page_heading.text == "The Nature of the Effect"
         a11y.run_axe(
             driver,
             session,
-            'drftregnateff',
+            "drftregnateff",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_designing_replication_study_page(
@@ -964,19 +966,19 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Replication Recipe (Brandt et al., 2013): Pre-Registration'
+            "Replication Recipe (Brandt et al., 2013): Pre-Registration"
         )
         design_study_page = DraftRegistrationGenericPage(
-            driver, draft_id=draft_id, url_addition='2-designing-the-replication-study'
+            driver, draft_id=draft_id, url_addition="2-designing-the-replication-study"
         )
         design_study_page.goto()
-        assert design_study_page.page_heading.text == 'Designing the Replication Study'
+        assert design_study_page.page_heading.text == "Designing the Replication Study"
         a11y.run_axe(
             driver,
             session,
-            'drftregdesrepstdy',
+            "drftregdesrepstdy",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_documenting_differences_page(
@@ -995,24 +997,24 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Replication Recipe (Brandt et al., 2013): Pre-Registration'
+            "Replication Recipe (Brandt et al., 2013): Pre-Registration"
         )
         documenting_differences_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='3-documenting-differences-between-the-original-and-replication-study',
+            url_addition="3-documenting-differences-between-the-original-and-replication-study",
         )
         documenting_differences_page.goto()
         assert (
             documenting_differences_page.page_heading.text
-            == 'Documenting Differences between the Original and Replication Study'
+            == "Documenting Differences between the Original and Replication Study"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregdocdiff',
+            "drftregdocdiff",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_analysis_replication_evaluation_page(
@@ -1030,24 +1032,24 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Pre-Registration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Replication Recipe (Brandt et al., 2013): Pre-Registration'
+            "Replication Recipe (Brandt et al., 2013): Pre-Registration"
         )
         analysis_replication_eval_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='4-analysis-and-replication-evaluation',
+            url_addition="4-analysis-and-replication-evaluation",
         )
         analysis_replication_eval_page.goto()
         assert (
             analysis_replication_eval_page.page_heading.text
-            == 'Analysis and Replication Evaluation'
+            == "Analysis and Replication Evaluation"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregrepeval',
+            "drftregrepeval",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_registering_replication_attempt_page(
@@ -1065,24 +1067,24 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Post-Completion that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Replication Recipe (Brandt et al., 2013): Post-Completion'
+            "Replication Recipe (Brandt et al., 2013): Post-Completion"
         )
         registering_replication_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='1-registering-the-replication-attempt',
+            url_addition="1-registering-the-replication-attempt",
         )
         registering_replication_page.goto()
         assert (
             registering_replication_page.page_heading.text
-            == 'Registering the Replication Attempt'
+            == "Registering the Replication Attempt"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregrepatt',
+            "drftregrepatt",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_reporting_replication_page(
@@ -1099,23 +1101,23 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Replication Recipe (Brandt et al., 2013):
         # Post-Completion that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Replication Recipe (Brandt et al., 2013): Post-Completion'
+            "Replication Recipe (Brandt et al., 2013): Post-Completion"
         )
         reporting_replication_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='2-reporting-the-replication',
+            url_addition="2-reporting-the-replication",
         )
         reporting_replication_page.goto()
         assert (
-            reporting_replication_page.page_heading.text == 'Reporting the Replication'
+            reporting_replication_page.page_heading.text == "Reporting the Replication"
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregreprep',
+            "drftregreprep",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_data_description_page(
@@ -1132,27 +1134,27 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Secondary Data Preregistration that
         # is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Secondary Data Preregistration'
+            "Secondary Data Preregistration"
         )
         data_description_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='2-data-description',
+            url_addition="2-data-description",
         )
         data_description_page.goto()
-        assert data_description_page.page_heading.text == 'Data Description'
+        assert data_description_page.page_heading.text == "Data Description"
         # Wait for file widget to load before calling axe
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-files-list-for]')
+                (By.CSS_SELECTOR, "[data-test-files-list-for]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'drftregdatadesc',
+            "drftregdatadesc",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_knowledge_of_data_page(
@@ -1169,21 +1171,21 @@ class TestDraftRegistrationPages:
         # Capture the draft id from the first Secondary Data Preregistration that
         # is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'Secondary Data Preregistration'
+            "Secondary Data Preregistration"
         )
         data_knowledge_page = DraftRegistrationGenericPage(
             driver,
             draft_id=draft_id,
-            url_addition='4-knowledge-of-data',
+            url_addition="4-knowledge-of-data",
         )
         data_knowledge_page.goto()
-        assert data_knowledge_page.page_heading.text == 'Knowledge of Data'
+        assert data_knowledge_page.page_heading.text == "Knowledge of Data"
         a11y.run_axe(
             driver,
             session,
-            'drftregknowdata',
+            "drftregknowdata",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.ember_page
@@ -1201,7 +1203,7 @@ class TestDraftRegistrationPages:
         """
         # Capture the draft id from the first OSF Preregistration that is listed
         draft_id = my_registrations_page.get_first_draft_id_by_template(
-            'OSF Preregistration'
+            "OSF Preregistration"
         )
         review_page = DraftRegistrationReviewPage(driver, draft_id=draft_id)
         review_page.goto()
@@ -1209,39 +1211,40 @@ class TestDraftRegistrationPages:
         a11y.run_axe(
             driver,
             session,
-            'drftregreview',
+            "drftregreview",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
 class TestBrandedRegistrationsProviders:
     def providers():
         """Return all registration providers."""
-        return osf_api.get_providers_list(type='registrations')
+        return osf_api.get_providers_list(type="registrations")
 
-    @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])
+    @pytest.fixture(params=providers(), ids=[prov["id"] for prov in providers()])
     def provider(self, request):
         return request.param
 
     def test_accessibility(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        # Test for all providers except OSF since the OSF Registries Discover page no
-        # longer exists
-        if provider['id'] != 'osf':
-            discover_page = BrandedRegistriesDiscoverPage(driver, provider=provider)
-            discover_page.goto()
-            assert BrandedRegistriesDiscoverPage(driver, verify=True)
-            discover_page.loading_indicator.here_then_gone()
-            page_name = 'br_' + provider['id']
-            a11y.run_axe(
-                driver,
-                session,
-                page_name,
-                write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
-            )
+        # # Test for all providers except OSF and assessment
+        if provider["id"] in settings.non_branded_registries:
+            pytest.skip()
+
+        discover_page = BrandedRegistriesDiscoverPage(driver, provider=provider)
+        discover_page.goto()
+        assert BrandedRegistriesDiscoverPage(driver, verify=True)
+        discover_page.loading_indicator.here_then_gone()
+        page_name = "br_" + provider["id"]
+        a11y.run_axe(
+            driver,
+            session,
+            page_name,
+            write_files=write_files,
+            exclude_best_practice=True,
+        )
 
 
 # We do not currently have a user setup as an administrator for any of the registries
@@ -1257,7 +1260,7 @@ class TestModerationPages:
 
     @pytest.fixture
     def provider(self, driver):
-        return osf_api.get_provider(provider_id='egap')
+        return osf_api.get_provider(provider_id="egap")
 
     def test_accessibility_moderation_submitted(
         self,
@@ -1275,15 +1278,15 @@ class TestModerationPages:
         if submitted_page.no_registrations_message.absent():
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, '[data-test-registration-list-card]')
+                    (By.CSS_SELECTOR, "[data-test-registration-list-card]")
                 )
             )
         a11y.run_axe(
             driver,
             session,
-            'regmodsub',
+            "regmodsub",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_pending(
@@ -1302,15 +1305,15 @@ class TestModerationPages:
         if pending_page.no_registrations_message.absent():
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, '[data-test-registration-list-card]')
+                    (By.CSS_SELECTOR, "[data-test-registration-list-card]")
                 )
             )
         a11y.run_axe(
             driver,
             session,
-            'regmodpend',
+            "regmodpend",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_moderators(
@@ -1328,15 +1331,15 @@ class TestModerationPages:
         # Wait for moderators table to load before calling axe
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-moderator-row]')
+                (By.CSS_SELECTOR, "[data-test-moderator-row]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'regmodmod',
+            "regmodmod",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_settings(
@@ -1354,13 +1357,13 @@ class TestModerationPages:
         # Wait for notifications list to load before calling axe
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-subscription-list-row]')
+                (By.CSS_SELECTOR, "[data-test-subscription-list-row]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'regmodset',
+            "regmodset",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )

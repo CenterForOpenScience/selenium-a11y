@@ -71,7 +71,7 @@ class WebElementWrapper:
         """
         self.present()
         if not self.absent():
-            raise ValueError('Element {} is not absent.'.format(self.name))
+            raise ValueError("Element {} is not absent.".format(self.name))
         return True
 
     def click_expecting_popup(self, timeout=settings.TIMEOUT):
@@ -98,7 +98,7 @@ class WebElementWrapper:
         try:
             WebDriverWait(self.driver, timeout).until(EC.number_of_windows_to_be(2))
         except TimeoutException:
-            raise ValueError('No new window was opened.')
+            raise ValueError("No new window was opened.")
         self.driver.close()
         self.driver.switch_to.window(self.driver.window_handles[0])
         self.driver.maximize_window()
@@ -160,7 +160,7 @@ class Locator(BaseLocator):
             )
         except (TimeoutException, StaleElementReferenceException):
             raise ValueError(
-                'Element {} not present on page. {}'.format(
+                "Element {} not present on page. {}".format(
                     attribute_name, driver.current_url
                 )
             ) from None
@@ -171,7 +171,7 @@ class Locator(BaseLocator):
             )
         except (TimeoutException, StaleElementReferenceException):
             raise ValueError(
-                'Element {} not visible before timeout. {}'.format(
+                "Element {} not visible before timeout. {}".format(
                     attribute_name, driver.current_url
                 )
             ) from None
@@ -182,19 +182,19 @@ class Locator(BaseLocator):
             )
         except (TimeoutException, StaleElementReferenceException):
             raise ValueError(
-                'Element {} not clickable before timeout. {}'.format(
+                "Element {} not clickable before timeout. {}".format(
                     attribute_name, driver.current_url
                 )
             ) from None
 
-        if 'href' in attribute_name:
+        if "href" in attribute_name:
             try:
                 WebDriverWait(driver, self.timeout).until(
                     ec.link_has_href(self.location)
                 )
             except (TimeoutException, StaleElementReferenceException):
                 raise ValueError(
-                    'Element {} on page but does not have a href. {}'.format(
+                    "Element {} on page but does not have a href. {}".format(
                         attribute_name, driver.current_url
                     )
                 ) from None
@@ -202,7 +202,7 @@ class Locator(BaseLocator):
             return driver.find_element(self.selector, self.path)
         except NoSuchElementException:
             raise ValueError(
-                'Element {} was present, but now is gone. {}'.format(
+                "Element {} was present, but now is gone. {}".format(
                     attribute_name, driver.current_url
                 )
             ) from None
@@ -269,7 +269,7 @@ class BaseElement:
         otherwise, instance of the original class on which _new_ was called.
         """
         page = super().__new__(cls)
-        if hasattr(cls, 'waffle_override'):
+        if hasattr(cls, "waffle_override"):
             for waffle_name in cls.waffle_override:
                 if waffle_name in settings.EMBER_PAGES:
                     page = super().__new__(cls.waffle_override[waffle_name])

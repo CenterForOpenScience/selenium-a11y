@@ -12,24 +12,24 @@ class BaseMeetingsPage(OSFBasePage):
 
 
 class MeetingsPage(BaseMeetingsPage):
-    url = settings.OSF_HOME + '/meetings/'
+    url = settings.OSF_HOME + "/meetings/"
 
     identity = Locator(
         By.CSS_SELECTOR, 'img[alt="Logo for OSF meeting"]', settings.VERY_LONG_TIMEOUT
     )
     register_button = Locator(
-        By.CSS_SELECTOR, 'button[data-test-register-button]', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR, "button[data-test-register-button]", settings.LONG_TIMEOUT
     )
-    register_text = Locator(By.CSS_SELECTOR, 'div[data-test-register-panel-text]')
+    register_text = Locator(By.CSS_SELECTOR, "div[data-test-register-panel-text]")
     upload_button = Locator(
-        By.CSS_SELECTOR, 'button[data-test-upload-button]', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR, "button[data-test-upload-button]", settings.LONG_TIMEOUT
     )
-    upload_text = Locator(By.CSS_SELECTOR, 'div[data-test-upload-panel-text]')
+    upload_text = Locator(By.CSS_SELECTOR, "div[data-test-upload-panel-text]")
     top_meeting_link = Locator(
-        By.CSS_SELECTOR, 'div[data-test-meetings-list-item-name] > a'
+        By.CSS_SELECTOR, "div[data-test-meetings-list-item-name] > a"
     )
     filter_input = Locator(
-        By.CSS_SELECTOR, 'div[data-test-meetings-list-search] > div > input'
+        By.CSS_SELECTOR, "div[data-test-meetings-list-search] > div > input"
     )
     sort_caret_name_asc = Locator(
         By.CSS_SELECTOR, 'button[data-test-ascending-sort="name"]'
@@ -37,32 +37,32 @@ class MeetingsPage(BaseMeetingsPage):
     sort_caret_name_desc = Locator(
         By.CSS_SELECTOR, 'button[data-test-descending-sort="name"]'
     )
-    aps_logo = Locator(By.CSS_SELECTOR, ' img[data-test-aps-img]')
-    bitss_logo = Locator(By.CSS_SELECTOR, 'img[data-test-bitss-img]')
-    nrao_logo = Locator(By.CSS_SELECTOR, 'img[data-test-nrao-img]')
-    spsp_logo = Locator(By.CSS_SELECTOR, 'img[data-test-spsp-img]')
+    aps_logo = Locator(By.CSS_SELECTOR, " img[data-test-aps-img]")
+    bitss_logo = Locator(By.CSS_SELECTOR, "img[data-test-bitss-img]")
+    nrao_logo = Locator(By.CSS_SELECTOR, "img[data-test-nrao-img]")
+    spsp_logo = Locator(By.CSS_SELECTOR, "img[data-test-spsp-img]")
     skeleton_row = Locator(
-        By.CSS_SELECTOR, 'div[data-test-ember-content-placeholders-text-line]'
+        By.CSS_SELECTOR, "div[data-test-ember-content-placeholders-text-line]"
     )
 
 
 class MeetingDetailPage(BaseMeetingsPage):
     # test url functionality
-    url = settings.OSF_HOME + '/view/'
+    url = settings.OSF_HOME + "/view/"
 
     identity = Locator(
-        By.CSS_SELECTOR, 'div._toggle-button-and-homepage-link-container_1h8tly'
+        By.CSS_SELECTOR, "div._toggle-button-and-homepage-link-container_1h8tly"
     )
-    meeting_title = Locator(By.CSS_SELECTOR, 'h1[data-test-meeting-name]')
+    meeting_title = Locator(By.CSS_SELECTOR, "h1[data-test-meeting-name]")
     entry_download_button = Locator(
         By.CSS_SELECTOR,
-        'li.list-group-item:nth-child(2) > div:nth-child(5) > button:nth-child(1)',
+        "li.list-group-item:nth-child(2) > div:nth-child(5) > button:nth-child(1)",
     )
     first_entry_link = Locator(
         By.CSS_SELECTOR,
-        'li.list-group-item:nth-child(2) > div:nth-child(1) > a:nth-child(1)',
+        "li.list-group-item:nth-child(2) > div:nth-child(1) > a:nth-child(1)",
     )
-    title = Locator(By.CSS_SELECTOR, '#nodeTitleEditable', settings.LONG_TIMEOUT)
+    title = Locator(By.CSS_SELECTOR, "#nodeTitleEditable", settings.LONG_TIMEOUT)
     filter_input = Locator(By.CSS_SELECTOR, 'input[placeholder="Search"]')
     sort_caret_title_asc = Locator(
         By.CSS_SELECTOR, 'button[data-test-ascending-sort="title"]'

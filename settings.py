@@ -4,174 +4,191 @@ env = Env()
 env.read_env()  # Read .env into os.environ, if it exists
 
 domains = {
-    'stage1': {
-        'home': 'https://staging.osf.io',
-        'api': 'https://api.staging.osf.io',
-        'files': 'https://files.us.staging.osf.io',
-        'cas': 'https://accounts.staging.osf.io',
-        'custom_institution_domains': ['https://staging-osf-nd.cos.io'],
+    "stage1": {
+        "home": "https://staging.osf.io",
+        "api": "https://api.staging.osf.io",
+        "files": "https://files.us.staging.osf.io",
+        "cas": "https://accounts.staging.osf.io",
+        "custom_institution_domains": ["https://staging-osf-nd.cos.io"],
     },
-    'stage2': {
-        'home': 'https://staging2.osf.io',
-        'api': 'https://api.staging2.osf.io',
-        'files': 'https://files.us.staging2.osf.io',
-        'cas': 'https://accounts.staging2.osf.io',
-        'custom_institution_domains': [],
+    "stage2": {
+        "home": "https://staging2.osf.io",
+        "api": "https://api.staging2.osf.io",
+        "files": "https://files.us.staging2.osf.io",
+        "cas": "https://accounts.staging2.osf.io",
+        "custom_institution_domains": [],
     },
-    'stage3': {
-        'home': 'https://staging3.osf.io',
-        'api': 'https://api.staging3.osf.io',
-        'files': 'https://files.us.staging3.osf.io',
-        'cas': 'https://accounts.staging3.osf.io',
-        'custom_institution_domains': [],
+    "stage3": {
+        "home": "https://staging3.osf.io",
+        "api": "https://api.staging3.osf.io",
+        "files": "https://files.us.staging3.osf.io",
+        "cas": "https://accounts.staging3.osf.io",
+        "custom_institution_domains": [],
     },
-    'test': {
-        'home': 'https://test.osf.io',
-        'api': 'https://api.test.osf.io',
-        'files': 'https://files.us.test.osf.io',
-        'cas': 'https://accounts.test.osf.io',
-        'custom_institution_domains': [],
+    "test": {
+        "home": "https://test.osf.io",
+        "api": "https://api.test.osf.io",
+        "files": "https://files.us.test.osf.io",
+        "cas": "https://accounts.test.osf.io",
+        "custom_institution_domains": [],
     },
-    'prod': {
-        'home': 'https://osf.io',
-        'api': 'https://api.osf.io',
-        'files': 'https://files.osf.io',
-        'cas': 'https://accounts.osf.io',
-        'custom_institution_domains': [
-            'https://open.uwstout.edu',
-            'https://osf.arizona.edu',
-            'https://osf.asu.edu',
-            'https://osf.fsu.edu',
-            'https://osf.jmu.edu',
-            'https://osf.nd.edu',
-            'https://osf.nyu.edu',
-            'https://osf.sc.edu',
-            'https://osf.uc.edu',
-            'https://osf.usc.edu',
-            'https://osf.ucla.edu',
-            'https://osf.ucr.edu',
-            'https://osf.wustl.edu',
-            'https://osf.research.vcu.edu',
+    "prod": {
+        "home": "https://osf.io",
+        "api": "https://api.osf.io",
+        "files": "https://files.osf.io",
+        "cas": "https://accounts.osf.io",
+        "custom_institution_domains": [
+            "https://open.uwstout.edu",
+            "https://osf.arizona.edu",
+            "https://osf.asu.edu",
+            "https://osf.fsu.edu",
+            "https://osf.jmu.edu",
+            "https://osf.nd.edu",
+            "https://osf.nyu.edu",
+            "https://osf.sc.edu",
+            "https://osf.uc.edu",
+            "https://osf.usc.edu",
+            "https://osf.ucla.edu",
+            "https://osf.ucr.edu",
+            "https://osf.wustl.edu",
+            "https://osf.research.vcu.edu",
         ],
     },
 }
 
-DRIVER = env('DRIVER', 'Firefox')
-HEADLESS = env.bool('HEADLESS', False)
+DRIVER = env("DRIVER", "Firefox")
+HEADLESS = env.bool("HEADLESS", False)
 
-QUICK_TIMEOUT = env.int('QUICK_TIMEOUT', 4)
-TIMEOUT = env.int('TIMEOUT', 10)
-LONG_TIMEOUT = env.int('LONG_TIMEOUT', 30)
-VERY_LONG_TIMEOUT = env.int('VERY_LONG_TIMEOUT', 60)
+QUICK_TIMEOUT = env.int("QUICK_TIMEOUT", 4)
+TIMEOUT = env.int("TIMEOUT", 10)
+LONG_TIMEOUT = env.int("LONG_TIMEOUT", 30)
+VERY_LONG_TIMEOUT = env.int("VERY_LONG_TIMEOUT", 60)
 
-DOMAIN = env('DOMAIN', 'stage1')
+DOMAIN = env("DOMAIN", "stage1")
 
-NEW_USER_EMAIL = env('NEW_USER_EMAIL')
+NEW_USER_EMAIL = env("NEW_USER_EMAIL")
 
 # Preferred node must be set to run tests on production
-PREFERRED_NODE = env('PREFERRED_NODE', None)
-if DOMAIN == 'prod':
-    PREFERRED_NODE = env('PREFERRED_NODE')
+PREFERRED_NODE = env("PREFERRED_NODE", None)
+if DOMAIN == "prod":
+    PREFERRED_NODE = env("PREFERRED_NODE")
 
 EXPECTED_PROVIDERS = env.list(
-    'EXPECTED_PROVIDERS',
+    "EXPECTED_PROVIDERS",
     [
-        'bitbucket',
-        'box',
-        'dataverse',
-        'dropbox',
-        'figshare',
-        'github',
-        'gitlab',
-        'googledrive',
-        'osfstorage',
-        'owncloud',
-        'onedrive',
-        's3',
+        "bitbucket",
+        "box",
+        "dataverse",
+        "dropbox",
+        "figshare",
+        "github",
+        "gitlab",
+        "googledrive",
+        "osfstorage",
+        "owncloud",
+        "onedrive",
+        "s3",
     ],
 )
 
-OSF_HOME = domains[DOMAIN]['home']
-API_DOMAIN = domains[DOMAIN]['api']
-FILE_DOMAIN = domains[DOMAIN]['files']
-CAS_DOMAIN = domains[DOMAIN]['cas']
-CUSTOM_INSTITUTION_DOMAINS = domains[DOMAIN]['custom_institution_domains']
+# As of January 24, 2022, the Engineering Archive ('engrxiv') preprint provider
+# has switched away from using OSF as their preprint service.  Therefore the
+# web page that OSF automatically redirects to is no longer based on the OSF
+# Preprints landing/discover page design.  However, they remain in our active
+# preprint provider list in the OSF api due to legal issues that are still being
+# worked out.  The best guess is that the transition will be completed (and
+# engrxiv removed from the api list) by the end of the first quarter of 2022
+# (i.e. end of March).  So to prevent this test from failing in Production
+# every night for 'engrxiv' we are going to skip the following steps for this
+# provider.
+# UPDATE 10/26/2022 - the status of 'engrxiv' has not changed and now another
+# provider - 'ecoevorxiv' is also leaving OSF.
+# UPDATE 10/13/2023 - After the Search Improvements project release, OSF and other providers
+# that have moved away from OSF now redirect to https://osf.io/search?q=&resourceType=Preprint&q=
+providers_leaving_OSF = ["ecoevorxiv", "engrxiv", "livedata", "osf"]
+non_branded_registries = ["osf", "assessment"]
+
+OSF_HOME = domains[DOMAIN]["home"]
+API_DOMAIN = domains[DOMAIN]["api"]
+FILE_DOMAIN = domains[DOMAIN]["files"]
+CAS_DOMAIN = domains[DOMAIN]["cas"]
+CUSTOM_INSTITUTION_DOMAINS = domains[DOMAIN]["custom_institution_domains"]
 
 # Browser capabilities for browserstack testing
 caps = {
-    'chrome': {
-        'browser': 'Chrome',
-        'os': 'Windows',
-        'os_version': '10',
-        'resolution': '2048x1536',
+    "chrome": {
+        "browser": "Chrome",
+        "os": "Windows",
+        "os_version": "10",
+        "resolution": "2048x1536",
     },
-    'edge': {
-        'browser': 'Edge',
-        'os': 'Windows',
-        'os_version': '10',
-        'resolution': '2048x1536',
+    "edge": {
+        "browser": "Edge",
+        "os": "Windows",
+        "os_version": "10",
+        "resolution": "2048x1536",
     },
-    'firefox': {
-        'browser': 'Firefox',
-        'os': 'Windows',
-        'os_version': '10',
-        'resolution': '2048x1536',
+    "firefox": {
+        "browser": "Firefox",
+        "os": "Windows",
+        "os_version": "10",
+        "resolution": "2048x1536",
     },
 }
 
 BUILD = DRIVER
 
-if DRIVER == 'Remote':
-    BSTACK_USER = env('BSTACK_USER')
-    BSTACK_KEY = env('BSTACK_KEY')
+if DRIVER == "Remote":
+    BSTACK_USER = env("BSTACK_USER")
+    BSTACK_KEY = env("BSTACK_KEY")
 
-    BUILD = env('TEST_BUILD', 'chrome')
+    BUILD = env("TEST_BUILD", "chrome")
     DESIRED_CAP = caps[BUILD]
 
     upper_build = BUILD.upper()
 
-    USER_ONE = env('{}_USER'.format(upper_build), env('USER_ONE', ''))
+    USER_ONE = env("{}_USER".format(upper_build), env("USER_ONE", ""))
     USER_ONE_PASSWORD = env(
-        '{}_USER_PASSWORD'.format(upper_build), env('USER_ONE_PASSWORD', '')
+        "{}_USER_PASSWORD".format(upper_build), env("USER_ONE_PASSWORD", "")
     )
 
-    USER_TWO = env('{}_USER_TWO'.format(upper_build), env('USER_TWO', ''))
+    USER_TWO = env("{}_USER_TWO".format(upper_build), env("USER_TWO", ""))
     USER_TWO_PASSWORD = env(
-        '{}_USER_TWO_PASSWORD'.format(upper_build), env('USER_TWO_PASSWORD', '')
+        "{}_USER_TWO_PASSWORD".format(upper_build), env("USER_TWO_PASSWORD", "")
     )
 else:
-    USER_ONE = env('USER_ONE')
-    USER_ONE_PASSWORD = env('USER_ONE_PASSWORD')
+    USER_ONE = env("USER_ONE")
+    USER_ONE_PASSWORD = env("USER_ONE_PASSWORD")
 
-    USER_TWO = env('USER_TWO')
-    USER_TWO_PASSWORD = env('USER_TWO_PASSWORD')
+    USER_TWO = env("USER_TWO")
+    USER_TWO_PASSWORD = env("USER_TWO_PASSWORD")
 
 
 # Used to skip certain tests on specific stagings
-STAGE1 = DOMAIN == 'stage1'
-STAGE2 = DOMAIN == 'stage2'
-STAGE3 = DOMAIN == 'stage3'
-TEST = DOMAIN == 'test'
-PRODUCTION = DOMAIN == 'prod'
+STAGE1 = DOMAIN == "stage1"
+STAGE2 = DOMAIN == "stage2"
+STAGE3 = DOMAIN == "stage3"
+TEST = DOMAIN == "test"
+PRODUCTION = DOMAIN == "prod"
 
 # Users for testing CAS login scemarios
-DEACTIVATED_USER = env('DEACTIVATED_USER')
-DEACTIVATED_USER_PASSWORD = env('DEACTIVATED_USER_PASSWORD')
-UNCONFIRMED_USER = env('UNCONFIRMED_USER')
-UNCONFIRMED_USER_PASSWORD = env('UNCONFIRMED_USER_PASSWORD')
-CAS_2FA_USER = env('CAS_2FA_USER')
-CAS_2FA_USER_PASSWORD = env('CAS_2FA_USER_PASSWORD')
-CAS_TOS_USER = env('CAS_TOS_USER')
-CAS_TOS_USER_PASSWORD = env('CAS_TOS_USER_PASSWORD')
-DEVAPP_CLIENT_ID = env('DEVAPP_CLIENT_ID')
-DEVAPP_CLIENT_SECRET = env('DEVAPP_CLIENT_SECRET')
+DEACTIVATED_USER = env("DEACTIVATED_USER")
+DEACTIVATED_USER_PASSWORD = env("DEACTIVATED_USER_PASSWORD")
+UNCONFIRMED_USER = env("UNCONFIRMED_USER")
+UNCONFIRMED_USER_PASSWORD = env("UNCONFIRMED_USER_PASSWORD")
+CAS_2FA_USER = env("CAS_2FA_USER")
+CAS_2FA_USER_PASSWORD = env("CAS_2FA_USER_PASSWORD")
+CAS_TOS_USER = env("CAS_TOS_USER")
+CAS_TOS_USER_PASSWORD = env("CAS_TOS_USER_PASSWORD")
+DEVAPP_CLIENT_ID = env("DEVAPP_CLIENT_ID")
+DEVAPP_CLIENT_SECRET = env("DEVAPP_CLIENT_SECRET")
 
 # User with IMAP enabled email
-IMAP_EMAIL = env('IMAP_EMAIL')
+IMAP_EMAIL = env("IMAP_EMAIL")
 # Password for IMAP enabled email account - NOT OSF password
-IMAP_EMAIL_PASSWORD = env('IMAP_EMAIL_PASSWORD')
-IMAP_HOST = env('IMAP_HOST')
+IMAP_EMAIL_PASSWORD = env("IMAP_EMAIL_PASSWORD")
+IMAP_HOST = env("IMAP_HOST")
 
 # User with existing draft registrations
-A11Y_REGISTRATIONS_USER = env('A11Y_REGISTRATIONS_USER')
-A11Y_REGISTRATIONS_PASSWORD = env('A11Y_REGISTRATIONS_PASSWORD')
+A11Y_REGISTRATIONS_USER = env("A11Y_REGISTRATIONS_USER")
+A11Y_REGISTRATIONS_PASSWORD = env("A11Y_REGISTRATIONS_PASSWORD")

@@ -9,94 +9,94 @@ from pages.base import GuidBasePage, OSFBasePage
 
 
 class BaseRegistriesPage(OSFBasePage):
-    base_url = settings.OSF_HOME + '/registries/'
-    url_addition = ''
+    base_url = settings.OSF_HOME + "/registries/"
+    url_addition = ""
     navbar = ComponentLocator(RegistriesNavbar)
 
     def __init__(self, driver, verify=False, provider=None):
         self.provider = provider
         if provider:
-            self.provider_id = provider['id']
-            self.provider_name = provider['attributes']['name']
+            self.provider_id = provider["id"]
+            self.provider_name = provider["attributes"]["name"]
 
         super().__init__(driver, verify)
 
     @property
     def url(self):
         """Set the URL based on the provider"""
-        if self.provider and self.provider_id != 'osf':
-            return urljoin(self.base_url, self.provider_id) + '/' + self.url_addition
+        if self.provider and self.provider_id != "osf":
+            return urljoin(self.base_url, self.provider_id) + "/" + self.url_addition
         return self.base_url + self.url_addition
 
 
 class RegistriesLandingPage(BaseRegistriesPage):
     identity = Locator(
-        By.CSS_SELECTOR, '._RegistriesHeader_3zbd8x', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR, "[data-test-registries-list-paragraph]", settings.LONG_TIMEOUT
     )
-    search_box = Locator(By.ID, 'search')
+    search_box = Locator(By.ID, "search")
 
 
 class BrandedRegistriesDiscoverPage(BaseRegistriesPage):
-    url_addition = 'discover'
+    url_addition = "discover"
 
     identity = Locator(
         By.CSS_SELECTOR, 'div[data-analytics-scope="Registries Discover page"]'
     )
-    search_input = Locator(By.ID, 'search-input')
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale', settings.LONG_TIMEOUT)
+    search_input = Locator(By.ID, "search-input")
+    loading_indicator = Locator(By.CSS_SELECTOR, ".ball-scale", settings.LONG_TIMEOUT)
 
 
 class BaseSubmittedRegistrationPage(GuidBasePage):
     base_url = settings.OSF_HOME
-    url_addition = ''
+    url_addition = ""
 
-    def __init__(self, driver, verify=False, guid=''):
+    def __init__(self, driver, verify=False, guid=""):
         # Set the cookie that prevents the New Feature popover from appearing on
         # submitted registration pages since this popover can get in the way of other
         # actions.
-        driver.add_cookie({'name': 'metadataFeaturePopover', 'value': '1'})
+        driver.add_cookie({"name": "metadataFeaturePopover", "value": "1"})
 
         super().__init__(driver, verify, guid)
 
     @property
     def url(self):
-        return self.base_url + '/' + self.guid + '/' + self.url_addition
+        return self.base_url + "/" + self.guid + "/" + self.url_addition
 
 
 class RegistrationDetailPage(BaseSubmittedRegistrationPage):
     """This is the Registration Overview Page"""
 
-    identity = Locator(By.CSS_SELECTOR, '[data-test-registration-title]')
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale', settings.LONG_TIMEOUT)
+    identity = Locator(By.CSS_SELECTOR, "[data-test-registration-title]")
+    loading_indicator = Locator(By.CSS_SELECTOR, ".ball-scale", settings.LONG_TIMEOUT)
 
 
 class RegistrationFileListPage(BaseSubmittedRegistrationPage):
-    url_addition = 'files'
-    identity = Locator(By.CSS_SELECTOR, '[data-test-file-providers-list]')
-    file_list_button = Locator(By.CSS_SELECTOR, '[data-test-file-list-link]')
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    url_addition = "files"
+    identity = Locator(By.CSS_SELECTOR, "[data-test-file-providers-list]")
+    file_list_button = Locator(By.CSS_SELECTOR, "[data-test-file-list-link]")
+    loading_indicator = Locator(By.CSS_SELECTOR, ".ball-scale")
     first_file_link = Locator(By.CSS_SELECTOR, '[data-analytics-name="Open file"]')
 
 
 class RegistrationFileDetailPage(GuidBasePage):
-    identity = Locator(By.CSS_SELECTOR, '[data-test-file-renderer')
+    identity = Locator(By.CSS_SELECTOR, "[data-test-file-renderer")
 
 
 class RegistrationResourcesPage(BaseSubmittedRegistrationPage):
-    url_addition = 'resources'
-    identity = Locator(By.CSS_SELECTOR, '[data-test-add-resource-section]')
+    url_addition = "resources"
+    identity = Locator(By.CSS_SELECTOR, "[data-test-add-resource-section]")
 
 
 class RegistrationMetadataPage(BaseSubmittedRegistrationPage):
-    url_addition = 'metadata'
-    identity = Locator(By.CSS_SELECTOR, '[data-test-edit-resource-metadata-button]')
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    url_addition = "metadata"
+    identity = Locator(By.CSS_SELECTOR, "[data-test-edit-resource-metadata-button]")
+    loading_indicator = Locator(By.CSS_SELECTOR, ".ball-scale")
 
 
 class RegistrationAddNewPage(BaseRegistriesPage):
-    url_addition = 'new'
+    url_addition = "new"
     identity = Locator(
-        By.CSS_SELECTOR, 'form[data-test-new-registration-form]', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR, "form[data-test-new-registration-form]", settings.LONG_TIMEOUT
     )
 
     @property
@@ -105,58 +105,58 @@ class RegistrationAddNewPage(BaseRegistriesPage):
         include 'osf' in the url for OSF Registries
         """
         if self.provider is None:
-            self.provider_id = 'osf'
-        return urljoin(self.base_url, self.provider_id) + '/' + self.url_addition
+            self.provider_id = "osf"
+        return urljoin(self.base_url, self.provider_id) + "/" + self.url_addition
 
 
 class RegistriesModerationSubmittedPage(BaseRegistriesPage):
-    url_addition = 'moderation/submitted'
-    identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type]')
+    url_addition = "moderation/submitted"
+    identity = Locator(By.CSS_SELECTOR, "[data-test-submissions-type]")
     no_registrations_message = Locator(
-        By.CSS_SELECTOR, '[data-test-registration-list-none]'
+        By.CSS_SELECTOR, "[data-test-registration-list-none]"
     )
 
 
 class RegistriesModerationPendingPage(BaseRegistriesPage):
-    url_addition = 'moderation/pending'
-    identity = Locator(By.CSS_SELECTOR, '[data-test-submissions-type]')
+    url_addition = "moderation/pending"
+    identity = Locator(By.CSS_SELECTOR, "[data-test-submissions-type]")
     no_registrations_message = Locator(
-        By.CSS_SELECTOR, '[data-test-registration-list-none]'
+        By.CSS_SELECTOR, "[data-test-registration-list-none]"
     )
 
 
 class RegistriesModerationModeratorsPage(BaseRegistriesPage):
-    url_addition = 'moderation/moderators'
-    identity = Locator(By.CSS_SELECTOR, '[data-test-moderator-row]')
+    url_addition = "moderation/moderators"
+    identity = Locator(By.CSS_SELECTOR, "[data-test-moderator-row]")
 
 
 class RegistriesModerationSettingsPage(BaseRegistriesPage):
-    url_addition = 'moderation/settings'
-    identity = Locator(By.CSS_SELECTOR, '[data-test-subscription-list]')
+    url_addition = "moderation/settings"
+    identity = Locator(By.CSS_SELECTOR, "[data-test-subscription-list]")
 
 
 class BaseRegistrationDraftPage(BaseRegistriesPage):
-    base_url = settings.OSF_HOME + '/registries/drafts/'
-    url_addition = ''
+    base_url = settings.OSF_HOME + "/registries/drafts/"
+    url_addition = ""
 
-    def __init__(self, driver, verify=False, draft_id=''):
+    def __init__(self, driver, verify=False, draft_id=""):
         self.draft_id = draft_id
         super().__init__(driver, verify)
 
     @property
     def url(self):
-        return self.base_url + self.draft_id + '/' + self.url_addition
+        return self.base_url + self.draft_id + "/" + self.url_addition
 
 
 class DraftRegistrationMetadataPage(BaseRegistrationDraftPage):
-    url_addition = 'metadata'
+    url_addition = "metadata"
     identity = Locator(
-        By.CSS_SELECTOR, 'div[data-test-metadata-title]', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR, "div[data-test-metadata-title]", settings.LONG_TIMEOUT
     )
 
 
 class DraftRegistrationGenericPage(BaseRegistrationDraftPage):
-    def __init__(self, driver, verify=False, draft_id='', url_addition=''):
+    def __init__(self, driver, verify=False, draft_id="", url_addition=""):
         self.draft_id = draft_id
         self.url_addition = url_addition
         super().__init__(driver, verify, draft_id)
@@ -164,13 +164,13 @@ class DraftRegistrationGenericPage(BaseRegistrationDraftPage):
     identity = Locator(
         By.CSS_SELECTOR, 'div[data-analytics-scope="Registries"]', settings.LONG_TIMEOUT
     )
-    page_heading = Locator(By.CSS_SELECTOR, 'h2[data-test-page-heading]')
+    page_heading = Locator(By.CSS_SELECTOR, "h2[data-test-page-heading]")
 
 
 class DraftRegistrationReviewPage(BaseRegistrationDraftPage):
-    url_addition = 'review'
+    url_addition = "review"
     identity = Locator(
         By.CSS_SELECTOR,
-        '[data-test-toggle-anchor-nav-button]',
+        "[data-test-toggle-anchor-nav-button]",
         settings.LONG_TIMEOUT,
     )

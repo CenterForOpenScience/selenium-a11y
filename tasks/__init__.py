@@ -12,22 +12,22 @@ import sys
 
 from invoke import task
 
-logging.getLogger('invoke').setLevel(logging.CRITICAL)
+logging.getLogger("invoke").setLevel(logging.CRITICAL)
 
-HERE = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+HERE = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 BIN_PATH = os.path.dirname(sys.executable)
 bin_prefix = lambda cmd: os.path.join(BIN_PATH, cmd)
-MAX_RETRIES = int(os.getenv('MAX_RETRIES', 0))
+MAX_RETRIES = int(os.getenv("MAX_RETRIES", 0))
 
 
-@task(aliases=['flake8'])
+@task(aliases=["flake8"])
 def flake(ctx):
-    ctx.run('flake8 .', echo=True)
+    ctx.run("flake8 .", echo=True)
 
 
-@task(aliases=['autopep8'])
+@task(aliases=["autopep8"])
 def autopep(ctx):
-    ctx.run('autopep8 .', echo=True)
+    ctx.run("autopep8 .", echo=True)
 
 
 @task
@@ -35,7 +35,7 @@ def clean(ctx, verbose=False):
     ctx.run('find . -name "*.pyc" -delete', echo=True)
 
 
-@task(aliases=['req'])
+@task(aliases=["req"])
 def requirements(ctx, dev=False):
     """Install python dependencies.
 
@@ -43,8 +43,8 @@ def requirements(ctx, dev=False):
         invoke requirements
     """
 
-    req_file = os.path.join(HERE, 'requirements.txt')
-    cmd = bin_prefix('pip install --exists-action w --upgrade -r {} '.format(req_file))
+    req_file = os.path.join(HERE, "requirements.txt")
+    cmd = bin_prefix("pip install --exists-action w --upgrade -r {} ".format(req_file))
     ctx.run(cmd, echo=True)
 
 
@@ -56,12 +56,20 @@ def test_module_wo_exit(ctx, module=None, params=None):
     if params is None:
         params = []
 
-    args = ['-s', '-v', '--tb=short', '--write_files', 'false', '--exclude_best_practice', 'true']
+    args = [
+        "-s",
+        "-v",
+        "--tb=short",
+        "--write_files",
+        "false",
+        "--exclude_best_practice",
+        "true",
+    ]
     for e in [module, params]:
         if e:
             args.extend([e] if isinstance(e, str) else e)
 
-    print('>>> pytest args: {}'.format(args))
+    print(">>> pytest args: {}".format(args))
     retcode = pytest.main(args)
     return retcode
 
@@ -81,7 +89,7 @@ def test_ember_accessibility(ctx):
     pytest marker 'ember_page'.
     """
     test_with_retries(
-        ctx, 'Ember Pages', _get_test_file_list(), module=['-m', 'ember_page']
+        ctx, "Ember Pages", _get_test_file_list(), module=["-m", "ember_page"]
     )
 
 
@@ -93,7 +101,7 @@ def test_legacy_accessibility(ctx):
     pytest marker 'legacy_page'.
     """
     test_with_retries(
-        ctx, 'Legacy Pages', _get_test_file_list(), module=['-m', 'legacy_page']
+        ctx, "Legacy Pages", _get_test_file_list(), module=["-m", "legacy_page"]
     )
 
 
@@ -103,8 +111,8 @@ def test_preprints_accessibility(ctx):
     This task will be invoked after 'ember-osf-preprints' has been deployed to any
     testing environment.
     """
-    file_list = ['tests/test_a11y_preprints.py']
-    test_with_retries(ctx, 'Preprints', file_list)
+    file_list = ["tests/test_a11y_preprints.py"]
+    test_with_retries(ctx, "Preprints", file_list)
 
 
 @task
@@ -113,12 +121,12 @@ def test_cas_accessibility(ctx):
     This task will be invoked after 'osf-cas' has been deployed to any testing
     environment.
     """
-    file_list = ['tests/test_a11y_cas.py']
-    test_with_retries(ctx, 'CAS', file_list)
+    file_list = ["tests/test_a11y_cas.py"]
+    test_with_retries(ctx, "CAS", file_list)
 
 
 def _get_test_file_list():
-    all_test_files = glob.glob('tests/test_*.py')
+    all_test_files = glob.glob("tests/test_*.py")
     all_test_files.sort()
     return all_test_files
 
@@ -130,21 +138,21 @@ def test_with_retries(ctx, partition_name, file_list, module=None):
 
     print(
         '>>> Testing {} modules in "/tests/" in {}'.format(
-            partition_name, os.environ['TEST_BUILD']
+            partition_name, os.environ["TEST_BUILD"]
         )
     )
-    print('>>> File list for {} is: {}'.format(partition_name, file_list))
+    print(">>> File list for {} is: {}".format(partition_name, file_list))
     retcode = test_module_wo_exit(ctx, params=file_list, module=module)
 
     if retcode != 1:
         sys.exit(retcode)
 
-    file_list = ['--last-failed', '--last-failed-no-failures', 'none'] + file_list
+    file_list = ["--last-failed", "--last-failed-no-failures", "none"] + file_list
 
     for i in range(1, MAX_RETRIES + 1):
         print(
             '>>> Retesting {} failures, iteration {}, in "/test/" '
-            'in {}'.format(partition_name, i, os.environ['TEST_BUILD'])
+            "in {}".format(partition_name, i, os.environ["TEST_BUILD"])
         )
         retcode = test_module_wo_exit(ctx, params=file_list, module=module)
 

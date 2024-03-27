@@ -9,7 +9,7 @@ class link_has_href(object):
         self.locator = locator
 
     def __call__(self, driver):
-        element_href = EC._find_element(driver, self.locator).get_attribute('href')
+        element_href = EC._find_element(driver, self.locator).get_attribute("href")
         if element_href:
             return element_href
         else:

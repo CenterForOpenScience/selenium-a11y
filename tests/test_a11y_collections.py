@@ -29,10 +29,10 @@ class TestCollectionDiscoverPages:
         collections in some environments (i.e. Staging2) has gotten very long, so a way
         to narrow the list is to set allow_submssions to False in the admin app and we
         can then skip those old testing collections."""
-        all_prov = osf_api.get_providers_list(type='collections')
-        return [prov for prov in all_prov if prov['attributes']['allow_submissions']]
+        all_prov = osf_api.get_providers_list(type="collections")
+        return [prov for prov in all_prov if prov["attributes"]["allow_submissions"]]
 
-    @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])
+    @pytest.fixture(params=providers(), ids=[prov["id"] for prov in providers()])
     def provider(self, request):
         return request.param
 
@@ -43,13 +43,13 @@ class TestCollectionDiscoverPages:
         discover_page.goto()
         assert CollectionDiscoverPage(driver, verify=True)
         discover_page.loading_indicator.here_then_gone()
-        page_name = 'cp_' + provider['id']
+        page_name = "cp_" + provider["id"]
         a11y.run_axe(
             driver,
             session,
             page_name,
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -64,7 +64,7 @@ class TestCollectionSubmitPage:
 
     @pytest.fixture
     def provider(self, driver):
-        return osf_api.get_provider(type='collections', provider_id='characterlab')
+        return osf_api.get_provider(type="collections", provider_id="characterlab")
 
     def test_accessibility(
         self,
@@ -86,9 +86,9 @@ class TestCollectionSubmitPage:
         a11y.run_axe(
             driver,
             session,
-            'collsub',
+            "collsub",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
         # Leaving this page without saving causes an alert pop-up in Chrome which will
         # cause the next test run after this one to fail. So we want to trigger the
@@ -114,7 +114,7 @@ class TestModerationPages:
 
     @pytest.fixture
     def provider(self, driver):
-        return osf_api.get_provider(type='collections', provider_id='selenium')
+        return osf_api.get_provider(type="collections", provider_id="selenium")
 
     def test_accessibility_moderation_pending(
         self,
@@ -132,9 +132,9 @@ class TestModerationPages:
         a11y.run_axe(
             driver,
             session,
-            'colmodpend',
+            "colmodpend",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_accepted(
@@ -153,9 +153,9 @@ class TestModerationPages:
         a11y.run_axe(
             driver,
             session,
-            'colmodacpt',
+            "colmodacpt",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_rejected(
@@ -174,9 +174,9 @@ class TestModerationPages:
         a11y.run_axe(
             driver,
             session,
-            'colmodrej',
+            "colmodrej",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_removed(
@@ -195,9 +195,9 @@ class TestModerationPages:
         a11y.run_axe(
             driver,
             session,
-            'colmodrem',
+            "colmodrem",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_moderators(
@@ -216,9 +216,9 @@ class TestModerationPages:
         a11y.run_axe(
             driver,
             session,
-            'colmodmods',
+            "colmodmods",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_moderation_settings(
@@ -237,7 +237,7 @@ class TestModerationPages:
         a11y.run_axe(
             driver,
             session,
-            'colmodset',
+            "colmodset",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )

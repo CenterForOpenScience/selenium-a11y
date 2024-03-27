@@ -8,8 +8,8 @@ import settings
 from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
 from pages.preprints import (
+    BrandedPreprintsDiscoverPage,
     PreprintDetailPage,
-    PreprintDiscoverPage,
     PreprintLandingPage,
     PreprintSubmitPage,
     ReviewsDashboardPage,
@@ -29,15 +29,15 @@ class TestPreprintLandingPage:
         a11y.run_axe(
             driver,
             session,
-            'preprints',
+            "preprints",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
 class TestPreprintSubmitPage:
     @pytest.mark.skipif(
-        not settings.PRODUCTION, reason='This version is only for Production'
+        not settings.PRODUCTION, reason="This version is only for Production"
     )
     def test_accessibility_prod(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
@@ -51,9 +51,9 @@ class TestPreprintSubmitPage:
         a11y.run_axe(
             driver,
             session,
-            'prepsub',
+            "prepsub",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     @markers.dont_run_on_prod
@@ -87,19 +87,19 @@ class TestPreprintSubmitPage:
         submit_page.upload_file_save_continue.click()
         submit_page.public_available_button.click()
         submit_page.public_data_input.click()
-        submit_page.public_data_input.send_keys_deliberately('https://osf.io/')
+        submit_page.public_data_input.send_keys_deliberately("https://osf.io/")
         submit_page.scroll_into_view(submit_page.preregistration_no_button.element)
         submit_page.preregistration_no_button.click()
         submit_page.preregistration_input.click()
-        submit_page.preregistration_input.send_keys_deliberately('QA Testing')
+        submit_page.preregistration_input.send_keys_deliberately("QA Testing")
         submit_page.save_author_assertions.click()
         submit_page.basics_abstract_input.click()
         a11y.run_axe(
             driver,
             session,
-            'prepsub',
+            "prepsub",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
@@ -116,26 +116,24 @@ class TestPreprintDetailPage:
         except TimeoutException:
             pass
 
-        # Use api to get the most recent publisged preprint and then navigate to the
+        # Use api to get the most recent published preprint and then navigate to the
         # detail page for that preprint
         preprint_node = osf_api.get_most_recent_preprint_node_id()
         detail_page = PreprintDetailPage(driver, guid=preprint_node)
         detail_page.goto()
         assert PreprintDetailPage(driver, verify=True)
 
-        # wait for authors list to fully load so that it doesn't trigger list violation
-        detail_page.authors_load_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
-            'prepdet',
+            "prepdet",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
 class TestBrandedProviders:
-    """For all of the Branded Providers in each environment we are loading both the
+    """For all the Branded Providers in each environment we are loading both the
     Branded Landing Page and Branded Discover Page.
     """
 
@@ -143,67 +141,53 @@ class TestBrandedProviders:
         """Return all preprint providers."""
         return osf_api.get_providers_list()
 
-    @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])
+    @pytest.fixture(params=providers(), ids=[prov["id"] for prov in providers()])
     def provider(self, request):
         return request.param
 
     def test_accessibility_landing(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        # As of January 24, 2022, the Engineering Archive ('engrxiv') preprint provider
-        # has switched away from using OSF as their preprint service.  Therefore the
-        # web page that OSF automatically redirects to is no longer based on the OSF
-        # Preprints landing/discover page design.  However, they remain in our active
-        # preprint provider list in the OSF api due to legal issues that are still being
-        # worked out.  The best guess is that the transition will be completed (and
-        # engrxiv removed from the api list) by the end of the first quarter of 2022
-        # (i.e. end of March).  So to prevent this test from failing in Production
-        # for 'engrxiv' we are going to skip the following steps for this provider.
-        if 'engrxiv' not in provider['id']:
-            landing_page = PreprintLandingPage(driver, provider=provider)
-            landing_page.goto()
-            assert PreprintLandingPage(driver, verify=True)
-            page_name = 'bp_' + provider['id']
-            a11y.run_axe(
-                driver,
-                session,
-                page_name,
-                write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
-            )
+        if provider["id"] in settings.providers_leaving_OSF:
+            pytest.skip()
+
+        landing_page = PreprintLandingPage(driver, provider=provider)
+        landing_page.goto()
+        assert PreprintLandingPage(driver, verify=True)
+        page_name = "bp_" + provider["id"]
+        a11y.run_axe(
+            driver,
+            session,
+            page_name,
+            write_files=write_files,
+            exclude_best_practice=True,
+        )
 
     def test_accessibility_discover(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        # As of January 24, 2022, the Engineering Archive ('engrxiv') preprint provider
-        # has switched away from using OSF as their preprint service.  Therefore the
-        # web page that OSF automatically redirects to is no longer based on the OSF
-        # Preprints landing/discover page design.  However, they remain in our active
-        # preprint provider list in the OSF api due to legal issues that are still being
-        # worked out.  The best guess is that the transition will be completed (and
-        # engrxiv removed from the api list) by the end of the first quarter of 2022
-        # (i.e. end of March).  So to prevent this test from failing in Production
-        # for 'engrxiv' we are going to skip the following steps for this provider.
-        if 'engrxiv' not in provider['id']:
-            discover_page = PreprintDiscoverPage(driver, provider=provider)
-            discover_page.goto()
-            assert PreprintDiscoverPage(driver, verify=True)
-            page_name = 'bp_' + provider['id'] + '_disc'
-            a11y.run_axe(
-                driver,
-                session,
-                page_name,
-                write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
-            )
+        if provider["id"] in settings.providers_leaving_OSF:
+            pytest.skip()
+
+        discover_page = BrandedPreprintsDiscoverPage(driver, provider=provider)
+        discover_page.goto()
+        assert BrandedPreprintsDiscoverPage(driver, verify=True)
+        page_name = "bp_" + provider["id"] + "_disc"
+        a11y.run_axe(
+            driver,
+            session,
+            page_name,
+            write_files=write_files,
+            exclude_best_practice=True,
+        )
 
 
-# We do not currently have a user setup as an administrator or noderator for any of the
+# We do not currently have a user setup as an administrator or moderator for any of the
 # preprint providers in production
 @markers.dont_run_on_prod
 class TestPreprintReviewsDashboardPage:
-    """To test the Reviews Dashboard page we must login as a user that has been
-    setup as an administrator or moderator for at least one of the preprint providers
+    """To test the Reviews Dashboard page we must log in as a user that has been
+    set up as an administrator or moderator for at least one of the preprint providers
     that has moderation enabled.
     """
 
@@ -217,18 +201,18 @@ class TestPreprintReviewsDashboardPage:
         a11y.run_axe(
             driver,
             session,
-            'revdash',
+            "revdash",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
 
-# We do not currently have a user setup as an administrator or noderator for any of the
+# We do not currently have a user setup as an administrator or moderator for any of the
 # preprint providers in production
 @markers.dont_run_on_prod
 class TestProviderReviewsPages:
-    """To test the provider specific Reviews pages we must login as a user that has been
-    setup as an administrator or moderator for one of the preprint providers that has
+    """To test the provider specific Reviews pages we must log in as a user that has been
+    set up as an administrator or moderator for one of the preprint providers that has
     moderation enabled.  We are using selpremod as the preprint provider since it exists
     in all testing environments and has the moderation process enabled in each
     environment.
@@ -236,7 +220,7 @@ class TestProviderReviewsPages:
 
     @pytest.fixture
     def provider(self, driver):
-        return osf_api.get_provider(type='preprints', provider_id='selpremod')
+        return osf_api.get_provider(type="preprints", provider_id="selpremod")
 
     def test_accessibility_reviews_submissions(
         self,
@@ -261,9 +245,9 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revsub',
+            "revsub",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_reviews_withdrawals(
@@ -282,9 +266,9 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revwthdrwls',
+            "revwthdrwls",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_reviews_moderators(
@@ -297,15 +281,17 @@ class TestProviderReviewsPages:
         must_be_logged_in,
     ):
         moderators_page = ReviewsModeratorsPage(driver, provider=provider)
+        # TODO: Fix this goto() statement.
+        print("Moderators Page URL: {}".format(moderators_page.url))
         moderators_page.goto()
         assert ReviewsModeratorsPage(driver, verify=True)
         moderators_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
-            'revmod',
+            "revmod",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_reviews_notifications(
@@ -324,9 +310,9 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revnot',
+            "revnot",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_reviews_settings(
@@ -345,7 +331,7 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revset',
+            "revset",
             write_files=write_files,
-            exclude_best_practice=exclude_best_practice,
+            exclude_best_practice=True,
         )

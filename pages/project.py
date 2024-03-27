@@ -14,11 +14,11 @@ from pages.base import GuidBasePage, OSFBasePage
 
 class ProjectPage(GuidBasePage):
 
-    identity = Locator(By.ID, 'projectScope')
-    title = Locator(By.ID, 'nodeTitleEditable', settings.LONG_TIMEOUT)
-    title_input = Locator(By.CSS_SELECTOR, '.form-inline input')
-    title_edit_submit_button = Locator(By.CSS_SELECTOR, '.editable-submit')
-    title_edit_cancel_button = Locator(By.CSS_SELECTOR, '.editable-cancel')
+    identity = Locator(By.ID, "projectScope")
+    title = Locator(By.ID, "nodeTitleEditable", settings.LONG_TIMEOUT)
+    title_input = Locator(By.CSS_SELECTOR, ".form-inline input")
+    title_edit_submit_button = Locator(By.CSS_SELECTOR, ".editable-submit")
+    title_edit_cancel_button = Locator(By.CSS_SELECTOR, ".editable-cancel")
     make_public_link = Locator(By.XPATH, '//a[contains(text(), "Make Public")]')
     make_private_link = Locator(By.XPATH, '//a[contains(text(), "Make Private")]')
     confirm_privacy_change_link = Locator(By.XPATH, '//a[text()="Confirm"]')
@@ -31,14 +31,14 @@ class ProjectPage(GuidBasePage):
 
 class RequestAccessPage(GuidBasePage):
 
-    identity = Locator(By.CSS_SELECTOR, '#requestAccessPrivateScope')
+    identity = Locator(By.CSS_SELECTOR, "#requestAccessPrivateScope")
 
 
 class MyProjectsPage(OSFBasePage):
-    url = settings.OSF_HOME + '/myprojects/'
+    url = settings.OSF_HOME + "/myprojects/"
 
     identity = Locator(
-        By.CSS_SELECTOR, '.col-xs-8 > h3:nth-child(1)', settings.LONG_TIMEOUT
+        By.CSS_SELECTOR, ".col-xs-8 > h3:nth-child(1)", settings.LONG_TIMEOUT
     )
     create_project_button = Locator(By.CSS_SELECTOR, '[data-target="#addProject"]')
     create_collection_button = Locator(By.CSS_SELECTOR, '[data-target="#addColl"]')
@@ -48,18 +48,18 @@ class MyProjectsPage(OSFBasePage):
     )
     first_project_hyperlink = Locator(
         By.CSS_SELECTOR,
-        'div[data-rindex="0"] > div:first-child >' ' span:last-child > a:first-child',
+        'div[data-rindex="0"] > div:first-child >' " span:last-child > a:first-child",
     )
     first_custom_collection = Locator(
         By.CSS_SELECTOR, 'li[data-index="4"] span', settings.QUICK_TIMEOUT
     )
     first_collection_settings_button = Locator(
-        By.CSS_SELECTOR, '.fa-ellipsis-v', settings.QUICK_TIMEOUT
+        By.CSS_SELECTOR, ".fa-ellipsis-v", settings.QUICK_TIMEOUT
     )
     first_collection_remove_button = Locator(
         By.CSS_SELECTOR, '[data-target="#removeColl"]', settings.QUICK_TIMEOUT
     )
-    empty_collection_indicator = Locator(By.CLASS_NAME, 'db-non-load-template')
+    empty_collection_indicator = Locator(By.CLASS_NAME, "db-non-load-template")
 
     # Components
     create_collection_modal = ComponentLocator(CreateCollectionModal)
@@ -69,30 +69,30 @@ class MyProjectsPage(OSFBasePage):
 
 
 class MetadataPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/metadata/'
+    base_url = settings.OSF_HOME + "/{guid}/metadata/"
 
     identity = Locator(By.CSS_SELECTOR, 'div[data-analytics-scope="Node"]')
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-pulse')
+    loading_indicator = Locator(By.CSS_SELECTOR, ".ball-pulse")
 
 
 class AnalyticsPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/analytics/'
+    base_url = settings.OSF_HOME + "/{guid}/analytics/"
 
-    identity = Locator(By.CSS_SELECTOR, '[data-test-analytics-page-heading]')
-    private_project_message = Locator(By.CSS_SELECTOR, '._PrivateProject_1mhar6')
-    disabled_chart = Locator(By.CSS_SELECTOR, '._Chart_1hff7g _Blurred_1hff7g')
+    identity = Locator(By.CSS_SELECTOR, "[data-test-analytics-page-heading]")
+    private_project_message = Locator(By.CSS_SELECTOR, "._PrivateProject_1mhar6")
+    disabled_chart = Locator(By.CSS_SELECTOR, "._Chart_1hff7g _Blurred_1hff7g")
 
 
 class ForksPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/forks/'
+    base_url = settings.OSF_HOME + "/{guid}/forks/"
 
-    identity = Locator(By.CSS_SELECTOR, '._Forks_1xlord')
-    new_fork_button = Locator(By.CSS_SELECTOR, '[data-test-new-fork-button]')
+    identity = Locator(By.CSS_SELECTOR, "._Forks_1xlord")
+    new_fork_button = Locator(By.CSS_SELECTOR, "[data-test-new-fork-button]")
     create_fork_modal_button = Locator(
-        By.CSS_SELECTOR, '[data-test-confirm-create-fork]'
+        By.CSS_SELECTOR, "[data-test-confirm-create-fork]"
     )
-    cancel_modal_button = Locator(By.CSS_SELECTOR, '[data-test-cancel-create-fork]')
-    info_toast = Locator(By.CSS_SELECTOR, '.toast-info')
+    cancel_modal_button = Locator(By.CSS_SELECTOR, "[data-test-cancel-create-fork]")
+    info_toast = Locator(By.CSS_SELECTOR, ".toast-info")
     fork_link = Locator(By.CSS_SELECTOR, 'a[data-analytics-name="Title"]')
     fork_authors = Locator(By.CSS_SELECTOR, 'div[class="_NodeCard__authors_1i3kzz"]')
     placeholder_text = Locator(
@@ -100,55 +100,55 @@ class ForksPage(GuidBasePage):
     )
 
     # Group Locators
-    listed_forks = GroupLocator(By.CSS_SELECTOR, '._list-group-item_8wsr4d')
+    listed_forks = GroupLocator(By.CSS_SELECTOR, "._list-group-item_8wsr4d")
 
 
 class FilesPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/files/'
+    base_url = settings.OSF_HOME + "/{guid}/files/"
 
-    identity = Locator(By.CSS_SELECTOR, '[data-test-file-search]')
+    identity = Locator(By.CSS_SELECTOR, "[data-test-file-search]")
 
-    file_rows = GroupLocator(By.CSS_SELECTOR, 'span[data-test-file-name]')
+    file_rows = GroupLocator(By.CSS_SELECTOR, "span[data-test-file-name]")
 
 
 class FileViewPage(GuidBasePage):
 
-    identity = Locator(By.CSS_SELECTOR, 'h2[data-test-filename]')
+    identity = Locator(By.CSS_SELECTOR, "h2[data-test-filename]")
 
 
 class WikiPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/wiki/'
+    base_url = settings.OSF_HOME + "/{guid}/wiki/"
 
-    identity = Locator(By.ID, 'wikiName')
+    identity = Locator(By.ID, "wikiName")
 
 
 class RegistrationsPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/registrations/'
+    base_url = settings.OSF_HOME + "/{guid}/registrations/"
 
-    identity = Locator(By.CSS_SELECTOR, '[data-test-registrations-container]')
-    first_registration_title = Locator(By.CSS_SELECTOR, '[data-test-node-title]')
-    draft_registrations_tab = Locator(By.CSS_SELECTOR, '[data-test-drafts-tab]')
+    identity = Locator(By.CSS_SELECTOR, "[data-test-registrations-container]")
+    first_registration_title = Locator(By.CSS_SELECTOR, "[data-test-node-title]")
+    draft_registrations_tab = Locator(By.CSS_SELECTOR, "[data-test-drafts-tab]")
     draft_registration_card = Locator(
-        By.CSS_SELECTOR, '[data-test-draft-registration-card]'
+        By.CSS_SELECTOR, "[data-test-draft-registration-card]"
     )
 
 
 class ContributorsPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/contributors/'
+    base_url = settings.OSF_HOME + "/{guid}/contributors/"
 
-    identity = Locator(By.ID, 'manageContributors')
+    identity = Locator(By.ID, "manageContributors")
 
 
 class AddonsPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/addons/'
+    base_url = settings.OSF_HOME + "/{guid}/addons/"
 
-    identity = Locator(By.ID, 'selectAddon')
+    identity = Locator(By.ID, "selectAddon")
 
 
 class SettingsPage(GuidBasePage):
-    base_url = settings.OSF_HOME + '/{guid}/settings/'
+    base_url = settings.OSF_HOME + "/{guid}/settings/"
 
-    identity = Locator(By.ID, 'projectSettings')
+    identity = Locator(By.ID, "projectSettings")
     email_notifications_loading_indicator = Locator(
-        By.CSS_SELECTOR, '#grid > div > .ball-scale'
+        By.CSS_SELECTOR, "#grid > div > .ball-scale"
     )
