@@ -27,7 +27,7 @@ class TestUserProfilePage:
         a11y.run_axe(
             driver,
             session,
-            'usrProf',
+            "usrProf",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -54,7 +54,7 @@ class TestUserSettingsProfileInformationPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetPrfName',
+            "usrSetPrfName",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -79,7 +79,7 @@ class TestUserSettingsProfileInformationPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetPrfSoc',
+            "usrSetPrfSoc",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -105,7 +105,7 @@ class TestUserSettingsProfileInformationPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetPrfEmp',
+            "usrSetPrfEmp",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -131,7 +131,7 @@ class TestUserSettingsProfileInformationPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetPrfEd',
+            "usrSetPrfEd",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -148,7 +148,7 @@ class TestUserSettingsAccountSettingsPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetAccnt',
+            "usrSetAccnt",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -165,7 +165,7 @@ class TestUserSettingsConfigureAddonsPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetAddons',
+            "usrSetAddons",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -181,11 +181,13 @@ class TestUserSettingsNotificationsPage:
         assert NotificationsPage(driver, verify=True)
         # wait for Notification Preferences section to finish loading
         notifications_page.loading_indicator.here_then_gone()
-        pytest.xfail("Label issue documented here -> ENG-3074. Color-contrast issue documented here -> ENG-3075")
+        pytest.xfail(
+            "Label issue documented here -> ENG-3074. Color-contrast issue documented here -> ENG-3075"
+        )
         a11y.run_axe(
             driver,
             session,
-            'usrSetNtfctns',
+            "usrSetNtfctns",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -202,7 +204,7 @@ class TestUserSettingsDeveloperAppsPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetDevApp',
+            "usrSetDevApp",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -219,7 +221,7 @@ class TestUserSettingsCreateDeveloperAppPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetCrtDevApp',
+            "usrSetCrtDevApp",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -236,7 +238,7 @@ class TestUserSettingsPersonalAccessTokensPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetPAT',
+            "usrSetPAT",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -253,7 +255,7 @@ class TestUserSettingsCreatePersonalAccessTokenPage:
         a11y.run_axe(
             driver,
             session,
-            'usrSetCrtPAT',
+            "usrSetCrtPAT",
             write_files=write_files,
             exclude_best_practice=True,
         )

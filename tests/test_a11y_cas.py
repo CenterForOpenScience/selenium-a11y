@@ -24,7 +24,7 @@ class TestCASLoginPage:
         a11y.run_axe(
             driver,
             session,
-            'login',
+            "login",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -45,7 +45,7 @@ class TestLogin2FAPage:
         a11y.run_axe(
             driver,
             session,
-            'login2FA',
+            "login2FA",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -66,7 +66,7 @@ class TestLoginToSPage:
         a11y.run_axe(
             driver,
             session,
-            'loginToS',
+            "loginToS",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -80,7 +80,7 @@ class TestInstitutionalLoginPage:
         a11y.run_axe(
             driver,
             session,
-            'i9nlogin',
+            "i9nlogin",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -90,20 +90,20 @@ class TestPreselectedInstitutionLoginPage:
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         preselectUrl = (
             settings.CAS_DOMAIN
-            + '/login?campaign=institution&institutionId=nd&service='
+            + "/login?campaign=institution&institutionId=nd&service="
             + settings.OSF_HOME
-            + '/login/?next='
+            + "/login/?next="
             + settings.OSF_HOME
-            + '/'
+            + "/"
         )
         driver.get(preselectUrl)
-        assert driver.find_element(By.CSS_SELECTOR, '#institutionSelect').get_property(
-            'disabled'
+        assert driver.find_element(By.CSS_SELECTOR, "#institutionSelect").get_property(
+            "disabled"
         )
         a11y.run_axe(
             driver,
             session,
-            'i9npresel',
+            "i9npresel",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -117,7 +117,7 @@ class TestUnsupportedInstitutionLoginPage:
         a11y.run_axe(
             driver,
             session,
-            'unsupi9n',
+            "unsupi9n",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -140,7 +140,7 @@ class TestInstitutionForgotPasswordPage:
         a11y.run_axe(
             driver,
             session,
-            'i9nfrgtpswrd',
+            "i9nfrgtpswrd",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -149,12 +149,12 @@ class TestInstitutionForgotPasswordPage:
 class TestGenericCASExceptionPage:
     def test_accessibility(self, driver, session, write_files, exclude_best_practice):
         """Test the Service not authorized exception page by having an invalid service in the url"""
-        driver.get(settings.CAS_DOMAIN + '/login?service=https://noservice.osf.io/')
+        driver.get(settings.CAS_DOMAIN + "/login?service=https://noservice.osf.io/")
         assert GenericCASPage(driver, verify=True)
         a11y.run_axe(
             driver,
             session,
-            'genCASExcept',
+            "genCASExcept",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -171,19 +171,19 @@ class TestCASOauthAuthorizationPage:
         accessibility compliance.
         """
         client_id = settings.DEVAPP_CLIENT_ID
-        redirect_uri = 'https://www.google.com/'
+        redirect_uri = "https://www.google.com/"
         requested_scope = (
-            'osf.nodes.metadata_read osf.nodes.access_read osf.nodes.data_read'
+            "osf.nodes.metadata_read osf.nodes.access_read osf.nodes.data_read"
         )
         authorization_url = (
             settings.CAS_DOMAIN
-            + '/oauth2/authorize?response_type=code&client_id='
+            + "/oauth2/authorize?response_type=code&client_id="
             + client_id
-            + '&redirect_uri='
+            + "&redirect_uri="
             + redirect_uri
-            + '&scope='
+            + "&scope="
             + requested_scope
-            + '&access_type=online'
+            + "&access_type=online"
         )
         # navigate to the authorization url in the browser
         driver.get(authorization_url)
@@ -191,7 +191,7 @@ class TestCASOauthAuthorizationPage:
         a11y.run_axe(
             driver,
             session,
-            'CASOauth',
+            "CASOauth",
             write_files=write_files,
             exclude_best_practice=True,
         )

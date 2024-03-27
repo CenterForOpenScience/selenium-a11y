@@ -32,7 +32,7 @@ class EmailAccess:
         # get the latest email uid from the list
         latest_uid = int(uids_list[-1])
         # fetch the body of the latest email
-        res, email_body = imap.fetch(str(latest_uid), '(UID BODY[TEXT])')
+        res, email_body = imap.fetch(str(latest_uid), "(UID BODY[TEXT])")
         imap_close(imap)
         return email_body
 
@@ -47,9 +47,9 @@ class EmailAccess:
         """
         imap = imap_connect_and_login(imap_host, email_address, password)
         # select mail from the Inbox
-        imap.select('Inbox')
+        imap.select("Inbox")
         # filter the email list for any UNSEEN emails
-        result_uids = search('UNSEEN', None, imap)
+        result_uids = search("UNSEEN", None, imap)
         uids_list = result_uids[0].split()
         imap_close(imap)
         return len(uids_list)

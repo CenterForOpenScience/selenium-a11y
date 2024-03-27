@@ -22,7 +22,7 @@ class TestInstitutionsLandingPage:
         a11y.run_axe(
             driver,
             session,
-            'institutions',
+            "institutions",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -36,7 +36,7 @@ class TestBrandedInstitutionPages:
 
     def institutions():
         """Return all institution ids."""
-        return osf_api.get_all_institutions(data_type='ids')
+        return osf_api.get_all_institutions(data_type="ids")
 
     @pytest.fixture(params=institutions())
     def institution(self, request):
@@ -51,12 +51,8 @@ class TestBrandedInstitutionPages:
         # first check if the collection is empty - this may often be the case in the test environments
         if institution_page.empty_collection_indicator.absent():
             # wait for projects table to start loading before calling axe
-            WebDriverWait(driver, 5).until(
-                EC.visibility_of(
-                    institution_page.identity
-                )
-            )
-        page_name = 'bi_' + institution
+            WebDriverWait(driver, 5).until(EC.visibility_of(institution_page.identity))
+        page_name = "bi_" + institution
         a11y.run_axe(
             driver,
             session,
@@ -76,14 +72,14 @@ class TestInstitutionAdminDashboardPage:
         """Test using the COS admin dashboard page - user must already be setup as an admin for the
         COS institution in each environment through the OSF admin app.
         """
-        dashboard_page = InstitutionAdminDashboardPage(driver, institution_id='cos')
+        dashboard_page = InstitutionAdminDashboardPage(driver, institution_id="cos")
         dashboard_page.goto()
         assert InstitutionAdminDashboardPage(driver, verify=True)
         dashboard_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
-            'biadmindash',
+            "biadmindash",
             write_files=write_files,
             exclude_best_practice=True,
         )

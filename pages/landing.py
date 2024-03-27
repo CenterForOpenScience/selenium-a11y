@@ -8,9 +8,9 @@ from pages.base import OSFBasePage
 
 
 class LandingPage(OSFBasePage):
-    identity = Locator(By.CSS_SELECTOR, '._heroHeader_1qc5dv', settings.LONG_TIMEOUT)
+    identity = Locator(By.CSS_SELECTOR, "._heroHeader_1qc5dv", settings.LONG_TIMEOUT)
 
-    loading_indicator = Locator(By.CSS_SELECTOR, '.ball-scale')
+    loading_indicator = Locator(By.CSS_SELECTOR, ".ball-scale")
 
     # Components
     navbar = ComponentLocator(EmberNavbar)
@@ -18,12 +18,12 @@ class LandingPage(OSFBasePage):
 
 
 class LegacyLandingPage(OSFBasePage):
-    waffle_override = {'ember_home_page': LandingPage}
+    waffle_override = {"ember_home_page": LandingPage}
 
-    identity = Locator(By.CSS_SELECTOR, '._heroHeader_1qc5dv')
+    identity = Locator(By.CSS_SELECTOR, "._heroHeader_1qc5dv")
 
 
 class RegisteredReportsLandingPage(OSFBasePage):
-    url = settings.OSF_HOME + '/rr/'
+    url = settings.OSF_HOME + "/rr/"
 
-    identity = Locator(By.CSS_SELECTOR, '.reg-landing-page-logo')
+    identity = Locator(By.CSS_SELECTOR, ".reg-landing-page-logo")

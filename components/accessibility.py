@@ -45,9 +45,9 @@ class ApplyA11yRules:
                 #     ]
                 # },
                 options={
-                    'runOnly': {
-                        'type': 'tag',
-                        'values': ['wcag2a', 'wcag2aa', 'wcag21aa'],
+                    "runOnly": {
+                        "type": "tag",
+                        "values": ["wcag2a", "wcag2aa", "wcag21aa"],
                     }
                 },
             )
@@ -59,7 +59,7 @@ class ApplyA11yRules:
             write_results_files(axe, results, page_name)
         if terminal_errors:
             # Assert no violations are found
-            assert len(results['violations']) == 0, axe.report(results['violations'])
+            assert len(results["violations"]) == 0, axe.report(results["violations"])
 
 
 # TODO: Figure out final storage place for results files:
@@ -84,37 +84,37 @@ def write_results_files(axe, results, page_name):
     """
     # Writing all files to a local folder 'a11y_results' to keep them a little more
     # organized
-    work_dir = 'a11y_results'
+    work_dir = "a11y_results"
     # Have to first check if the folder exists - if not then create it
     if not os.path.isdir(work_dir):
         os.mkdir(work_dir)
     # Files for Passed Rules
     file_name_passes = os.path.join(
-        work_dir, 'a11y_' + page_name + '_passes_' + settings.DOMAIN + '.json'
+        work_dir, "a11y_" + page_name + "_passes_" + settings.DOMAIN + ".json"
     )
-    axe.write_results(results['passes'], file_name_passes)
+    axe.write_results(results["passes"], file_name_passes)
     pandaObject = pd.read_json(file_name_passes)
     file_name_passes_csv = os.path.join(
-        work_dir, 'a11y_' + page_name + '_passes_' + settings.DOMAIN + '.csv'
+        work_dir, "a11y_" + page_name + "_passes_" + settings.DOMAIN + ".csv"
     )
     pandaObject.to_csv(file_name_passes_csv)
     # Files for Failed Rules (aka Violations)
     file_name_violations = os.path.join(
-        work_dir, 'a11y_' + page_name + '_violations_' + settings.DOMAIN + '.json'
+        work_dir, "a11y_" + page_name + "_violations_" + settings.DOMAIN + ".json"
     )
-    axe.write_results(results['violations'], file_name_violations)
+    axe.write_results(results["violations"], file_name_violations)
     pandaObject = pd.read_json(file_name_violations)
     file_name_violations_csv = os.path.join(
-        work_dir, 'a11y_' + page_name + '_violations_' + settings.DOMAIN + '.csv'
+        work_dir, "a11y_" + page_name + "_violations_" + settings.DOMAIN + ".csv"
     )
     pandaObject.to_csv(file_name_violations_csv)
     # Files for Rules that couldn't be evaluated by the rules engine (aka Incomplete)
     file_name_incomplete = os.path.join(
-        work_dir, 'a11y_' + page_name + '_incomplete_' + settings.DOMAIN + '.json'
+        work_dir, "a11y_" + page_name + "_incomplete_" + settings.DOMAIN + ".json"
     )
-    axe.write_results(results['incomplete'], file_name_incomplete)
+    axe.write_results(results["incomplete"], file_name_incomplete)
     pandaObject = pd.read_json(file_name_incomplete)
     file_name_incomplete_csv = os.path.join(
-        work_dir, 'a11y_' + page_name + '_incomplete_' + settings.DOMAIN + '.csv'
+        work_dir, "a11y_" + page_name + "_incomplete_" + settings.DOMAIN + ".csv"
     )
     pandaObject.to_csv(file_name_incomplete_csv)

@@ -46,7 +46,7 @@ class TestProjectPage:
         a11y.run_axe(
             driver,
             session,
-            'project',
+            "project",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -74,7 +74,7 @@ class TestMetadataPage:
         a11y.run_axe(
             driver,
             session,
-            'prjMeta',
+            "prjMeta",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -99,13 +99,13 @@ class TestFilesPage:
         files_page.goto()
         # Wait until at least one of the files in the list is present
         WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-select-file]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "[data-test-select-file]"))
         )
         assert FilesPage(driver, verify=True)
         a11y.run_axe(
             driver,
             session,
-            'prjFiles',
+            "prjFiles",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -132,12 +132,12 @@ class TestFileViewPage:
             # Wait until at least one of the files in the list is present
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located(
-                    (By.CSS_SELECTOR, '[data-test-select-file]')
+                    (By.CSS_SELECTOR, "[data-test-select-file]")
                 )
             )
             for file in files_page.file_rows:
                 # open the first text file you find
-                if '.txt' in file.text:
+                if ".txt" in file.text:
                     file.click()
                     break
             # Wait for the new tab to open - window count should then = 2
@@ -147,12 +147,12 @@ class TestFileViewPage:
             assert FileViewPage(driver, verify=True)
             # wait for iframe to load before running axe
             WebDriverWait(driver, 10).until(
-                EC.visibility_of_element_located((By.CSS_SELECTOR, '#mfrIframeParent'))
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "#mfrIframeParent"))
             )
             a11y.run_axe(
                 driver,
                 session,
-                'fileView',
+                "fileView",
                 write_files=write_files,
                 exclude_best_practice=True,
             )
@@ -185,7 +185,7 @@ class TestWikiPage:
         a11y.run_axe(
             driver,
             session,
-            'prjWiki',
+            "prjWiki",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -212,13 +212,13 @@ class TestAnalyticsPage:
         # wait until analytics graphs load
         WebDriverWait(driver, 5).until(
             EC.visibility_of_element_located(
-                (By.CSS_SELECTOR, '[data-test-analytics-chart]')
+                (By.CSS_SELECTOR, "[data-test-analytics-chart]")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'prjAnlytcs',
+            "prjAnlytcs",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -250,10 +250,10 @@ class TestRegistrationsPage:
             # Open-Ended Registration schema. We'll need this schema id to create the
             # draft.
             schema_list = osf_api.get_registration_schemas_for_provider(
-                provider_id='osf'
+                provider_id="osf"
             )
             for schema in schema_list:
-                if schema[0] == 'Open-Ended Registration':
+                if schema[0] == "Open-Ended Registration":
                     schema_id = schema[1]
                     break
             # Use the api to create a draft registration for the temporary project
@@ -269,7 +269,7 @@ class TestRegistrationsPage:
         a11y.run_axe(
             driver,
             session,
-            'prjReg',
+            "prjReg",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -296,7 +296,7 @@ class TestContributorsPage:
         a11y.run_axe(
             driver,
             session,
-            'prjCntrb',
+            "prjCntrb",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -323,7 +323,7 @@ class TestAddonsPage:
         a11y.run_axe(
             driver,
             session,
-            'prjAddons',
+            "prjAddons",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -351,7 +351,7 @@ class TestSettingsPage:
         a11y.run_axe(
             driver,
             session,
-            'prjSttngs',
+            "prjSttngs",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -385,12 +385,12 @@ class TestForksPage:
         forks_page.fork_authors.present()
         assert len(forks_page.listed_forks) == 1
         # clean-up leftover fork
-        fork_guid = forks_page.fork_link.get_attribute('data-test-node-title')
+        fork_guid = forks_page.fork_link.get_attribute("data-test-node-title")
         osf_api.delete_project(session, fork_guid, None)
         a11y.run_axe(
             driver,
             session,
-            'prjForks',
+            "prjForks",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -416,7 +416,7 @@ class TestRequestAccessPage:
         a11y.run_axe(
             driver,
             session,
-            'prjReqAcc',
+            "prjReqAcc",
             write_files=write_files,
             exclude_best_practice=True,
         )

@@ -8,11 +8,11 @@ import settings
 from api import osf_api
 from components.accessibility import ApplyA11yRules as a11y
 from pages.preprints import (
+    BrandedPreprintsDiscoverPage,
     PreprintDetailPage,
     PreprintLandingPage,
     PreprintSubmitPage,
     ReviewsDashboardPage,
-    BrandedPreprintsDiscoverPage,
     ReviewsModeratorsPage,
     ReviewsNotificationsPage,
     ReviewsSettingsPage,
@@ -29,7 +29,7 @@ class TestPreprintLandingPage:
         a11y.run_axe(
             driver,
             session,
-            'preprints',
+            "preprints",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -37,7 +37,7 @@ class TestPreprintLandingPage:
 
 class TestPreprintSubmitPage:
     @pytest.mark.skipif(
-        not settings.PRODUCTION, reason='This version is only for Production'
+        not settings.PRODUCTION, reason="This version is only for Production"
     )
     def test_accessibility_prod(
         self, driver, session, write_files, exclude_best_practice, must_be_logged_in
@@ -51,7 +51,7 @@ class TestPreprintSubmitPage:
         a11y.run_axe(
             driver,
             session,
-            'prepsub',
+            "prepsub",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -87,17 +87,17 @@ class TestPreprintSubmitPage:
         submit_page.upload_file_save_continue.click()
         submit_page.public_available_button.click()
         submit_page.public_data_input.click()
-        submit_page.public_data_input.send_keys_deliberately('https://osf.io/')
+        submit_page.public_data_input.send_keys_deliberately("https://osf.io/")
         submit_page.scroll_into_view(submit_page.preregistration_no_button.element)
         submit_page.preregistration_no_button.click()
         submit_page.preregistration_input.click()
-        submit_page.preregistration_input.send_keys_deliberately('QA Testing')
+        submit_page.preregistration_input.send_keys_deliberately("QA Testing")
         submit_page.save_author_assertions.click()
         submit_page.basics_abstract_input.click()
         a11y.run_axe(
             driver,
             session,
-            'prepsub',
+            "prepsub",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -126,7 +126,7 @@ class TestPreprintDetailPage:
         a11y.run_axe(
             driver,
             session,
-            'prepdet',
+            "prepdet",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -141,20 +141,20 @@ class TestBrandedProviders:
         """Return all preprint providers."""
         return osf_api.get_providers_list()
 
-    @pytest.fixture(params=providers(), ids=[prov['id'] for prov in providers()])
+    @pytest.fixture(params=providers(), ids=[prov["id"] for prov in providers()])
     def provider(self, request):
         return request.param
 
     def test_accessibility_landing(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        if provider['id'] in settings.providers_leaving_OSF:
+        if provider["id"] in settings.providers_leaving_OSF:
             pytest.skip()
 
         landing_page = PreprintLandingPage(driver, provider=provider)
         landing_page.goto()
         assert PreprintLandingPage(driver, verify=True)
-        page_name = 'bp_' + provider['id']
+        page_name = "bp_" + provider["id"]
         a11y.run_axe(
             driver,
             session,
@@ -166,13 +166,13 @@ class TestBrandedProviders:
     def test_accessibility_discover(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        if provider['id'] in settings.providers_leaving_OSF:
+        if provider["id"] in settings.providers_leaving_OSF:
             pytest.skip()
 
         discover_page = BrandedPreprintsDiscoverPage(driver, provider=provider)
         discover_page.goto()
         assert BrandedPreprintsDiscoverPage(driver, verify=True)
-        page_name = 'bp_' + provider['id'] + '_disc'
+        page_name = "bp_" + provider["id"] + "_disc"
         a11y.run_axe(
             driver,
             session,
@@ -201,7 +201,7 @@ class TestPreprintReviewsDashboardPage:
         a11y.run_axe(
             driver,
             session,
-            'revdash',
+            "revdash",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -220,7 +220,7 @@ class TestProviderReviewsPages:
 
     @pytest.fixture
     def provider(self, driver):
-        return osf_api.get_provider(type='preprints', provider_id='selpremod')
+        return osf_api.get_provider(type="preprints", provider_id="selpremod")
 
     def test_accessibility_reviews_submissions(
         self,
@@ -245,7 +245,7 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revsub',
+            "revsub",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -266,7 +266,7 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revwthdrwls',
+            "revwthdrwls",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -282,16 +282,14 @@ class TestProviderReviewsPages:
     ):
         moderators_page = ReviewsModeratorsPage(driver, provider=provider)
         # TODO: Fix this goto() statement.
-        print(
-            'Moderators Page URL: {}'.format(moderators_page.url)
-        )
+        print("Moderators Page URL: {}".format(moderators_page.url))
         moderators_page.goto()
         assert ReviewsModeratorsPage(driver, verify=True)
         moderators_page.loading_indicator.here_then_gone()
         a11y.run_axe(
             driver,
             session,
-            'revmod',
+            "revmod",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -312,7 +310,7 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revnot',
+            "revnot",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -333,7 +331,7 @@ class TestProviderReviewsPages:
         a11y.run_axe(
             driver,
             session,
-            'revset',
+            "revset",
             write_files=write_files,
             exclude_best_practice=True,
         )

@@ -1,11 +1,11 @@
 import re
 
+import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 import markers
-import pytest
 import settings
 from components.accessibility import ApplyA11yRules as a11y
 from components.email_access import EmailAccess
@@ -30,7 +30,7 @@ class TestOSFHomePage:
         a11y.run_axe(
             driver,
             session,
-            'home',
+            "home",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -48,7 +48,7 @@ class TestDashboardPage:
         a11y.run_axe(
             driver,
             session,
-            'dash',
+            "dash",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -63,11 +63,13 @@ class TestMyProjectsPage:
         my_projects_page.goto()
         assert MyProjectsPage(driver, verify=True)
         my_projects_page.empty_collection_indicator.present()
-        pytest.xfail("Color-contrast issue documented here -> ENG-3616. List issue documented here -> ENG-3146")
+        pytest.xfail(
+            "Color-contrast issue documented here -> ENG-3616. List issue documented here -> ENG-3146"
+        )
         a11y.run_axe(
             driver,
             session,
-            'myproj',
+            "myproj",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -82,7 +84,7 @@ class TestRegisterPage:
         a11y.run_axe(
             driver,
             session,
-            'signup',
+            "signup",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -97,13 +99,13 @@ class TestSearchPage:
         search_page.loading_indicator.here_then_gone()
         WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located(
-                (By.CSS_SELECTOR, '._result-card-container_qeqpmj')
+                (By.CSS_SELECTOR, "._result-card-container_qeqpmj")
             )
         )
         a11y.run_axe(
             driver,
             session,
-            'search',
+            "search",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -118,7 +120,7 @@ class TestForgotPasswordPage:
         a11y.run_axe(
             driver,
             session,
-            'frgtpwrd',
+            "frgtpwrd",
             write_files=write_files,
             exclude_best_practice=True,
         )
@@ -151,7 +153,7 @@ class TestResetPasswordPage:
             loop_counter += 1
             if loop_counter == 60:
                 raise Exception(
-                    'No unseen emails. Verify that Reset Password email was sent.'
+                    "No unseen emails. Verify that Reset Password email was sent."
                 )
                 break
 
@@ -163,14 +165,14 @@ class TestResetPasswordPage:
                 settings.IMAP_HOST,
                 settings.IMAP_EMAIL,
                 settings.IMAP_EMAIL_PASSWORD,
-                'Inbox',
-                'SUBJECT',
-                'Reset Password',
+                "Inbox",
+                "SUBJECT",
+                "Reset Password",
             )
             # Search through the email body text and find the reset password link
-            match = re.search('/resetpassword/' + '.{42}', str(email_body))
+            match = re.search("/resetpassword/" + ".{42}", str(email_body))
             # Need to remove any literal carriage returns or line breaks from matched string
-            reset_URL = match.group(0).replace('=\\r\\n', '')
+            reset_URL = match.group(0).replace("=\\r\\n", "")
             assert match is not None
             # Reconstruct the full url for the reset password link and navigate to it
             driver.get(settings.OSF_HOME + reset_URL)
@@ -179,7 +181,7 @@ class TestResetPasswordPage:
             a11y.run_axe(
                 driver,
                 session,
-                'resetpwrd',
+                "resetpwrd",
                 write_files=write_files,
                 exclude_best_practice=True,
             )
