@@ -63,8 +63,7 @@ class TestMyProjectsPage:
         my_projects_page.goto()
         assert MyProjectsPage(driver, verify=True)
         my_projects_page.empty_collection_indicator.present()
-        pytest.xfail("Color-contrast issue documented here -> ENG-3616"
-                     "List issue documented here -> ENG-3146")
+        pytest.xfail("Color-contrast issue documented here -> ENG-3616. List issue documented here -> ENG-3146")
         a11y.run_axe(
             driver,
             session,

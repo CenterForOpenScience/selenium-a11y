@@ -293,7 +293,7 @@ class TestProviderReviewsPages:
             session,
             'revmod',
             write_files=write_files,
-            exclude_best_practice=1,
+            exclude_best_practice=True,
         )
 
     def test_accessibility_reviews_notifications(

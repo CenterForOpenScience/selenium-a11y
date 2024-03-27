@@ -181,8 +181,7 @@ class TestUserSettingsNotificationsPage:
         assert NotificationsPage(driver, verify=True)
         # wait for Notification Preferences section to finish loading
         notifications_page.loading_indicator.here_then_gone()
-        pytest.xfail("Label issue documented here -> ENG-3074"
-                     "Color-contrast issue documented here -> ENG-3075")
+        pytest.xfail("Label issue documented here -> ENG-3074. Color-contrast issue documented here -> ENG-3075")
         a11y.run_axe(
             driver,
             session,
