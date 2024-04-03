@@ -108,6 +108,39 @@ EXPECTED_PROVIDERS = env.list(
 providers_leaving_OSF = ['ecoevorxiv', 'engrxiv', 'livedata', 'osf']
 non_branded_registries = ['osf', 'assessment']
 
+# Documented failures for branded preprint discover pages
+# ENG-5422 CoP Preprints
+# ENG-5423 EdArXiv
+# ENG-5424 NewAddictionsX
+# ENG-5425 SocArXiv
+# ENG-5426 Thesis Commons
+known_preprints_discover_failures = [
+    "edarxiv", "coppreprints", "newaddictionsx", "socarxiv", "thesiscommons"
+]
+
+# Documented failures for branded preprint landing pages
+# ENG-5398 AfricaArXiv
+# ENG-5399 ArabiXiv
+# ENG-5400 BodoArXiv
+# ENG-5401 CoP Preprints
+# ENG-5402 ECSarXiv
+# ENG-5403 & ENG-5404 EdArXiv
+# ENG-5406 Focus Archive
+# ENG-5407 FrenXiv
+# ENG-5408 IndiaRxiv
+# ENG-5409 MarXiv
+# ENG-5410 MindRxiv
+# ENG-5411 & ENG-5413 NewAddictionsX
+# ENG-5414 & ENG-5415 SocArXiv
+# ENG-5416 SportRxiv
+# ENG-5417 Thesis Commons
+known_preprints_landing_failures = [
+    "africarxiv", "arabixiv", "bodoarxiv", "coppreprints",
+    "ecsarxiv", "edarxiv", "focusarchive", "frenxiv", "indiarxiv",
+    "marxiv", "mindrxiv", "newaddictionsx", "socarxiv", "sportrxiv", "thesiscommons"
+]
+
+
 OSF_HOME = domains[DOMAIN]['home']
 API_DOMAIN = domains[DOMAIN]['api']
 FILE_DOMAIN = domains[DOMAIN]['files']

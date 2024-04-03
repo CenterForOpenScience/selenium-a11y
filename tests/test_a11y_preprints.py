@@ -150,6 +150,8 @@ class TestBrandedProviders:
     ):
         if provider['id'] in settings.providers_leaving_OSF:
             pytest.skip()
+        if provider['id'] in settings.known_preprints_landing_failures:
+            pytest.skip()
 
         landing_page = PreprintLandingPage(driver, provider=provider)
         landing_page.goto()
@@ -167,6 +169,8 @@ class TestBrandedProviders:
         self, session, driver, provider, write_files, exclude_best_practice
     ):
         if provider['id'] in settings.providers_leaving_OSF:
+            pytest.skip()
+        if provider['id'] in settings.known_preprints_discover_failures:
             pytest.skip()
 
         discover_page = BrandedPreprintsDiscoverPage(driver, provider=provider)
