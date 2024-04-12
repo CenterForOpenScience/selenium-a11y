@@ -31,7 +31,7 @@ class TestPreprintLandingPage:
             session,
             'preprints',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -53,7 +53,7 @@ class TestPreprintSubmitPage:
             session,
             'prepsub',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     @markers.dont_run_on_prod
@@ -99,7 +99,7 @@ class TestPreprintSubmitPage:
             session,
             'prepsub',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -128,7 +128,7 @@ class TestPreprintDetailPage:
             session,
             'prepdet',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -162,7 +162,7 @@ class TestBrandedProviders:
             session,
             page_name,
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_discover(
@@ -182,7 +182,7 @@ class TestBrandedProviders:
             session,
             page_name,
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -207,7 +207,7 @@ class TestPreprintReviewsDashboardPage:
             session,
             'revdash',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -251,7 +251,7 @@ class TestProviderReviewsPages:
             session,
             'revsub',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_reviews_withdrawals(
@@ -272,7 +272,7 @@ class TestProviderReviewsPages:
             session,
             'revwthdrwls',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_reviews_moderators(
@@ -297,7 +297,7 @@ class TestProviderReviewsPages:
             session,
             'revmod',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_reviews_notifications(
@@ -318,7 +318,7 @@ class TestProviderReviewsPages:
             session,
             'revnot',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_reviews_settings(
@@ -339,5 +339,5 @@ class TestProviderReviewsPages:
             session,
             'revset',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )

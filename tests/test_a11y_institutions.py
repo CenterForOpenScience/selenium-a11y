@@ -24,7 +24,7 @@ class TestInstitutionsLandingPage:
             session,
             'institutions',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -62,7 +62,7 @@ class TestBrandedInstitutionPages:
             session,
             page_name,
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -85,5 +85,5 @@ class TestInstitutionAdminDashboardPage:
             session,
             'biadmindash',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )

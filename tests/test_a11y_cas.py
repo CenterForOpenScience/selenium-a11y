@@ -26,7 +26,7 @@ class TestCASLoginPage:
             session,
             'login',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -47,7 +47,7 @@ class TestLogin2FAPage:
             session,
             'login2FA',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -68,7 +68,7 @@ class TestLoginToSPage:
             session,
             'loginToS',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -82,7 +82,7 @@ class TestInstitutionalLoginPage:
             session,
             'i9nlogin',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -105,7 +105,7 @@ class TestPreselectedInstitutionLoginPage:
             session,
             'i9npresel',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -119,7 +119,7 @@ class TestUnsupportedInstitutionLoginPage:
             session,
             'unsupi9n',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -142,7 +142,7 @@ class TestInstitutionForgotPasswordPage:
             session,
             'i9nfrgtpswrd',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -156,7 +156,7 @@ class TestGenericCASExceptionPage:
             session,
             'genCASExcept',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -193,5 +193,5 @@ class TestCASOauthAuthorizationPage:
             session,
             'CASOauth',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )

@@ -29,7 +29,7 @@ class TestUserProfilePage:
             session,
             'usrProf',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -56,7 +56,7 @@ class TestUserSettingsProfileInformationPage:
             session,
             'usrSetPrfName',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_social_tab(
@@ -81,7 +81,7 @@ class TestUserSettingsProfileInformationPage:
             session,
             'usrSetPrfSoc',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_employment_tab(
@@ -107,7 +107,7 @@ class TestUserSettingsProfileInformationPage:
             session,
             'usrSetPrfEmp',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
     def test_accessibility_education_tab(
@@ -133,7 +133,7 @@ class TestUserSettingsProfileInformationPage:
             session,
             'usrSetPrfEd',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -150,7 +150,7 @@ class TestUserSettingsAccountSettingsPage:
             session,
             'usrSetAccnt',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -167,7 +167,7 @@ class TestUserSettingsConfigureAddonsPage:
             session,
             'usrSetAddons',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -187,7 +187,7 @@ class TestUserSettingsNotificationsPage:
             session,
             'usrSetNtfctns',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -204,7 +204,7 @@ class TestUserSettingsDeveloperAppsPage:
             session,
             'usrSetDevApp',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -221,7 +221,7 @@ class TestUserSettingsCreateDeveloperAppPage:
             session,
             'usrSetCrtDevApp',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -238,7 +238,7 @@ class TestUserSettingsPersonalAccessTokensPage:
             session,
             'usrSetPAT',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )
 
 
@@ -255,5 +255,5 @@ class TestUserSettingsCreatePersonalAccessTokenPage:
             session,
             'usrSetCrtPAT',
             write_files=write_files,
-            exclude_best_practice=True,
+            exclude_best_practice=exclude_best_practice,
         )

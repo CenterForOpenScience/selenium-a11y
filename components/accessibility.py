@@ -53,7 +53,7 @@ class ApplyA11yRules:
             )
         else:
             # This runs axe with all available rule sets which includes WCAG and Best
-            # Practoce rules.
+            # Practice rules.
             results = axe.run()
         if write_files:
             write_results_files(axe, results, page_name)
