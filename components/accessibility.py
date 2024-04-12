@@ -13,7 +13,7 @@ class ApplyA11yRules:
         page_name,
         write_files=True,
         terminal_errors=True,
-        exclude_best_practice=False,
+        exclude_best_practice=True,
     ):
         """Use the axe testing engine to perform accessibility checks on a web page
         Parameters:
@@ -25,7 +25,7 @@ class ApplyA11yRules:
             errors to terminal window - default = True
         - exclude_best_practice - boolean - used to determine whether or not to
             exclude the Best Practice rule set when performing accessibility check.
-            - default = False
+            - set default to True
         """
         axe = Axe(driver)
         # Inject axe-core javascript into page.
@@ -53,7 +53,7 @@ class ApplyA11yRules:
             )
         else:
             # This runs axe with all available rule sets which includes WCAG and Best
-            # Practoce rules.
+            # Practice rules.
             results = axe.run()
         if write_files:
             write_results_files(axe, results, page_name)

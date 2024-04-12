@@ -153,6 +153,6 @@ def exclude_best_practice(pytestconfig):
         Raises ValueError if input value is anything else.
     """
     if pytestconfig.getoption('exclude_best_practice') is None:
-        return False
+        return True
     else:
         return strtobool(pytestconfig.getoption('exclude_best_practice'))

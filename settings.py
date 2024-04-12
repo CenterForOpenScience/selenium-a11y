@@ -91,6 +91,56 @@ EXPECTED_PROVIDERS = env.list(
     ],
 )
 
+# As of January 24, 2022, the Engineering Archive ('engrxiv') preprint provider
+# has switched away from using OSF as their preprint service.  Therefore the
+# web page that OSF automatically redirects to is no longer based on the OSF
+# Preprints landing/discover page design.  However, they remain in our active
+# preprint provider list in the OSF api due to legal issues that are still being
+# worked out.  The best guess is that the transition will be completed (and
+# engrxiv removed from the api list) by the end of the first quarter of 2022
+# (i.e. end of March).  So to prevent this test from failing in Production
+# every night for 'engrxiv' we are going to skip the following steps for this
+# provider.
+# UPDATE 10/26/2022 - the status of 'engrxiv' has not changed and now another
+# provider - 'ecoevorxiv' is also leaving OSF.
+# UPDATE 10/13/2023 - After the Search Improvements project release, OSF and other providers
+# that have moved away from OSF now redirect to https://osf.io/search?q=&resourceType=Preprint&q=
+providers_leaving_OSF = ['ecoevorxiv', 'engrxiv', 'livedata', 'osf']
+non_branded_registries = ['osf', 'assessment']
+
+# Documented failures for branded preprint discover pages
+# ENG-5422 CoP Preprints
+# ENG-5423 EdArXiv
+# ENG-5424 NewAddictionsX
+# ENG-5425 SocArXiv
+# ENG-5426 Thesis Commons
+known_preprints_discover_failures = [
+    "edarxiv", "coppreprints", "newaddictionsx", "socarxiv", "thesiscommons"
+]
+
+# Documented failures for branded preprint landing pages
+# ENG-5398 AfricaArXiv
+# ENG-5399 ArabiXiv
+# ENG-5400 BodoArXiv
+# ENG-5401 CoP Preprints
+# ENG-5402 ECSarXiv
+# ENG-5403 & ENG-5404 EdArXiv
+# ENG-5406 Focus Archive
+# ENG-5407 FrenXiv
+# ENG-5408 IndiaRxiv
+# ENG-5409 MarXiv
+# ENG-5410 MindRxiv
+# ENG-5411 & ENG-5413 NewAddictionsX
+# ENG-5414 & ENG-5415 SocArXiv
+# ENG-5416 SportRxiv
+# ENG-5417 Thesis Commons
+known_preprints_landing_failures = [
+    "africarxiv", "arabixiv", "bodoarxiv", "coppreprints",
+    "ecsarxiv", "edarxiv", "focusarchive", "frenxiv", "indiarxiv",
+    "marxiv", "mindrxiv", "newaddictionsx", "socarxiv", "sportrxiv", "thesiscommons"
+]
+
+
 OSF_HOME = domains[DOMAIN]['home']
 API_DOMAIN = domains[DOMAIN]['api']
 FILE_DOMAIN = domains[DOMAIN]['files']

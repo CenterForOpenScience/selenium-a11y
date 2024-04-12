@@ -98,6 +98,8 @@ class TestAddNewRegistrationPage:
         add_new_registration_page = RegistrationAddNewPage(driver)
         add_new_registration_page.goto()
         assert RegistrationAddNewPage(driver, verify=True)
+        pytest.xfail("aria-command-name issue documented here -> ENG-5354")
+        pytest.xfail("link-in-text-block issue documented here -> ENG-5355")
         a11y.run_axe(
             driver,
             session,
@@ -1227,20 +1229,21 @@ class TestBrandedRegistrationsProviders:
     def test_accessibility(
         self, session, driver, provider, write_files, exclude_best_practice
     ):
-        # Test for all providers except OSF since the OSF Registries Discover page no
-        # longer exists
-        if provider['id'] != 'osf':
-            discover_page = BrandedRegistriesDiscoverPage(driver, provider=provider)
-            discover_page.goto()
-            assert BrandedRegistriesDiscoverPage(driver, verify=True)
-            discover_page.loading_indicator.here_then_gone()
-            page_name = 'br_' + provider['id']
-            a11y.run_axe(
-                driver,
-                session,
-                page_name,
-                write_files=write_files,
-                exclude_best_practice=exclude_best_practice,
+        # # Test for all providers except OSF and assessment
+        if provider['id'] in settings.non_branded_registries:
+            pytest.skip()
+
+        discover_page = BrandedRegistriesDiscoverPage(driver, provider=provider)
+        discover_page.goto()
+        assert BrandedRegistriesDiscoverPage(driver, verify=True)
+        discover_page.loading_indicator.here_then_gone()
+        page_name = 'br_' + provider['id']
+        a11y.run_axe(
+            driver,
+            session,
+            page_name,
+            write_files=write_files,
+            exclude_best_practice=exclude_best_practice,
             )
 
 
